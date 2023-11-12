@@ -22,7 +22,7 @@ jobs:
       - name: Build
         run: |
           cordova -v
-          cordova build --release --buildConfig=/home/runner/work/ui/ui/cordova-build-config.json
+          cordova build --buildConfig=/home/runner/work/ui/ui/cordova-build-config.json
           tree ./platforms
 
       - run: |
