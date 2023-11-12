@@ -1,10 +1,10 @@
-
-
-
-
-
 name: main
-on: [push]
+
+on:
+  push:
+    tags:
+    - 'v*'
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -25,5 +25,40 @@ jobs:
           cordova -v
           cordova build --prod --buildConfig=/home/runner/work/ui/ui/cordova-build-config.json
 
-      - run: find ./ -name *.apk
-      - run: find ./ -name *.AppImage
+      - run: |
+          echo "ARTIFACT_APK=$(find /home/runner/work/ui/ui/ -name *.apk)" >> "$GITHUB_ENV"
+      - run: |
+          echo "ARTIFACT_APPIMAGE=$(find /home/runner/work/ui/ui/ -name *.AppImage)" >> "$GITHUB_ENV"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Android Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ${{ ARTIFACT_APK }}
+          asset_name: storganizer-debug.apk
+          asset_content_type: application/vnd.android.package-archive
+
+      - name: Upload AppImage Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ${{ ARTIFACT_APPIMAGE }}
+          asset_name: storganizer-debug.apk
+          asset_content_type: application/vnd.android.package-archive
