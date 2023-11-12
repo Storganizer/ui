@@ -33,4 +33,4 @@ jobs:
       - uses: ncipollo/release-action@v1
         with:
           token: ${{ secrets.STORGANIZER_RELEASE_TOKEN }}
-          artifacts: "*AppImage,*.apk"
+          artifacts: "platforms/electron/build/*AppImage,platforms/android/app/build/outputs/apk/debug/*.apk"
