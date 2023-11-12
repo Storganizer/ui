@@ -23,7 +23,7 @@ jobs:
       - name: Build
         run: |
           cordova -v
-          cordova build --prod --buildConfig=./cordova-build-config.json
+          cordova build --prod --buildConfig=/home/runner/work/ui/ui/cordova-build-config.json
 
       - run: find ./ -name *.apk
       - run: find ./ -name *.AppImage
