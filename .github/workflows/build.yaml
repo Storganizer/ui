@@ -11,25 +11,5 @@ jobs:
     name: Build
     steps:
 
+      - run: pwd && ls -hal ./
 
-      - uses: bahmutov/npm-install@v1
-
-      - run: npm install
-      - run: npm run production-build
-      - run: npm run cordova-prepare
-
-
-      - name: Use coturiv/setup-ionic
-        uses: coturiv/setup-ionic@v1
-        with:
-          java-version: 8
-      - name: Use coturiv/setup-ionic
-        uses: coturiv/setup-ionic@v1
-        with:
-          cordova-version: 8
-
-
-
-      - name: Build
-        run: |
-          ionic cordova build electron --prod
