@@ -31,4 +31,5 @@ jobs:
 
       - name: Build
         run: |
-          ionic cordova build electron --prod
+          cordova -v
+          #ionic cordova build electron --prod
