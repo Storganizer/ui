@@ -1,14 +1,19 @@
 {
-
    "electron": {
         "linux": {
             "package": [
-                 "AppImage"
+                "AppImage"
             ]
-        }   
-    } 
-
-
-
-
+        },
+        "mac": {
+            "package": [
+                "dmg"
+            ]
+        }   ,
+        "windows": {
+            "package": [
+                "msi"
+            ]
+        }
+    }
 }
