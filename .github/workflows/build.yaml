@@ -22,7 +22,8 @@ jobs:
 
       - name: Build
         run: |
-          npx cordova -v
-          npx cordova build --prod --buildConfig=./cordova-build-config.json
+          cordova -v
+          cordova build --prod --buildConfig=./cordova-build-config.json
 
-      - run: tree ./platforms
+      - run: find ./ -name *.apk
+      - run: find ./ -name *.AppImage
