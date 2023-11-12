@@ -4,16 +4,6 @@
             "package": [
                 "AppImage"
             ]
-        }/*,
-        "mac": {
-            "package": [
-                "dmg"
-            ]
-        }   ,
-        "windows": {
-            "package": [
-                "msi"
-            ]
-        }*/
+        }
     }
 }
