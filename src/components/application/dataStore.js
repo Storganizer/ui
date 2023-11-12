@@ -65,13 +65,10 @@ export default {
       if (this.locations == false) {
         let target = this
         function reqListener() {
-          alert(this.responseText)
           let jsonResponse = JSON.parse(this.responseText)
           target.locations = jsonResponse
           Registry.eventBus.trigger('dataLocationLoadSuccess', target.locations)
         }
-        alert('ma boiii')
-        alert(apiHost + "/locations")
         const req = new XMLHttpRequest()
         req.addEventListener("load", reqListener)
         req.open("GET", apiHost + "/locations")
