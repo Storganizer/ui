@@ -8,12 +8,18 @@
     <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
+
+
     <platform name="electron">
         <icon src="www/storganizer-logo.png" />
         
         <preference name="Fullscreen" value="true" />
         <preference name="ShowTitle" value="false" />
         <preference name="ElectronSettingsFilePath" value="./electron.json" />
+    </platform>
+
+    <platform name="android">
+        <icon src="www/storganizer-logo.png" />
     </platform>
 
 </widget>
