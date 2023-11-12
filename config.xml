@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget
     id="io.storganizer.app"
-    version="1.0.22"
+    version="1.0.23"
     xmlns="http://www.w3.org/ns/widgets"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:cdv="http://cordova.apache.org/ns/1.0" >
@@ -11,6 +11,7 @@
         Storganizer Dev
     </author>
     <content src="index.html" />
+    <access origin="http://10.1.1.79:5000" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
 
