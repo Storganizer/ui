@@ -1,5 +1,5 @@
 <boxes-list class="no-print">
-    <h2>📦 { props.boxes.length } Boxes <a class="add-entry" onclick={ toggleAdd }>➕</a></h2>
+    <h2><i class="fa-solid fa-boxes-stacked"></i> { props.boxes.length } Boxes <a class="add-entry" onclick={ toggleAdd }><i class="fa fa-plus"></i></a></h2>
 
     <div if={ state.add }>
       <box-form box={ state.emptyBox } onCancel={ toggleAdd }></box-form>

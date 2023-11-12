@@ -2,12 +2,7 @@
   margin-top: 90px;
 }
 
-.edit-entry, .add-entry {
-  cursor: pointer;
-  margin-right: 5px;
-  float: right;
-  font-size: .5em;
-}
+
 
 .form-buttons {
   float: right;
@@ -17,6 +12,21 @@
 .button-delete {
     background-color: #a31b41;
     border-color: #a31b41;
+}
+
+
+
+/* Icon fixes */
+
+h2 .fa, h2 .fa-solid {
+  margin-right: 15px
+}
+
+.edit-entry, .add-entry {
+  cursor: pointer;
+  margin-right: 5px;
+  float: right;
+  font-size: .8em;
 }
 
 

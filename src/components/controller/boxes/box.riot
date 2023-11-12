@@ -1,6 +1,6 @@
 <box>
     <div if={ ! state.edit && state.box  }>
-      <h2>📦 { state.box.name } <a class="edit-entry" onclick={ toggleEdit }>✏️</a></h2> 
+      <h2><i class="fa-solid fa-box-open"></i> { state.box.name } <a class="edit-entry" onclick={ toggleEdit }><i class="fa fa-edit"></i></a></h2> 
       <p>{ state.box.description }</p>
       <p if={ state.location }><b>Location: </b><a onclick={ registry.application.clickHandler } href="#location/{ state.location.id }">{ state.location.name }</a></p>
       <qr-code></qr-code>

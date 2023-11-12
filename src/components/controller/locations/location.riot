@@ -1,6 +1,6 @@
 <location>
     <div if={ ! state.edit && state.location }>
-      <h2>🏠 { state.location.name } <a class="edit-entry" onclick={ toggleEdit }>✏️</a></h2>
+      <h2><i class="fa-solid fa-location-dot"></i> { state.location.name } <a class="edit-entry" onclick={ toggleEdit }><i class="fa fa-edit"></i></a></h2>
 
       <p>{ state.location.description }</p>
       <p>Classification: <b>{ state.location.classification }</b></p>
