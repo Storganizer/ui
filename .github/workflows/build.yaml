@@ -12,24 +12,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1
+      - uses: coturiv/setup-ionic@v1
+        with:
+          java-version: 8
 
       - run: npm install
       - run: npm run production-build
       - run: npm run cordova-prepare
 
-
-      - name: Use coturiv/setup-ionic
-        uses: coturiv/setup-ionic@v1
-        with:
-          java-version: 8
-      - name: Use coturiv/setup-ionic
-        uses: coturiv/setup-ionic@v1
-        with:
-          cordova-version: 8
-
-
-
       - name: Build
         run: |
-          cordova -v
-          cordova build --prod --buildConfig=/home/runner/work/ui/ui/cordova-build-config.json
+          npx cordova -v
+          npx cordova build --prod --buildConfig=/home/runner/work/ui/ui/cordova-build-config.json
