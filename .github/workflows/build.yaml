@@ -1,3 +1,8 @@
+
+
+
+
+
 name: main
 on: [push]
 jobs:
@@ -5,9 +10,26 @@ jobs:
     runs-on: ubuntu-latest
     name: Build
     steps:
-      - uses: actions/checkout@v3
+
+
       - uses: bahmutov/npm-install@v1
-      - run: npm i electron cordova -g
+
       - run: npm i
       - run: npm run production-build
-      - run: npm run cordova-build electron
+      - run: npm run cordova-prepare
+
+
+      - name: Use coturiv/setup-ionic
+        uses: coturiv/setup-ionic@v1
+        with:
+          java-version: 8
+      - name: Use coturiv/setup-ionic
+        uses: coturiv/setup-ionic@v1
+        with:
+          cordova-version: 8
+
+
+
+      - name: Build
+        run: |
+          ionic cordova build electron --prod
