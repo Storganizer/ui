@@ -70,7 +70,8 @@ export default {
           target.locations = jsonResponse
           Registry.eventBus.trigger('dataLocationLoadSuccess', target.locations)
         }
-
+        alert('ma boiii')
+        alert(apiHost + "/locations")
         const req = new XMLHttpRequest()
         req.addEventListener("load", reqListener)
         req.open("GET", apiHost + "/locations")

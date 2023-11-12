@@ -11,3 +11,6 @@ cp ./public/* ./www
 rm -rf ./platforms
 npx cordova platform add electron
 npx cordova platform add android
+#npx cordova platform add osx
+#npx cordova platform add ios
+#npx cordova platform add windows
