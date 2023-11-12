@@ -10,4 +10,4 @@ cp ./public/* ./www
 
 rm -rf ./platforms
 npx cordova platform add electron
-npx cordova platform add android
+#npx cordova platform add android
