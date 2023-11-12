@@ -1,22 +1,27 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget
     id="io.storganizer.app"
-    version="1.0.25"
+    version="1.0.26"
     xmlns="http://www.w3.org/ns/widgets"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:cdv="http://cordova.apache.org/ns/1.0" >
+
     <name>Storganizer</name>
     <description>Storganizer UI Application</description>
     <author email="info@gitcd.io" href="https://gitcd.io">
         Storganizer Dev
     </author>
     <content src="index.html" />
+
     <access origin="http://10.1.1.79:5000" />
     <allow-intent href="http://*/*" />
+    <allow-intent href="http://10.1.1.79:5000/*" />
     <allow-intent href="https://*/*" />
     
     <preference name="Scheme" value="http" />
     <preference name="usesCleartextTraffic" value="true" />
+    <preference name="AndroidInsecureFileModeEnabled" value="true" />
+
 
     <platform name="electron">
         <icon src="www/storganizer-logo.png" />
@@ -29,6 +34,8 @@
 
         <preference name="Scheme" value="http" />
         <preference name="usesCleartextTraffic" value="true" />
+        <preference name="AndroidInsecureFileModeEnabled" value="true" />
+
     </platform>
 
 </widget>
