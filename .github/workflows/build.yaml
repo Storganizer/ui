@@ -24,3 +24,5 @@ jobs:
         run: |
           npx cordova -v
           npx cordova build --prod --buildConfig=/home/runner/work/ui/ui/cordova-build-config.json
+
+      - run: tree ./platforms
