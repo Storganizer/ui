@@ -10,6 +10,7 @@ cp ./public/* ./www
 
 rm -rf ./platforms
 
+npx cordova plugin add cordova-plugin-android-permissions
 npx cordova plugin add cordova-plugin-camera
 npx cordova platform add electron
 npx cordova platform add android
