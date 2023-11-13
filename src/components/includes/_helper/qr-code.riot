@@ -2,11 +2,6 @@
   <p><button class="no-print" onclick={ toggleQr }>Show qr code</button></p>
   <p><div id="location-qr"></div></p>
 
-
-  <p><video class="camera" muted autoplay="autoplay" playsinline="playsinline" webkit-playsinline></video></p>
-
-
-
   <script>
 
     export default {
@@ -27,17 +22,6 @@
         } else {
           e.target.innerHTML = 'Show qr code'
         }
-
-        navigator.mediaDevices.getUserMedia({
-           video: true,
-           audio: false
-        }).then(function(stream) {
-           var camera = document.getElementsByClassName("camera")[0]; //A video element
-           // Attach the stream to the video element
-           camera.srcObject = stream;
-        }).catch(function(err) {
-           console.error('getUserMediaError', err, err.stack);
-        })
       },
     }
   </script>
