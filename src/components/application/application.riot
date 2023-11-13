@@ -76,6 +76,11 @@
       },
 
       clickHandler(e) {
+
+        console.log(document.getElementsByClassName('menu-btn')[0].value)
+        if (document.getElementsByClassName('menu-btn')[0].checked) {
+          document.getElementsByClassName('menu-btn')[0].checked = false
+        }
         if (e.target.href) {
           this.render(e.target.href)
         }

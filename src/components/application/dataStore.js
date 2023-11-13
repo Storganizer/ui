@@ -2,7 +2,7 @@ import Registry from './registry.js'
 
 
 
-let apiHost = "http://10.1.1.79:5000"
+let apiHost = "http://10.1.1.179:5000"
 
 export default {
 
