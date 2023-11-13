@@ -115,7 +115,7 @@
 }
 
 /* 48em = 768px */
-@media (min-width: 47em) {
+@media (min-width: 55em) {
   .header li {
     float: left;
   }
@@ -130,9 +130,16 @@
   .header .menu-icon {
     display: none;
   }
+
 }
 
-@media (max-width: 47em) {
+@media (max-width: 55em) {
+
+
+  .header li a {
+    padding:  10px 20px
+  }
+
 
   td.description {
     display: none;

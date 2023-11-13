@@ -4,7 +4,7 @@
   <scan-qr-code></scan-qr-code>
 
 
-  <div class="search"><i class="fa-solid fa-magnifying-glass"></i><input onkeyup={typeahead} type="text" placeholder="search" id="search" name="search"></div>
+  <div class="search"><input onkeyup={typeahead} type="text" placeholder="search" id="search" name="search"></div>
 
   <div class="results">
     <locations-list if={ state.locations.length } locations={ state.locations }></locations-list>

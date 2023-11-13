@@ -1,6 +1,7 @@
 .search {
     position: fixed;
-    top: 20px;
+    top: 15px;
+    left:  210px;
     width: inherit;
     z-index: 5;
 }
