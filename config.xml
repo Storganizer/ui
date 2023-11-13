@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget
     id="io.storganizer.app"
-    version="1.0.32"
+    version="1.0.33"
     xmlns="http://www.w3.org/ns/widgets"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:cdv="http://cordova.apache.org/ns/1.0" >
@@ -34,16 +34,13 @@
         <preference name="Scheme" value="http" />
         <preference name="usesCleartextTraffic" value="true" />
 
-        <feature name="Camera">
-            <param name="android-package" value="org.apache.cordova.CameraLauncher" />
-        </feature>
-
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
           <application android:usesCleartextTraffic="true" />
         </edit-config>
-        <config-file target="app/src/main/AndroidManifest.xml" parent="/manifest/application">
-            <uses-permission android:name="android.permission.CAMERA"/>
-        </config-file>
+
+        <uses-permission android:name="android.permission.CAMERA" />
+        <uses-feature android:name="android.hardware.camera" />
+        <uses-feature android:name="android.hardware.camera.front" />
     </platform>
 </widget>
 
