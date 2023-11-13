@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget
     id="io.storganizer.app"
-    version="1.0.35"
+    version="1.0.36"
     xmlns="http://www.w3.org/ns/widgets"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:cdv="http://cordova.apache.org/ns/1.0" >
@@ -36,19 +36,6 @@
           <application android:usesCleartextTraffic="true" />
         </edit-config>
 
-
-
-        <config-file mode="merge" parent="/*" target="AndroidManifest.xml">
-          <uses-permission android:name="android.permission.CAMERA" />
-          <uses-feature android:name="android.hardware.camera" />
-          <uses-feature android:name="android.hardware.camera.autofocus" />
-        </config-file>
-
-        <uses-permission android:name="android.permission.CAMERA" />
-        <uses-permission android:name="permission.CAMERA" />
-        <uses-permission android:name="android.permission.READ_CONTACTS" />
-        <uses-feature android:name="android.hardware.camera" />
-        <uses-feature android:name="android.hardware.camera.front" />
     </platform>
 </widget>
 
