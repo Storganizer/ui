@@ -33,7 +33,7 @@ h2 .fa, h2 .fa-solid {
 @media print
 {    
 
-    .no-print, .no-print, .button-delete, .edit-entry, .add-entry *
+    .no-print, .button-delete, .edit-entry, .add-entry *
     {
         display: none !important;
     }

@@ -142,11 +142,11 @@ export default {
 
         let found = false
 
-        if (item.name && item.name.toLowerCase().includes(string)) {
+        if (item?.name.toLowerCase().includes(string)) {
           found = true
         }
 
-        if (item.description && item.description.toLowerCase().includes(string)) {
+        if (item?.description.toLowerCase().includes(string)) {
           found = true
         }
 
@@ -195,7 +195,6 @@ export default {
       }
 
       return this.boxes
-      return true
     },
 
     fetchBoxes() {
@@ -278,11 +277,11 @@ export default {
         }
         let found = false
 
-        if (item.name && item.name.toLowerCase().includes(string)) {
+        if (item?.name.toLowerCase().includes(string)) {
           found = true
         }
 
-        if (item.description && item.description.toLowerCase().includes(string)) {
+        if (item?.description.toLowerCase().includes(string)) {
           found = true
         }
 
