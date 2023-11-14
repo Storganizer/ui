@@ -19,3 +19,9 @@ const app = mountApp(
   document.getElementById('root'),
   {}
 )
+
+
+document.addEventListener("deviceready", function onDeviceReady() {
+    console.log("deviceready");
+    console.log(cordova.file);
+}, false);
