@@ -1,23 +1,31 @@
 <config>
 
-
+  <label for="api-url">Api URL</label><input placeholder="http://localhost:5000" name="api-url" id="api-url" type="text" value="{ state.apiUrl }"></input>
   <button onclick={ save }>Save</button>
 
   <script>
     import  './style.css'
 
     export default {
+      localStorage: window.localStorage,
       components: {
       },
 
       state: {
-        apiUrl: "http://10.1.1.79:5000"
+        apiUrl: "http://127.0.0.1:5000"
       },
 
       save(e) {
-        console.log(window.localStorage)
-        alert(this.state.apiUrl)
-      }
+        let apiUrl = document.getElementById("api-url").value
+        this.registry.dataStore.setApiHost(apiUrl)
+        this.localStorage.setItem("apiUrl", apiUrl)
+      },
+
+      onMounted(e) {
+        this.update({
+          apiUrl: this.localStorage.getItem("apiUrl")
+        })
+      },
 
     }
   </script>
