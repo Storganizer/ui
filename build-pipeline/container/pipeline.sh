@@ -1,5 +1,7 @@
 
 rm -rf ./platforms ./plugins
+rm -rf /tmp/local-builds/*
+
 
 cordova telemetry off
 cordova platform add android
