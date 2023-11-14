@@ -1,8 +1,9 @@
 <box-form class="no-print">
   <p if={ props.box }>
-    <p><button class="no-print" onclick={ picture }>Take a picture</button></p>
+    <p><button class="no-print" onclick={ camera }>Take a picture</button></p>
+    <p><button class="no-print" onclick={ snapshot }>Snapshot</button></p>
     <video class="camera" muted autoplay="autoplay" playsinline="playsinline" webkit-playsinline></video>
-
+    <canvas id="canvas" width="640" height="480"></canvas>
 
 
 
@@ -27,8 +28,8 @@
         locations: false
       },
 
-
-      picture(e) {
+      camera(e) {
+        let target = this
         navigator.mediaDevices.getUserMedia({
            video: true,
            audio: false
@@ -41,6 +42,12 @@
         })
       },
 
+      snapshot() {
+        const canvas = document.getElementById('canvas');
+        var camera = document.getElementsByClassName("camera")[0]
+        var context = canvas.getContext('2d');
+        context.drawImage(camera, 0, 0, 640, 480);
+      },
 
       setupListenter() {
         let target = this
@@ -84,6 +91,7 @@
         this.registry.application.render(redirectUrl)
       },
     }
+
   </script>
 
   <style>
