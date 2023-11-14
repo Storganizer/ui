@@ -1,0 +1,23 @@
+<config>
+
+
+  <button onclick={ save }>Save</button>
+
+  <script>
+    import  './style.css'
+
+    export default {
+      components: {
+      },
+
+      state: {
+        apiUrl: "http://10.1.1.79:5000"
+      },
+
+      save(e) {
+        alert(this.state.apiUrl)
+      }
+
+    }
+  </script>
+</config>
