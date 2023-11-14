@@ -15,14 +15,14 @@ jobs:
         with:
           java-version: 8
 
-      - run: npm install
-      - run: npm run production-build
-      - run: npm run cordova-prepare
 
-      - name: Build
-        run: |
-          cordova build --buildConfig=/tmp/ui/cordova-build-config.json
-          tree ./platforms
+      - run: bash ./build-pipeline/01-cleanup.sh
+      - run: bash ./build-pipeline/02-npm-install.sh
+      - run: bash ./build-pipeline/03-npm-build.sh
+      - run: bash ./build-pipeline/04-cordova-prepare.sh
+      - run: bash ./build-pipeline/05-cordova-build.sh
+
+
 
       - run: |
           find /home/runner/work/ui/ui/ -name *.apk
@@ -32,8 +32,6 @@ jobs:
           find /home/runner/work/ui/ui/ -name *.dmg
       - run: |
           find /home/runner/work/ui/ui/ -name *.msi
-
-
 
       - uses: ncipollo/release-action@v1
         with:
