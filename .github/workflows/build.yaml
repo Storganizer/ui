@@ -15,14 +15,7 @@ jobs:
         with:
           java-version: 8
 
-
-      - run: bash ./build-pipeline/01-cleanup.sh
-      - run: bash ./build-pipeline/02-npm-install.sh
-      - run: bash ./build-pipeline/03-npm-build.sh
-      - run: bash ./build-pipeline/04-cordova-prepare.sh
-      - run: bash ./build-pipeline/05-cordova-build.sh
-
-
+      - run: ./build-pipeline/scripts/github.sh
 
       - run: |
           find /home/runner/work/ui/ui/ -name *.apk
