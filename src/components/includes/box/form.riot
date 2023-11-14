@@ -1,5 +1,11 @@
 <box-form class="no-print">
   <p if={ props.box }>
+
+    <img id="upload-box-image" />
+    <button onclick={ openCamera }>Picture</button>
+    <p><video class="camera" muted autoplay="autoplay" playsinline="playsinline" webkit-playsinline></video></p>
+
+
     <input placeholder="Box" name="box-name" id="box-name" type="text" value="{ props.box.name }"></input>
     <textarea placeholder="Description" name="box-description" id="box-description">{ props.box.description }</textarea>
     <label for="box-location-id">Location</label><select name="box-location-id" id="box-location-id">
@@ -20,6 +26,36 @@
       state: {
         locations: false
       },
+
+
+      openCamera() {
+
+
+        navigator.mediaDevices.getUserMedia({
+           video: true,
+           audio: false
+        }).then(function(stream) {
+           var camera = document.getElementsByClassName("camera")[0]; //A video element
+           // Attach the stream to the video element
+           camera.srcObject = stream;
+        }).catch(function(err) {
+           console.error('getUserMediaError', err, err.stack);
+        })
+
+
+      },
+
+
+      cameraCallback(imageData) {
+         var image = document.getElementById('upload-box-image')
+         image.src = "data:image/jpeg;base64," + imageData
+      },
+
+      cameraError(error) {
+        console.debug("Unable to obtain picture: " + error, "app")
+      },
+
+
 
       setupListenter() {
         let target = this

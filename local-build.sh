@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Cleanup"
-sudo rm -rf ./builds ./dist ./node_modules ./platforms ./plugins ./www
+sudo rm -rf ./builds ./dist ./node_modules ./www
 mkdir -p ./platforms
 mkdir -p ./www
 mkdir -p ./builds
@@ -9,6 +9,8 @@ mkdir -p ./builds
 echo "Fresh install"
 npm install
 npm run production-build
+./cordova-prepare.sh
+
 
 echo "Copy artifacts"
 cp ./dist/* ./www
@@ -25,6 +27,7 @@ docker run -it --name $(cat version.txt) \
     -v $(pwd)/package.json:/tmp/package.json:z \
     beevelop/ionic \
         bash /tmp/container-pipeline.sh
+
 
 echo "Fixing artifact permissions"
 sudo chown -R claudio: $(pwd)/builds

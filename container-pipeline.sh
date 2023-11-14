@@ -4,7 +4,8 @@ rm -rf ./platforms ./plugins
 cordova telemetry off
 cordova platform add android
 cordova platform add electron
-cordova build --prod --release --buildConfig=/tmp/cordova-build-config.json
+cordova build --buildConfig=/tmp/cordova-build-config.json
+#cordova build --prod --release --buildConfig=/tmp/cordova-build-config.json
 
 APK=$(find ./ -name *.apk)
 AAB=$(find ./ -name *.aab)
