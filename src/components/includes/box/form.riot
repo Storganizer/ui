@@ -1,5 +1,11 @@
 <box-form class="no-print">
   <p if={ props.box }>
+    <p><button class="no-print" onclick={ picture }>Take a picture</button></p>
+    <video class="camera" muted autoplay="autoplay" playsinline="playsinline" webkit-playsinline></video>
+
+
+
+
     <input placeholder="Box" name="box-name" id="box-name" type="text" value="{ props.box.name }"></input>
     <textarea placeholder="Description" name="box-description" id="box-description">{ props.box.description }</textarea>
     <label for="box-location-id">Location</label><select name="box-location-id" id="box-location-id">
@@ -20,6 +26,21 @@
       state: {
         locations: false
       },
+
+
+      picture(e) {
+        navigator.mediaDevices.getUserMedia({
+           video: true,
+           audio: false
+        }).then(function(stream) {
+           var camera = document.getElementsByClassName("camera")[0]; //A video element
+           // Attach the stream to the video element
+           camera.srcObject = stream;
+        }).catch(function(err) {
+           console.error('getUserMediaError', err, err.stack);
+        })
+      },
+
 
       setupListenter() {
         let target = this
@@ -68,6 +89,9 @@
   <style>
     button {
       margin-right: 5px;
+    }
+    video.camera {
+      width: 100%
     }
   </style>
 
