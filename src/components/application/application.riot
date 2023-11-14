@@ -79,11 +79,11 @@
       },
 
       clickHandler(e) {
-
-        console.log(document.getElementsByClassName('menu-btn')[0].value)
+        // close the burger menu if open
         if (document.getElementsByClassName('menu-btn')[0].checked) {
           document.getElementsByClassName('menu-btn')[0].checked = false
         }
+        // parent href is relevant since i have the icons now
         if (e.target.href) {
           this.render(e.target.href)
         }
