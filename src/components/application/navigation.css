@@ -114,6 +114,10 @@
   top: 0;
 }
 
+.header .app-title {
+  display: inline-block;
+}
+
 /* 48em = 768px */
 @media (min-width: 55em) {
   .header li {
@@ -144,4 +148,13 @@
   td.description {
     display: none;
   }
+
+  .header .app-title {
+    display: none;
+  }
+
+  .search {
+      left:  50px !important;
+  }
+
 }
