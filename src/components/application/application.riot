@@ -12,6 +12,7 @@
       <items application={ this } params={ state.controller.params } if={ isController('items') }></items>
       <item application={ this } params={ state.controller.params } if={ isController('item') }></item>
       <search application={ this } params={ state.controller.params } if={ isController('search') }></search>
+      <config application={ this } params={ state.controller.params } if={ isController('config') }></config>
     </div>
   </div>
 
@@ -30,6 +31,7 @@
     import Items from '../controller/items/items.riot'
     import Item from '../controller/items/item.riot'
     import Search from '../controller/search/search.riot'
+    import Config from '../controller/config/config.riot'
     import QrCode from '../includes/_helper/qr-code.riot'
 
     function parseUrl(url = "localhost#locations") {
@@ -73,14 +75,15 @@
         Items,
         Item,
         Search,
+        Config,
       },
 
       clickHandler(e) {
-
-        console.log(document.getElementsByClassName('menu-btn')[0].value)
+        // close the burger menu if open
         if (document.getElementsByClassName('menu-btn')[0].checked) {
           document.getElementsByClassName('menu-btn')[0].checked = false
         }
+        // parent href is relevant since i have the icons now
         if (e.target.href) {
           this.render(e.target.href)
         }

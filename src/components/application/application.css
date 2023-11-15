@@ -14,7 +14,14 @@
     border-color: #a31b41;
 }
 
+/* Weird Table beahviors in small screens */
+table {
+  display: inline-table;
+}
 
+td.length {
+  width: 55px
+}
 
 /* Icon fixes */
 
