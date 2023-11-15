@@ -2,9 +2,13 @@ import Registry from './registry.js'
 
 
 
-let apiHost = "http://10.1.1.79:5000"
+let apiHost = window.localStorage.getItem("apiUrl")
 
 export default {
+
+  setApiHost(url) {
+    apiHost = url
+  },
 
   locations: {
     locations: false,
