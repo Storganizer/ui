@@ -36,11 +36,16 @@
           cameraActive: true
         })
 
+        console.log(navigator.mediaDevices)
         this.camera = document.getElementById("camera")
         navigator.mediaDevices.getUserMedia({
-           video: true,
-           audio: false
-        }).then(function(stream) {
+          video: true,
+          audio: false,
+          facingMode: 'environment',
+        }
+
+
+        ).then(function(stream) {
            this.stream = stream
            this.camera.srcObject = this.stream;
         }.bind(this)).catch(function(err) {
@@ -53,12 +58,16 @@
           pictureTaken: true
         })
         this.canvas = document.getElementById('canvas')
+        this.canvas.width = this.camera.videoWidth
+        this.canvas.height = this.camera.videoHeight
+
         this.context = this.canvas.getContext('2d')
-        this.context.drawImage(this.camera, 0, 0, 480, 360);
+        this.context.drawImage(this.camera, 0, 0);
       },
 
       getEncodedImage() {
-        return this.canvas?.toDataURL().replace(/^data:image\/png;base64,/, "")
+        let canvas = document.getElementById('canvas')
+        return canvas.toDataURL().replace(/^data:image\/png;base64,/, "")
       },
 
 

@@ -47,6 +47,7 @@
       saveEntry(e) {
         let box = {
           id: this.props.box.id || 0,
+          image: TakePicture.exports.getEncodedImage(),
           name: document.getElementById("box-name").value,
           description: document.getElementById("box-description").value,
           locationId: parseInt(document.getElementById("box-location-id").value),
