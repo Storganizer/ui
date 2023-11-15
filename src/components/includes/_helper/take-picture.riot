@@ -1,0 +1,81 @@
+<take-picture>
+
+    <p><button if={ !state.cameraActive } class="no-print" onclick={ openCamera }>Open Camera</button></p>
+    <p><button if={ state.cameraActive } class="no-print" onclick={ closeCamera }>Close Camera</button></p>
+
+    <p><video class="webcam-video" if={ state.cameraActive } id="camera" muted autoplay="autoplay" playsinline="playsinline" webkit-playsinline></video>
+    <button if={ state.cameraActive } class="snapshot no-print" onclick={ snapshot }>Snapshot</button></p>
+
+    <p><canvas class="webcam-image" if={ state.pictureTaken } id="canvas" width="480" height="360"></canvas></p>
+
+  <script>
+
+    export default {
+      stream: false,
+      camera: false,
+      canvas: false,
+      context: false,
+      state: {
+        cameraActive: false,
+        pictureTaken: false,
+      },
+
+      closeCamera(e) {
+        if (this.stream)
+        this.stream.getTracks().forEach(function(track) {
+          track.stop()
+        })
+
+        this.update({
+          cameraActive: false
+        })
+      },
+
+      openCamera(e) {
+        this.update({
+          cameraActive: true
+        })
+
+        this.camera = document.getElementById("camera")
+        navigator.mediaDevices.getUserMedia({
+           video: true,
+           audio: false
+        }).then(function(stream) {
+           this.stream = stream
+           this.camera.srcObject = this.stream;
+        }.bind(this)).catch(function(err) {
+           console.error('getUserMediaError', err, err.stack);
+        })
+      },
+
+      snapshot() {
+        this.update({
+          pictureTaken: true
+        })
+        this.canvas = document.getElementById('canvas')
+        this.context = this.canvas.getContext('2d')
+        this.context.drawImage(this.camera, 0, 0, 480, 360);
+      },
+
+      getEncodedImage() {
+        return this.canvas?.toDataURL().replace(/^data:image\/png;base64,/, "")
+      },
+
+
+    }
+  </script>
+  <style>
+    .webcam-video,  .webcam-image{
+      width: 250px;
+      border: 1px solid #9b4dca;
+    }
+
+    .snapshot {
+      position: absolute;
+      z-index: 2;
+      margin-left: -245px; /*.webcam-video:width; - 5px*/
+      margin-top: 5px;
+    }
+
+  </style>
+</take-picture>

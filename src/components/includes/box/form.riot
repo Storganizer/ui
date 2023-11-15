@@ -1,12 +1,6 @@
 <box-form class="no-print">
   <p if={ props.box }>
-    <p><button class="no-print" onclick={ camera }>Take a picture</button></p>
-    <p><button class="no-print" onclick={ snapshot }>Snapshot</button></p>
-    <video class="camera" muted autoplay="autoplay" playsinline="playsinline" webkit-playsinline></video>
-    <canvas id="canvas" width="640" height="480"></canvas>
-
-
-
+    <take-picture></take-picture>
     <input placeholder="Box" name="box-name" id="box-name" type="text" value="{ props.box.name }"></input>
     <textarea placeholder="Description" name="box-description" id="box-description">{ props.box.description }</textarea>
     <label for="box-location-id">Location</label><select name="box-location-id" id="box-location-id">
@@ -22,31 +16,14 @@
   </div>
   
   <script>
+    import TakePicture from '../../includes/_helper/take-picture.riot'
 
     export default {
+      components: {
+        TakePicture,
+      },
       state: {
         locations: false
-      },
-
-      camera(e) {
-        let target = this
-        navigator.mediaDevices.getUserMedia({
-           video: true,
-           audio: false
-        }).then(function(stream) {
-           var camera = document.getElementsByClassName("camera")[0]; //A video element
-           // Attach the stream to the video element
-           camera.srcObject = stream;
-        }).catch(function(err) {
-           console.error('getUserMediaError', err, err.stack);
-        })
-      },
-
-      snapshot() {
-        const canvas = document.getElementById('canvas');
-        var camera = document.getElementsByClassName("camera")[0]
-        var context = canvas.getContext('2d');
-        context.drawImage(camera, 0, 0, 640, 480);
       },
 
       setupListenter() {
@@ -96,7 +73,7 @@
 
   <style>
     button {
-      margin-right: 5px;
+      margin-left: 5px;
     }
     video.camera {
       width: 100%

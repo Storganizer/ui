@@ -83,9 +83,9 @@
         if (document.getElementsByClassName('menu-btn')[0].checked) {
           document.getElementsByClassName('menu-btn')[0].checked = false
         }
-        // parent href is relevant since i have the icons now
-        if (e.target.href) {
-          this.render(e.target.href)
+
+        if (e.currentTarget.href) {
+          this.render(e.currentTarget.href)
         }
       },
 
