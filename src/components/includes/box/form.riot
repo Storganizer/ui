@@ -1,6 +1,6 @@
 <box-form class="no-print">
   <p if={ props.box }>
-    <take-picture></take-picture>
+    <take-picture currentPicture="{ props.box.image }"></take-picture>
     <input placeholder="Box" ame="box-name" id="box-name" type="text" value="{ props.box.name }"></input>
     <textarea placeholder="Description" name="box-description" id="box-description">{ props.box.description }</textarea>
     <label for="box-location-id">Location</label><select name="box-location-id" id="box-location-id">
