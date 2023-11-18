@@ -5,12 +5,13 @@
 
     <p><video class="webcam-video" if={ state.cameraActive } id="camera" muted autoplay="autoplay" playsinline="playsinline" webkit-playsinline></video>
     <button if={ state.cameraActive } class="snapshot no-print" onclick={ snapshot }>Snapshot</button></p>
-
+    <img id="myImage" />
     <p><canvas class="webcam-image" if={ state.pictureTaken } id="canvas" width="480" height="360"></canvas></p>
 
   <script>
 
     export default {
+      localStorage: window.localStorage,
       stream: false,
       camera: false,
       canvas: false,
@@ -21,31 +22,50 @@
       },
 
       closeCamera(e) {
-        if (this.stream)
-        this.stream.getTracks().forEach(function(track) {
-          track.stop()
-        })
+        let camera = document.getElementById("camera")
+        if (camera) {
+          let stream = camera.srcObject;
+          if (stream) {
+            stream.getTracks().forEach(function(track) {
+              track.stop()
+            })
+          }
+        }
 
-        this.update({
-          cameraActive: false
-        })
+        if (this.update) {
+          this.update({
+            cameraActive: false
+          })
+        }
       },
 
       openCamera(e) {
+
+        // navigator.camera.getPicture(onSuccess, onFail, {  
+        //   quality: 50, 
+        //   destinationType: Camera.DestinationType.DATA_URL 
+        // });  
+
+        // function onSuccess(imageData) { 
+        //   var image = document.getElementById('myImage'); 
+        //   image.src = "data:image/jpeg;base64," + imageData; 
+        // }  
+
+        // function onFail(message) { 
+        //   alert('Failed because: ' + message); 
+        // }
+
         this.update({
           cameraActive: true
         })
 
-        console.log(navigator.mediaDevices)
         this.camera = document.getElementById("camera")
         navigator.mediaDevices.getUserMedia({
-          video: true,
-          audio: false,
-          facingMode: 'environment',
-        }
-
-
-        ).then(function(stream) {
+          'video': {
+              'deviceId': this.localStorage.getItem("cameraId")
+          },
+          'audio': false,
+        }).then(function(stream) {
            this.stream = stream
            this.camera.srcObject = this.stream;
         }.bind(this)).catch(function(err) {
@@ -67,6 +87,9 @@
 
       getEncodedImage() {
         let canvas = document.getElementById('canvas')
+        if (!canvas) {
+          return ''
+        }
         return canvas.toDataURL().replace(/^data:image\/png;base64,/, "")
       },
 

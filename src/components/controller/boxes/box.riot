@@ -1,14 +1,22 @@
 <box>
-    <div if={ ! state.edit && state.box  }>
-      <h2><i class="fa-solid fa-box-open"></i> { state.box.name } <a class="edit-entry" onclick={ toggleEdit }><i class="fa fa-edit"></i></a></h2> 
-      <p>{ state.box.description }</p>
-      <p if={ state.location }><b>Location: </b><a onclick={ registry.application.clickHandler } href="#location/{ state.location.id }">{ state.location.name }</a></p>
+    <div class="object-image-container"><img if={ ! state.edit && state.box.image } class="object-image no-print" src="http://10.1.1.79:5000/static/images/box-{ state.box.id }.png?time={ state.timestamp }"></div>
+    <div if={ ! state.edit && state.box  } class="box">
+      
+      
+      <h2><div class="text"><i class="fa-solid fa-box-open"></i> { state.box.name }</div> <a class="edit-entry" onclick={ toggleEdit }><i class="fa fa-edit"></i></a></h2> 
+      <p><div if={ state.box.description } class="text description">{ state.box.description }</div></p>
+      <p if={ state.location }><div class="text">Location: <b><a onclick={ registry.application.clickHandler } href="#location/{ state.location.id }">{ state.location.name }</a></b></div></p>
+      
       <qr-code></qr-code>
     </div>
-    <div class="clearfix" if={ state.edit && state.box }>
+    
+    <div class="form clearfix" if={ state.edit && state.box }>
       <box-form box={ state.box } onCancel={ toggleEdit }></box-form>
     </div>
-    <items-list if={ state.box} items={ state.items } boxId={ state.box.id } ></items-list>
+    
+    <div class="list">
+      <items-list if={ state.box} items={ state.items } boxId={ state.box.id } ></items-list>
+    </div>
 
   <script>
     import  './style.css'
@@ -24,6 +32,7 @@
       },
 
       state: {
+        timestamp: Date.now(),
         box: false,
         location: false,
         items: false,
@@ -32,8 +41,17 @@
 
       toggleEdit() {
         this.update({
-          edit: !this.state.edit
+          edit: !this.state.edit,
+          timestamp: Date.now(),
         })
+
+        // cheap hack to reload the image after upload, could fetch the url until a 200 is there. Only if the current box has an image, of course
+        const myTimeout = setTimeout(function() {
+          clearTimeout(myTimeout);
+          this.update({
+            timestamp: Date.now(),
+          })
+        }.bind(this), 1000);
       },
 
       setupListenter() {
@@ -57,7 +75,6 @@
       },
 
       loadBoxAndLocationData() {
-        console.log('loading box data now')
         let box = this.registry.dataStore.boxes.getBoxById(this.props.params[0])
         let locationId = box && box.locationId ? box.locationId : 0
         this.update({
@@ -67,7 +84,6 @@
       },
 
       loadItemData() {
-        console.log('loading item data now')
         this.update({
           items: this.registry.dataStore.items.getItemsByBoxId(this.props.params[0])
         })
@@ -81,4 +97,48 @@
       }
     }
   </script>
+  <style>
+
+    .text {
+      display: inline-block;
+      background-color: white;
+      padding: 5px;
+      border-radius: 3px;
+      min-width: 50%
+    }
+
+    .text.description {
+      white-space: pre-wrap;
+    }
+
+    div.object-image-container {
+      position: absolute;
+      left: 0;
+      max-width: 112.0rem;
+      width: 100%;
+      z-index: -1;
+      padding: 20px;
+      overflow: hidden;
+    }    
+
+    img.object-image {
+      width: 100%;
+      margin-top: -30%;
+    }
+
+
+
+    div.box {
+      background-color: rgba(255, 255, 255, 0.6);
+      padding: 25px;
+    }
+
+    div.list {
+      padding-top: 20px;
+    }
+
+    div.list, div.form{
+      background-color: white;
+    }
+  </style>
 </box>

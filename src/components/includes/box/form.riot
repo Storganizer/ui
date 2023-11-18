@@ -1,7 +1,7 @@
 <box-form class="no-print">
   <p if={ props.box }>
     <take-picture></take-picture>
-    <input placeholder="Box" name="box-name" id="box-name" type="text" value="{ props.box.name }"></input>
+    <input placeholder="Box" ame="box-name" id="box-name" type="text" value="{ props.box.name }"></input>
     <textarea placeholder="Description" name="box-description" id="box-description">{ props.box.description }</textarea>
     <label for="box-location-id">Location</label><select name="box-location-id" id="box-location-id">
       <option selected={ !props.box.locationId || props.box.locationId <= 0 } value="0" >unlocated</option>
@@ -11,7 +11,7 @@
 
   <div class="form-buttons" if={ props.box }>
     <button onclick={ saveEntry }>Save</button>
-    <button class="button-outline" onclick={ props.onCancel }>Cancel</button>
+    <button class="button-outline" onclick={ onCancel }>Cancel</button>
     <button if={ props.box.id } class="button-delete" onclick={ deleteEntry }>Delete</button>
   </div>
   
@@ -22,8 +22,14 @@
       components: {
         TakePicture,
       },
+
       state: {
         locations: false
+      },
+
+      onCancel() {
+        TakePicture.exports.closeCamera()
+        this.props.onCancel()
       },
 
       setupListenter() {
@@ -45,6 +51,8 @@
       },
 
       saveEntry(e) {
+        TakePicture.exports.closeCamera()
+
         let box = {
           id: this.props.box.id || 0,
           image: TakePicture.exports.getEncodedImage(),
@@ -63,6 +71,8 @@
       },
 
       deleteEntry(e) {
+        TakePicture.exports.closeCamera()
+        
         let redirectUrl  = '#location/' + document.getElementById("box-location-id").value
         this.registry.dataStore.boxes.deleteEntry(this.props.box)
         //window.location.replace(redirectUrl)

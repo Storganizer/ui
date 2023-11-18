@@ -1,5 +1,6 @@
 <item-form class="no-print">
   <p if={ props.item }>
+    <take-picture></take-picture>
     <input placeholder="Item" name="item-name" id="item-name" type="text" value="{ props.item.name }"></input>
     <textarea placeholder="Description" name="item-description" id="item-description">{ props.item.description }</textarea>
     <input placeholder="Amount" name="item-amount" id="item-amount" value={ props.item.amount }></input>
@@ -13,15 +14,24 @@
 
   <div class="form-buttons" if={ props.item }>
     <button onclick={ saveEntry }>Save</button>
-    <button class="button-outline" onclick={ props.onCancel }>Cancel</button>
+    <button class="button-outline" onclick={ onCancel }>Cancel</button>
     <button if={ props.item.id } class="button-delete" onclick={ deleteEntry }>Delete</button>
   </div>
 
   <script>
+    import TakePicture from '../../includes/_helper/take-picture.riot'
 
     export default {
+      components: {
+        TakePicture,
+      },
       state: {
         boxes: false
+      },
+
+      onCancel() {
+        TakePicture.exports.closeCamera()
+        this.props.onCancel()
       },
 
       setupListenter() {
@@ -43,8 +53,10 @@
       },
 
       saveEntry(e) {
+        TakePicture.exports.closeCamera()
         let item = {
           id: this.props.item.id || 0,
+          image: TakePicture.exports.getEncodedImage(),
           name: document.getElementById("item-name").value,
           description: document.getElementById("item-description").value,
           amount: document.getElementById("item-amount").value,
@@ -61,6 +73,7 @@
       },
 
       deleteEntry(e) {
+        TakePicture.exports.closeCamera()
         let redirectUrl  = '#box/' + document.getElementById("item-box-id").value
         this.registry.dataStore.items.deleteEntry(this.props.item)
         //window.location.replace(redirectUrl)
