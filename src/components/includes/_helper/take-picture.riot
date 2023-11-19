@@ -1,9 +1,6 @@
 <take-picture>
 
     <p><button if={ !state.cameraActive } class="no-print" onclick={ openCamera }>Open Camera</button></p>
-<!--     <p><button if={ state.cameraActive } class="no-print" onclick={ closeCamera }>Close Camera</button></p>
-
-    <button if={ state.cameraActive } class="snapshot no-print" onclick={ snapshot }>Snapshot</button> -->
     <p if={ state.pictureTaken }>
       <canvas class="webcam-image" id="canvas"></canvas>
     </p>

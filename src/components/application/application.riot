@@ -99,7 +99,9 @@
         this.registry.application = this
       },
 
-      onMounted() {
+      async onMounted() {
+        let devices = await navigator.mediaDevices.enumerateDevices();
+        console.log(devices)
         document.addEventListener("deviceready", function () {
             console.log('fucking ready boiii')
             console.log(navigator.camera);
