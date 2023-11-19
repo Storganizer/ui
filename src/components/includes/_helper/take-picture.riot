@@ -1,9 +1,9 @@
 <take-picture>
 
     <p><button if={ !state.cameraActive } class="no-print" onclick={ openCamera }>Open Camera</button></p>
-    <p><button if={ state.cameraActive } class="no-print" onclick={ closeCamera }>Close Camera</button></p>
+<!--     <p><button if={ state.cameraActive } class="no-print" onclick={ closeCamera }>Close Camera</button></p>
 
-    <button if={ state.cameraActive } class="snapshot no-print" onclick={ snapshot }>Snapshot</button>
+    <button if={ state.cameraActive } class="snapshot no-print" onclick={ snapshot }>Snapshot</button> -->
     <p if={ state.pictureTaken }>
       <canvas class="webcam-image" id="canvas"></canvas>
     </p>
@@ -25,12 +25,10 @@
       },
 
       closeCamera(e) {
-
         let body = document.getElementsByTagName('body')[0]
+        body.className = ''
         let fullScreen = document.getElementById('fullscreen')
-        if (fullScreen) {
-          body.removeChild(fullScreen)
-        }
+
         let camera = document.getElementById("camera")
         if (camera) {
           let stream = camera.srcObject;
@@ -41,6 +39,10 @@
           }
         }
 
+        if (fullScreen) {
+          body.removeChild(fullScreen)
+        }
+
         if (this.update) {
           this.update({
             cameraActive: false
@@ -49,13 +51,13 @@
       },
 
       openCamera(e) {
-
-
         let body = document.getElementsByTagName('body')[0]
+        body.className = 'no-scroll'
+
         let fullScreen = document.createElement('div')
-        let video = document.createElement('video')
         fullScreen.id = "fullscreen"
         
+        let video = document.createElement('video')
         video.className = 'webcam-video'
         video.setAttribute('muted', '1')
         video.setAttribute('autoplay', '1')
@@ -63,6 +65,27 @@
         video.setAttribute('webkit-playsinline', '1')
         video.id = 'camera'
         fullScreen.prepend(video)
+
+
+        let buttonContainer = document.createElement('div')
+        buttonContainer.className = 'camera-button-container'
+
+        // <button if={ state.cameraActive } class="no-print" onclick={ closeCamera }>Close Camera</button>
+        let closeButton = document.createElement('button')
+        closeButton.innerHTML = '<i class="fa-solid fa-xmark"></i>'
+        closeButton.className = "no-print camera-button"
+        closeButton.onclick = this.closeCamera
+        buttonContainer.prepend(closeButton)
+
+        // <button if={ state.cameraActive } class="no-print" onclick={ closeCamera }>Close Camera</button>
+        let snapButton = document.createElement('button')
+        snapButton.innerHTML = '<i class="fa-solid fa-camera"></i>'
+        snapButton.className = "no-print camera-button camera-button-snapshot"
+        snapButton.onclick = this.snapshot
+        buttonContainer.prepend(snapButton)
+        
+        fullScreen.prepend(buttonContainer)
+        
         body.prepend(fullScreen);
 
         this.update({
@@ -78,7 +101,6 @@
         }).then(function(stream) {
            this.stream = stream
            this.camera.srcObject = this.stream;
-           console.log(this.camera.srcObject)
         }.bind(this)).catch(function(err) {
            console.error('getUserMediaError', err, err.stack);
         })
@@ -99,8 +121,6 @@
           this.context = this.canvas.getContext('2d')
           this.context.drawImage(this.camera, 0, 0);
           this.closeCamera()
-        } else {
-          console.log('focking canvas not found')
         }
 
       },
@@ -117,7 +137,6 @@
     }
   </script>
   <style>
-
     #canvas {
       max-width: 300px;
     }
@@ -125,11 +144,6 @@
     .webcam-video,  .webcam-image{
       max-width: 300px;
       border: 1px solid #9b4dca;
-    }
-
-    .snapshot {
-      position: absolute;
-      z-index: 200;
     }
 
   </style>
