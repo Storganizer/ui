@@ -1,0 +1,79 @@
+<element-detail>
+
+    <div class="element">
+      <h2>
+        <div class="text">
+          <i if={ props.type == "box" } class="fa-solid fa-box-open"></i>
+          <i if={ props.type == "location" } class="fa-solid fa-location-dot"></i>
+          <i if={ props.type == "item" } class="fa-solid fa-screwdriver-wrench"></i>
+          { props.element.name }
+        </div>
+      </h2>
+      
+      <p if={ props.element.description } class="no-print">
+        <div class="text description">
+          { props.element.description }
+        </div>
+      </p>
+
+      <p if={ props.box }>
+        <div class="text">
+          Box: 
+          <b><a onclick={ registry.application.clickHandler } href="#box/{ props.box.id }">{ props.box.name }</a></b>
+        </div>
+      </p>
+      
+      <p if={ props.location }>
+        <div class="text">
+          Location: 
+          <b><a onclick={ registry.application.clickHandler } href="#location/{ props.location.id }">{ props.location.name }</a></b>
+        </div>
+      </p>
+
+      <qr-code></qr-code>
+    </div>
+
+  <script>
+    import QrCode from './qr-code.riot'
+
+    export default {
+      components: {
+        QrCode,
+      }
+    }
+  </script>
+
+    <style>
+    p{
+      margin-bottom: 2px;
+    }
+    div.element {
+      min-height: 290px;
+      background-color: rgba(255, 255, 255, 0.7);
+      display: inline-block;
+      margin-top: 2px;
+      margin-bottom: 2px;
+      min-width: 50%
+
+    }
+    .text {
+      display: inline-block;
+      background-color: white;
+      padding: 5px;
+      border-radius: 3px;
+      min-width: 50%
+    }
+
+    .text.description {
+      white-space: pre-wrap;
+    }
+
+
+    div.element {
+      z-index: 10;
+      padding: 30px;
+    }
+
+    </style>
+
+</element-detail>

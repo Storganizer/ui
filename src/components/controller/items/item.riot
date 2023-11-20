@@ -1,51 +1,51 @@
 <item>
-    <div class="object-image-container"><img if={ ! state.edit && state.item.image } class="object-image no-print" src="http://10.1.1.79:5000/static/images/item-{ state.item.id }.png?time={ state.timestamp }"></div>
     
-    <div if={ ! state.edit && state.item  } class="item">
-      <h2><div class="text"><i class="fa-solid fa-screwdriver-wrench"></i> { state.item.name }</div> <a class="edit-entry" onclick={ toggleEdit }><i class="fa fa-edit"></i></a></h2> 
+    <element-header
+      if={ ! state.edit && state.item } 
+      type="item"
+      element={ state.item }
+      next={ state.nextItem ? "#item/" + state.nextItem.id : "" }
+      previous={ state.previousItem ? "#item/" + state.previousItem.id : "" }
+      edit="#item/{ state.item.id }/edit"
+      add="#item/{ state.item.id }/add"
+    />
 
-      <p><div if={ state.item.description } class="text description">{ state.item.description }</div></p>
-      <p><div class="text">Amount: <b>{ state.item.amount }</b></div></p>
-      
-      <p if={ state.box }><div class="text">Box: <b><a onclick={ registry.application.clickHandler } href="#box/{ state.box.id }">{ state.box.name }</a></b></div></p>
-      <p if={ state.location }><div class="text">Location: <b><a onclick={ registry.application.clickHandler } href="#location/{ state.location.id }">{ state.location.name }</a></b></div></p>
-      <qr-code></qr-code>
-    </div>
+    <element-detail if={ !state.edit && state.item } type="item" element={ state.item } box={ state.box } location={ state.location }  />
+
+    <!--
     <div class="clearfix" if={ state.edit && state.item }>
       <item-form item={ state.item } onCancel={ toggleEdit }></box-form>
-    </div>
+    </div>-->
 
   <script>
     import  './style.css'
+
+    import ElementDetail from '../../includes/_helper/element-detail.riot'
+    import ElementHeader from '../../includes/_helper/element-header.riot'
+    import ElementForm from '../../includes/_helper/element-form.riot'
+    import ElementList from '../../includes/_helper/element-list.riot'
     import ItemForm from '../../includes/item/form.riot'
-    import QrCode from '../../includes/_helper/qr-code.riot'
+
 
     export default {
       components: {
         ItemForm,
-        QrCode,
+        ElementDetail,
+        ElementHeader,
+        ElementForm,
+        ElementList,
       },
+
       state: {
+        nextItem: false,
+        previousItem: false,
+        id: false,
+        edit: false,
         timestamp: Date.now(),
         item: false,
         box: false,
         location: false,
         edit: false,
-      },
-
-      toggleEdit() {
-        this.update({
-          edit: !this.state.edit,
-          timestamp: Date.now(),
-        })
-
-        // cheap hack to reload the image after upload, could fetch the url until a 200 is there. Only if the current box has an image, of course
-        const myTimeout = setTimeout(function() {
-          clearTimeout(myTimeout);
-          this.update({
-            timestamp: Date.now(),
-          })
-        }.bind(this), 1000);
       },
 
       setupListenter() {
@@ -66,56 +66,36 @@
       },
 
       loadData() {
-        let item = this.registry.dataStore.items.getItemById(this.props.params[0])
+        let item = this.registry.dataStore.items.getItemById(this.state.id)
         let boxId = item && item.boxId ? item.boxId : 0
         let box = this.registry.dataStore.boxes.getBoxById(boxId)
         let locationId = box && box.locationId ? box.locationId : 0
         let location = this.registry.dataStore.locations.getLocationById(locationId)
+        let nextItem = this.registry.dataStore.items.getNext(item)
+        let previousItem = this.registry.dataStore.items.getPrevious(item)
+
         this.update({
           location: location,
           box: box,
           item: item,
+          nextItem: nextItem ? nextItem : false,
+          previousItem: previousItem ? previousItem : false,
         })
 
       },
 
       onMounted() {
+        this.update({
+          id: this.props.params[0],
+          edit: this.props.params[1] == 'edit'
+        })
         this.setupListenter()
         this.loadData()
       }
     }
   </script>
   <style>
-
-    .text {
-      display: inline-block;
-      background-color: white;
-      padding: 5px;
-      border-radius: 3px;
-      min-width: 50%
-    }
-
-    .text.description {
-      white-space: pre-wrap;
-    }
-
-    div.object-image-container {
-      position: absolute;
-      left: 0;
-      max-width: 112.0rem;
-      width: 100%;
-      z-index: -1;
-      padding: 20px;
-      overflow: hidden;
-    }    
-
-    img.object-image {
-      width: 100%;
-      margin-top: -30%;
-    }
-
     div.item {
-      background-color: rgba(255, 255, 255, 0.6);
       padding: 25px;
     }
 

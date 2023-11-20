@@ -118,7 +118,11 @@
   display: inline-block;
 }
 
-/* 48em = 768px */
+
+/**
+ * Sizes are handled here because its primary use is here within the navigation
+ * 48em = 768px
+ */
 @media (min-width: 55em) {
   .header li {
     float: left;
@@ -134,27 +138,27 @@
   .header .menu-icon {
     display: none;
   }
-
 }
 
-@media (max-width: 55em) {
 
+@media (max-width: 55em) {
+  h2 {
+    font-size: 2rem;
+  }
+  h2 i {
+    margin-right: 5px;
+  }
 
   .header li a {
     padding:  10px 20px
   }
-
-
   td.description {
     display: none;
   }
-
   .header .app-title {
     display: none;
   }
-
   .search {
       left:  50px !important;
   }
-
 }

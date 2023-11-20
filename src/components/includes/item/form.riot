@@ -1,6 +1,6 @@
 <item-form class="no-print">
   <p if={ props.item }>
-    <take-picture></take-picture>
+    <take-picture currentPicture="{ props.item.image }"></take-picture>
     <input placeholder="Item" name="item-name" id="item-name" type="text" value="{ props.item.name }"></input>
     <textarea placeholder="Description" name="item-description" id="item-description">{ props.item.description }</textarea>
     <input placeholder="Amount" name="item-amount" id="item-amount" value={ props.item.amount }></input>

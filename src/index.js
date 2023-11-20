@@ -19,3 +19,4 @@ const app = mountApp(
   document.getElementById('root'),
   {}
 )
+

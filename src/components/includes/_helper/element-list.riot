@@ -1,4 +1,5 @@
-<items-list class="no-print">
+<element-list>
+
     <h2><i class="fa-solid fa-screwdriver-wrench"></i> { props.items.length } Items <a class="add-entry" onclick={ toggleAdd }><i class="fa fa-plus"></i></a></h2>
 
     <div if={ state.add }>
@@ -19,11 +20,11 @@
 
 
   <script>
-    import ItemForm from './form.riot'
+    //import ItemForm from './form.riot'
 
     export default {
       components: {
-        ItemForm,
+        //ItemForm,
       },
       state: {
         add: false,
@@ -50,7 +51,7 @@
       padding-top: 20px;
     }
 
-    items-list {
+    element-list {
       display: block;
       background-color: white;
       padding: 10px;
@@ -58,4 +59,5 @@
     }
   </style>
 
-</items-list>
+
+</element-list>

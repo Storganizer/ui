@@ -132,6 +132,30 @@ export default {
   boxes: {
     boxes: false,
 
+    getNext(box) {
+      let boxes = box.locationId ? this.getBoxesByLocationId(box.locationId) : this.boxes
+      if (!boxes) {
+        return false
+      }
+      let index = boxes.indexOf(box);
+      if(index >= 0 && index < boxes.length - 1) {
+        return boxes[index + 1]
+      }
+      return false
+    },
+
+    getPrevious(box) {
+      let boxes = box.locationId ? this.getBoxesByLocationId(box.locationId) : this.boxes
+      if (!boxes) {
+        return false
+      }
+      let index = boxes.indexOf(box);
+      if(index >= 1 && index < boxes.length) {
+        return boxes[index - 1]
+      }
+      return false
+    },
+
     search(string) {
       if (!this.boxes) {
         this.fetchBoxes()
@@ -268,6 +292,30 @@ export default {
 
   items: {
     items: false,
+
+    getNext(item) {
+      let items = item.boxId ? this.getItemsByBoxId(item.boxId) : this.items
+      if (!items) {
+        return false
+      }
+      let index = items.indexOf(item);
+      if(index >= 0 && index < items.length - 1) {
+        return items[index + 1]
+      }
+      return false
+    },
+
+    getPrevious(item) {
+      let items = item.locationId ? this.getItemsByBoxId(item.boxId) : this.items
+      if (!items) {
+        return false
+      }
+      let index = items.indexOf(item);
+      if(index >= 1 && index < items.length) {
+        return items[index - 1]
+      }
+      return false
+    },
 
     search(string) {
       if (!this.items) {

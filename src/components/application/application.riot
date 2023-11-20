@@ -32,29 +32,6 @@
     import Item from '../controller/items/item.riot'
     import Search from '../controller/search/search.riot'
     import Config from '../controller/config/config.riot'
-    import QrCode from '../includes/_helper/qr-code.riot'
-
-    function parseUrl(url = "localhost#locations") {
-      let controllerParams = []
-      let controller = 'locations'
-
-      let urlParts = url.split('#')
-
-      if (urlParts.length > 1) {
-        controller = urlParts[1]
-      }
-
-      let controllerParts = controller.split('/')
-      if (controllerParts.length > 1) {
-        controller = controllerParts[0]
-        controllerParams = controllerParts.splice(1, controllerParts.length)
-      }
-
-      return {
-        name: controller,
-        params: controllerParams
-      }
-    }
 
     //const isLoggedIn = Login.exports.login()
     const isLoggedIn = true
@@ -63,7 +40,7 @@
       application: this,
       state: {
         controller: false,
-        isLoggedIn: isLoggedIn
+        isLoggedIn: isLoggedIn,
       },
 
       components: {
@@ -78,20 +55,47 @@
         Config,
       },
 
+      parseUrl(url = "localhost#locations") {
+        let controllerParams = []
+        let controller = 'locations'
+        let urlParts = url.split('#')
+
+        if (urlParts.length > 1) {
+          controller = urlParts[1]
+        }
+
+        let controllerParts = controller.split('/')
+        if (controllerParts.length > 1) {
+          controller = controllerParts[0]
+          controllerParams = controllerParts.splice(1, controllerParts.length)
+        }
+
+        return {
+          name: controller,
+          params: controllerParams
+        }
+      },
+
       clickHandler(e) {
+        /**
+         * Hack for rerender the controller if only this.props.params has changed
+         * RiotJS seems not to handle this yet
+         */
+        this.render('')
+
         // close the burger menu if open
         if (document.getElementsByClassName('menu-btn')[0].checked) {
           document.getElementsByClassName('menu-btn')[0].checked = false
         }
-
         if (e.currentTarget.href) {
           this.render(e.currentTarget.href)
         }
       },
 
-      render(url) {
+      render(url) {     
+        let controller = this.getController(url)
         this.update({
-          controller: this.getController(url)
+          controller: controller
         })
       },
 
@@ -101,18 +105,20 @@
 
       async onMounted() {
         let devices = await navigator.mediaDevices.enumerateDevices();
-        console.log(devices)
-     
         this.render(document.URL)
       },
 
       getController(url) {
-        return parseUrl(url)
+        return this.parseUrl(url)
       },
 
       isController(controller) {
         return this.state.controller.name == controller
-      }
+      },
+
+      getCurrentController() {
+        return this.state.controller
+      },
     }
   </script>
 </application>

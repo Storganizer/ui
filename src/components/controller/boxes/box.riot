@@ -1,45 +1,57 @@
 <box>
-    <div class="object-image-container"><img if={ ! state.edit && state.box.image } class="object-image no-print" src="http://10.1.1.79:5000/static/images/box-{ state.box.id }.png?time={ state.timestamp }"></div>
-    <div if={ ! state.edit && state.box  } class="box">
-      
-      
-      <h2><div class="text"><i class="fa-solid fa-box-open"></i> { state.box.name }</div> <a class="edit-entry" onclick={ toggleEdit }><i class="fa fa-edit"></i></a></h2> 
-      <p><div if={ state.box.description } class="text description">{ state.box.description }</div></p>
-      <p if={ state.location }><div class="text">Location: <b><a onclick={ registry.application.clickHandler } href="#location/{ state.location.id }">{ state.location.name }</a></b></div></p>
-      
-      <qr-code></qr-code>
-    </div>
+    <element-header
+      if={ ! state.edit && state.box } 
+      type="box"
+      element={state.box}
+      next={ state.nextBox ? "#box/" + state.nextBox.id : "" }
+      previous={ state.previousBox ? "#box/" + state.previousBox.id : "" }
+      edit="#box/{state.box.id}/edit"
+      add="#box/{state.box.id}/add"
+    />
+
+    <element-detail if={ !state.edit && state.box } type="box" element={ state.box } location={ state.location }  />
     
+
+    <element-form if={ state.edit && state.box } type="box" element={ state.box }  />
+
+    <!-- Form
     <div class="form clearfix" if={ state.edit && state.box }>
       <box-form box={ state.box } onCancel={ toggleEdit }></box-form>
     </div>
-    
+    -->
+
     <div class="list">
       <items-list if={ state.box} items={ state.items } boxId={ state.box.id } ></items-list>
     </div>
 
   <script>
     import  './style.css'
-    import BoxForm from '../../includes/box/form.riot'
-    import QrCode from '../../includes/_helper/qr-code.riot'
+    import ElementDetail from '../../includes/_helper/element-detail.riot'
+    import ElementHeader from '../../includes/_helper/element-header.riot'
+    import ElementForm from '../../includes/_helper/element-form.riot'
+    import ElementList from '../../includes/_helper/element-list.riot'
     import ItemsList from '../../includes/item/list.riot'
 
     export default {
       components: {
-        BoxForm,
-        QrCode,
+        ElementDetail,
+        ElementHeader,
+        ElementForm,
         ItemsList,
       },
 
       state: {
+        nextBox: false,
+        previousBox: false,
         timestamp: Date.now(),
         box: false,
         location: false,
         items: false,
         edit: false,
+        id: false,
       },
 
-      toggleEdit() {
+      /*toggleEdit() {
         this.update({
           edit: !this.state.edit,
           timestamp: Date.now(),
@@ -52,11 +64,10 @@
             timestamp: Date.now(),
           })
         }.bind(this), 1000);
-      },
+      },*/
 
       setupListenter() {
         let target = this
-
 
         this.registry.eventBus.on('dataBoxLoadSuccess', function(boxes) {
           target.loadBoxAndLocationData()
@@ -74,71 +85,41 @@
 
       },
 
+      clickHandler(e) {
+        // hack to rerender if only the controller properties have changed
+        this.registry.application.render('')
+        this.registry.application.clickHandler(e)
+      },
+
       loadBoxAndLocationData() {
-        let box = this.registry.dataStore.boxes.getBoxById(this.props.params[0])
+        let box = this.registry.dataStore.boxes.getBoxById(this.state.id)
         let locationId = box && box.locationId ? box.locationId : 0
+        let nextBox = this.registry.dataStore.boxes.getNext(box)
+        let previousBox = this.registry.dataStore.boxes.getPrevious(box)
         this.update({
           box: box,
+          nextBox: nextBox ? nextBox : false,
+          previousBox: previousBox ? previousBox : false,
           location: this.registry.dataStore.locations.getLocationById(locationId)
         })
       },
 
       loadItemData() {
         this.update({
-          items: this.registry.dataStore.items.getItemsByBoxId(this.props.params[0])
+          items: this.registry.dataStore.items.getItemsByBoxId(this.state.id)
         })
 
       },
 
       onMounted() {
+        this.update({
+          id: this.props.params[0],
+          edit: this.props.params[1] == 'edit'
+        })
         this.setupListenter()
         this.loadBoxAndLocationData()
         this.loadItemData()
       }
     }
   </script>
-  <style>
-
-    .text {
-      display: inline-block;
-      background-color: white;
-      padding: 5px;
-      border-radius: 3px;
-      min-width: 50%
-    }
-
-    .text.description {
-      white-space: pre-wrap;
-    }
-
-    div.object-image-container {
-      position: absolute;
-      left: 0;
-      max-width: 112.0rem;
-      width: 100%;
-      z-index: -1;
-      padding: 20px;
-      overflow: hidden;
-    }    
-
-    img.object-image {
-      width: 100%;
-      margin-top: -30%;
-    }
-
-
-
-    div.box {
-      background-color: rgba(255, 255, 255, 0.6);
-      padding: 25px;
-    }
-
-    div.list {
-      padding-top: 20px;
-    }
-
-    div.list, div.form{
-      background-color: white;
-    }
-  </style>
 </box>

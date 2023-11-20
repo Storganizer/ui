@@ -1,0 +1,94 @@
+<element-header>
+    <div class="header-image-container">
+      <img
+        if={ props.element.image }
+        class="header-image no-print"
+        src="{ props.element.image }?time=" />
+    </div>
+
+    <div if={ props.previous } class="previous no-print">
+      <a onclick={ registry.application.clickHandler } href={ props.previous }><i class="fa-solid fa-circle-arrow-left"></i></a>
+    </div>
+
+    <div if={ props.next } class="next no-print">
+      <a onclick={ registry.application.clickHandler } href="{ props.next }"><i class="fa-solid fa-circle-arrow-right"></i></a>
+    </div>
+
+    <div if={ props.add } class="add-entry no-print">
+      <a onclick={ registry.application.clickHandler } href="{ props.add }"><i class="fa fa-plus"></i></a>
+    </div>
+
+    <div if={ props.edit } class="edit-entry no-print">
+      <a onclick={ registry.application.clickHandler } href="{ props.edit }"><i class="fa fa-edit"></i></a>
+    </div>
+
+<style>
+    div.edit-entry, div.add-entry {
+        position: absolute;
+        left: 2px;
+        top: 105px;
+    }
+
+    div.add-entry {
+      top: 152px;
+    }
+
+    div.edit-entry a, div.add-entry a {
+      background: white;
+      display: flex;
+      align-content: center;
+      text-align: center;
+      width: 40px;
+      height: 45px;
+      border-radius: 3px;
+      padding: 5px;
+      margin: 0px;
+      font-size: 3rem;
+    }
+
+    div.header-image-container {
+      position: absolute;
+      left: 0;
+      max-width: 112.0rem;
+      width: 100%;
+      z-index: -1;
+      height: 350px;
+      overflow: hidden;
+      border-color: 1px solid grey;
+      border-radius: 3px;
+
+    }    
+
+    img.header-image {
+      width: 100%;
+      margin-top: -30%;
+      border-radius: 3px;
+    }
+
+    .previous {
+      position: absolute;
+      width: 40px;
+      padding-left: 2px;
+      top: 2px;
+      left: 2px;
+      font-size: 3.6rem;
+      z-index: 10;
+      background-color: white;
+      border-radius: 3px;
+      margin: 0px;
+    }
+
+    .next {
+      position: absolute;
+      width: 40px;
+      padding-left: 2px;
+      top: 2px;
+      right: 2px;
+      font-size: 3.6rem;
+      z-index: 10;
+      background-color: white;
+      border-radius: 3px;
+    }
+  </style>
+
+</element-header>

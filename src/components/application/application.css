@@ -1,3 +1,6 @@
+body {
+  overflow: scroll; /* Show scrollbars */
+}
 .application-body {
   margin-top: 90px;
 }
@@ -24,9 +27,13 @@ td.length {
 }
 
 /* Icon fixes */
+i {
+  margin: 0px;
+  padding: 0px;
+}
 
-h2 .fa, h2 .fa-solid {
-  margin-right: 15px
+h2 i {
+  margin-right: 15px;
 }
 
 .edit-entry, .add-entry {
@@ -35,8 +42,6 @@ h2 .fa, h2 .fa-solid {
   float: right;
   font-size: .8em;
 }
-
-
 
 /* Camera Settings*/
 #fullscreen {
@@ -56,9 +61,10 @@ h2 .fa, h2 .fa-solid {
 
 .camera-button-container {
   position: fixed; /* or absolute */
-  top: 80%;
+  top: 100%;
   left: 50%;
   margin-left: -70px;
+  margin-top: -80px;
   z-index: 110;
 }
 
@@ -83,6 +89,10 @@ h2 .fa, h2 .fa-solid {
 
 @media print
 {    
+
+    h2 {
+      font-size: 2rem;
+    }
 
     .no-print, .no-print, .button-delete, .edit-entry, .add-entry *
     {
