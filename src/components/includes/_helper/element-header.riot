@@ -1,28 +1,51 @@
 <element-header>
-    <div class="header-image-container">
-      <img
-        if={ props.element.image }
-        class="header-image no-print"
-        src="{ props.element.image }?time=" />
-    </div>
+  <div class="header-image-container">
+    <img
+      if={ props.element.image }
+      class="header-image no-print"
+      src="{ props.element.image }?time={state.timestamp}" />
+  </div>
 
-    <div if={ props.previous } class="previous no-print">
-      <a onclick={ registry.application.clickHandler } href={ props.previous }><i class="fa-solid fa-circle-arrow-left"></i></a>
-    </div>
+  <div if={ props.previous } class="previous no-print">
+    <a onclick={ registry.application.clickHandler } href={ props.previous }><i class="fa-solid fa-circle-arrow-left"></i></a>
+  </div>
 
-    <div if={ props.next } class="next no-print">
-      <a onclick={ registry.application.clickHandler } href="{ props.next }"><i class="fa-solid fa-circle-arrow-right"></i></a>
-    </div>
+  <div if={ props.next } class="next no-print">
+    <a onclick={ registry.application.clickHandler } href="{ props.next }"><i class="fa-solid fa-circle-arrow-right"></i></a>
+  </div>
 
-    <div if={ props.add && !props.stateAdd } class="add-entry no-print">
-      <a onclick={ registry.application.clickHandler } href="{ props.add }"><i class="fa fa-plus"></i></a>
-    </div>
+  <div if={ props.add && !props.stateAdd } class="add-entry no-print">
+    <a onclick={ registry.application.clickHandler } href="{ props.add }"><i class="fa fa-plus"></i></a>
+  </div>
 
-    <div if={ props.edit } class="edit-entry no-print">
-      <a onclick={ registry.application.clickHandler } href="{ props.edit }"><i class="fa fa-edit"></i></a>
-    </div>
+  <div if={ props.edit } class="edit-entry no-print">
+    <a onclick={ registry.application.clickHandler } href="{ props.edit }"><i class="fa fa-edit"></i></a>
+  </div>
 
-<style>
+  <script>
+    
+  export default {
+    state: {
+      timestamp: Date.now(),
+    },
+
+    setupListener() {
+      this.registry.eventBus.on('imageUploaded', this.reloadImage)
+    },
+
+    reloadImage() {
+      this.update({
+        timestamp: Date.now(),
+      })
+    },
+
+    onMounted() {
+      this.setupListener()
+    },
+  }
+  </script>
+
+  <style>
     div.edit-entry, div.add-entry {
         position: absolute;
         left: 2px;
@@ -90,5 +113,4 @@
       border-radius: 3px;
     }
   </style>
-
 </element-header>

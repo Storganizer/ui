@@ -32,7 +32,6 @@
         previousItem: false,
         id: false,
         edit: false,
-        timestamp: Date.now(),
         item: false,
         box: false,
         location: false,
@@ -41,6 +40,12 @@
 
       toggleEdit() {
         this.registry.application.render('#item/' + this.state.id)
+
+        // cheap hack to reload the image after upload, could fetch the url until a 200 is there. Only if the current box has an image, of course
+        const myTimeout = setTimeout(function() {
+          clearTimeout(myTimeout);
+          this.registry.eventBus.trigger('imageUploaded')
+        }.bind(this), 1000);
       },
 
       setupListenter() {
