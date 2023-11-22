@@ -38,6 +38,7 @@
 
     export default {
       application: this,
+      currentControllerName: false,
       state: {
         controller: false,
         isLoggedIn: isLoggedIn,
@@ -77,12 +78,6 @@
       },
 
       clickHandler(e) {
-        /**
-         * Hack for rerender the controller if only this.props.params has changed
-         * RiotJS seems not to handle this yet
-         */
-        
-
         // close the burger menu if open
         if (document.getElementsByClassName('menu-btn')[0].checked) {
           document.getElementsByClassName('menu-btn')[0].checked = false
@@ -93,15 +88,20 @@
       },
 
       render(url) {
-        if (url != '') {
-          window.location.replace(url)
-          this.registry.eventBus.trigger('applicationRender')
+        let controller = this.getController(url)
+        
+        if (controller.name == this.getCurrentController()) {
           this.update({
             controller: {}
           })
         }
 
-        let controller = this.getController(url)
+        this.currentControllerName = controller.name
+        this.registry.eventBus.trigger('applicationRender')
+        // if it is an application link
+        if (url.indexOf('#') >= 0) {
+          window.location.replace(url)
+        }
         this.update({
           controller: controller
         })
@@ -125,7 +125,7 @@
       },
 
       getCurrentController() {
-        return this.state.controller
+        return this.currentControllerName
       },
     }
   </script>

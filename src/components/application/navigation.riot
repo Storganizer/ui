@@ -31,13 +31,14 @@
       },
 
       onApplicationRender() {
-        let controller = this.registry.application.getController(document.URL)
+        console.log('rerendering navigation')
+        let controller = this.registry.application.getCurrentController()
         let classes = {
-          locations: controller.name == 'locations' || controller.name == 'location' ? 'active' : '',
-          boxes: controller.name == 'boxes' || controller.name == 'box' ? 'active' : '',
-          items: controller.name == 'items' || controller.name == 'item' ? 'active' : '',
-          search: controller.name == 'search' ? 'active' : '',
-          config: controller.name == 'config' ? 'active' : '',
+          locations: controller == 'locations' || controller == 'location' ? 'active' : '',
+          boxes: controller == 'boxes' || controller == 'box' ? 'active' : '',
+          items: controller == 'items' || controller == 'item' ? 'active' : '',
+          search: controller == 'search' ? 'active' : '',
+          config: controller == 'config' ? 'active' : '',
         }
 
         this.update({

@@ -6,11 +6,9 @@
       element={ state.item }
       next={ state.nextItem ? "#item/" + state.nextItem.id : "" }
       previous={ state.previousItem ? "#item/" + state.previousItem.id : "" }
-      edit="#item/{ state.item.id }/edit"
-      add="#item/{ state.item.id }/add"
     />
     <element-detail if={ !state.edit && state.item } type="item" element={ state.item } box={ state.box } location={ state.location }  />
-    <element-form if={ state.edit && state.item } type="item" element={ state.item } onCancel={ toggleEdit } />
+    <element-form if={ state.edit && state.item } type="item" element={ state.item } onCancel={ closeEdit } />
 
   <script>
     import  './style.css'
@@ -38,7 +36,7 @@
         edit: false,
       },
 
-      toggleEdit() {
+      closeEdit() {
         this.registry.application.render('#item/' + this.state.id)
 
         // cheap hack to reload the image after upload, could fetch the url until a 200 is there. Only if the current box has an image, of course

@@ -5,15 +5,12 @@
       element={state.box}
       next={ state.nextBox ? "#box/" + state.nextBox.id : "" }
       previous={ state.previousBox ? "#box/" + state.previousBox.id : "" }
-      edit="#box/{state.box.id}/edit"
-      add="#box/{state.box.id}/add"
-      stateAdd={state.add}
     />
     <element-detail if={ !state.edit && state.box } type="box" element={ state.box } location={ state.location }  />
-    <element-form if={ state.edit && state.box } type="box" element={ state.box } onCancel={ toggleEdit }  />
+    <element-form if={ state.edit && state.box } type="box" element={ state.box } onCancel={ closeEdit }  />
     <div if={ state.add && state.emptyItem } class="add-form">
       <h2>Add an item to the box</h2>
-      <element-form type="item" element={ state.emptyItem } onCancel={ toggleEdit }  />
+      <element-form type="item" element={ state.emptyItem } onCancel={ closeEdit }  />
     </div>
     <element-list elements={ state.items } type="item" />
   <script>
@@ -43,7 +40,7 @@
         emptyItem: false
       },
 
-      toggleEdit() {
+      closeEdit() {
         this.registry.application.render('#box/' + this.state.id)
 
         // cheap hack to reload the image after upload, could fetch the url until a 200 is there. Only if the current box has an image, of course

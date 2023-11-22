@@ -37,16 +37,37 @@
         </div>
       </p>
 
+      <button class="action no-print" onclick={ edit }><i class="fa fa-edit"></i></button>
+      <button if={ props.type != 'item' } class="action no-print" onclick={ add }><i class="fa fa-plus"></i></button>
       <qr-code></qr-code>
+
     </div>
 
   <script>
     import QrCode from './qr-code.riot'
 
     export default {
+      baseLink: false,
       components: {
         QrCode,
+      },
+
+      exec(link) {
+        this.registry.application.render(link)
+      },
+
+      edit(e) {
+        this.exec(this.baseLink + "/edit")
+      },
+
+      add(e) {
+        this.exec(this.baseLink + "/add")
+      },
+
+      onMounted() {
+        this.baseLink = "#" + this.props.type + "/" + this.props.element.id
       }
+
     }
   </script>
   <style>
@@ -59,7 +80,6 @@
       display: inline-block;
       margin-top: 2px;
       margin-bottom: 2px;
-      margin-left: 100px;
       min-width: 50%
     }
     .text {
@@ -78,6 +98,12 @@
     div.element {
       z-index: 10;
       padding: 30px;
+    }
+
+    button.action {
+      margin-right: 5px;
+      margin-bottom: 5px;
+      font-size: 1.6rem;
     }
 
   </style>

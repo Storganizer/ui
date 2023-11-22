@@ -14,14 +14,6 @@
     <a onclick={ registry.application.clickHandler } href="{ props.next }"><i class="fa-solid fa-circle-arrow-right"></i></a>
   </div>
 
-  <div if={ props.add && !props.stateAdd } class="add-entry no-print">
-    <a onclick={ registry.application.clickHandler } href="{ props.add }"><i class="fa fa-plus"></i></a>
-  </div>
-
-  <div if={ props.edit } class="edit-entry no-print">
-    <a onclick={ registry.application.clickHandler } href="{ props.edit }"><i class="fa fa-edit"></i></a>
-  </div>
-
   <script>
     
   export default {

@@ -152,7 +152,6 @@
     height: 35px !important;
   }
   div.element {
-      margin-left: 0px !important;
   }
   div.edit-entry {
     top: 87px!important;
@@ -173,6 +172,13 @@
     display: none;
   }
   .search {
-      left:  50px !important;
+    left:  50px !important;
   }
+
+
+  element-detail div.element {
+    min-height: 100px;
+    padding: 15px;
+  }
+
 }
