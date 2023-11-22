@@ -1,15 +1,29 @@
 <boxes>
-    <boxes-list boxes={ state.boxes }></boxes-list>
+  <element-form if={ state.add } type="box" element={ state.emptyBox } onCancel={ toggleAdd } />
+  <element-list elements={ state.boxes } type="box" add="#boxes/add" />
+    
   <script>
     import  './style.css'
-    import BoxesList from '../../includes/box/list.riot'
+    import ElementForm from '../../includes/_helper/element-form.riot'
+    import ElementList from '../../includes/_helper/element-list.riot'
 
     export default {
       components: {
-        BoxesList
+        ElementForm,
+        ElementList,
       },
       state: {
+        add: false,
         boxes: [],
+        emptyBox: {
+          name: '',
+          description: '',
+          locationId: 0,
+        }
+      },
+
+      toggleAdd() {
+        this.registry.application.render('#boxes')
       },
 
       setupListenter() {
@@ -28,11 +42,10 @@
       onMounted() {
         this.setupListenter()
         this.loadData()
+        this.update({
+          add: this.props.params[0] == 'add',
+        })
       }
     }
-
   </script>
-
-
-
 </boxes>

@@ -1,55 +1,39 @@
-<element-list>
-
-    <h2><i class="fa-solid fa-screwdriver-wrench"></i> { props.items.length } Items <a class="add-entry" onclick={ toggleAdd }><i class="fa fa-plus"></i></a></h2>
-
-    <div if={ state.add }>
-      <item-form item={ state.emptyItem } onCancel={ toggleAdd }>haaa</item-form>
+<element-list class="no-print">
+    <div if={ props.add } class="add-entry no-print">
+      <a onclick={ registry.application.clickHandler } href="{ props.add }"><i class="fa fa-plus"></i></a>
     </div>
+
+    <h2>
+      <i if={ props.type == 'item' } class="fa-solid fa-screwdriver-wrench"></i>
+      <i if={ props.type == 'box' } class="fa-solid fa-boxes-stacked"></i>
+      <i if={ props.type == 'location' } class="fa-solid fa-location-dot"></i>
+      { props.elements.length }
+      <span if={ props.type == 'item' }> Items</span>
+      <span if={ props.type == 'box' }> Boxes</span>
+      <span if={ props.type == 'location' }> Locations</span>
+    </h2>
 
     <table>
       <tbody>
-        <tr each={ element in props.items } key={ element.id }>
+        <tr each={ element in props.elements } key={ element.id }>
           <td>
-            <a onclick={ registry.application.clickHandler } href="#item/{ element.id }">{ element.name }</a>
+            <a onclick={ registry.application.clickHandler } href="#{props.type}/{ element.id }">{ element.name }</a>
           </td>
           <td class="description">{ element.description }</td>
-          <td class="length">{ element.amount }</td>
+          <td if={ props.type == 'item' } class="length">{ element.amount }</td>
+          <td if={ props.type == 'box' } class="length">{ element.lenItems }</td>
+          <td if={ props.type == 'location' } class="length">{ element.lenBoxes }</td>
         </tr>
       </tbody>
     </table>
 
-
   <script>
-    //import ItemForm from './form.riot'
 
     export default {
-      components: {
-        //ItemForm,
-      },
-      state: {
-        add: false,
-        emptyItem: {
-          id: 0,
-          name: '',
-          description: '',
-          boxId: 0,
-        }
-      },
-      toggleAdd() {
-        this.update({
-          add: !this.state.add,
-          emptyItem: {
-            boxId: this.props.boxId || 0
-          }
-        })
-      },
     }
   </script>
 
   <style>
-    div.list {
-      padding-top: 20px;
-    }
 
     element-list {
       display: block;
@@ -57,7 +41,30 @@
       padding: 10px;
       border-radius: 3px;
     }
+
+    div.add-entry {
+        position: absolute;
+        right: 40px;
+        top: 10px;
+    }
+
+
+    div.add-entry a {
+      background: white;
+      display: flex;
+      align-content: center;
+      text-align: center;
+      width: 40px;
+      height: 45px;
+      border-radius: 3px;
+      padding: 5px;
+      margin: 0px;
+      font-size: 3rem;
+    }
+
+
   </style>
+
 
 
 </element-list>

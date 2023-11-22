@@ -28,6 +28,7 @@
 }
 
 .header li a:hover,
+.header li.active a,
 .header .menu-btn:hover {
   background-color: #f4f4f4;
 }
@@ -143,12 +144,25 @@
 
 @media (max-width: 55em) {
   h2 {
-    font-size: 2rem;
+    font-size: 2rem !important;
+  }
+  .previous, .next, div.edit-entry a, div.add-entry a {
+    font-size: 2rem !important;
+    width: 30px !important;
+    height: 35px !important;
+  }
+  div.element {
+      margin-left: 0px !important;
+  }
+  div.edit-entry {
+    top: 87px!important;
+  }
+  div.add-entry {
+    top: 125px!important;
   }
   h2 i {
     margin-right: 5px;
   }
-
   .header li a {
     padding:  10px 20px
   }

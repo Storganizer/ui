@@ -7,25 +7,22 @@
   <div class="search"><input onkeyup={typeahead} type="text" placeholder="search" id="search" name="search"></div>
 
   <div class="results">
-    <locations-list if={ state.locations.length } locations={ state.locations }></locations-list>
-    <boxes-list if={ state.boxes.length }  boxes={ state.boxes }></boxes-list>
-    <items-list if={ state.items.length }  items={ state.items }></items-list>
+    <element-list if={ state.locations.length } elements={ state.locations } type="location" />
+    <element-list if={ state.boxes.length }  elements={ state.boxes } type="box" />
+    <element-list if={ state.items.length }  elements={ state.items } type="item" />
   </div>
 
   <script>
     import  './style.css'
 
     import ScanQrCode from '../../includes/_helper/scan-qr-code.riot'
-    import LocationsList from '../../includes/location/list.riot'
-    import BoxesList from '../../includes/box/list.riot'
-    import ItemsList from '../../includes/item/list.riot'
+    import ElementList from '../../includes/_helper/element-list.riot'
+
 
     export default {
       components: {
         ScanQrCode,
-        LocationsList,
-        BoxesList,
-        ItemsList,
+        ElementList,
       },
 
       state: {

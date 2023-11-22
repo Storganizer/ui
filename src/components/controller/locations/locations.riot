@@ -1,15 +1,29 @@
 <locations>
-    <locations-list locations={ state.locations }></locations-list>
+  <element-form if={ state.add } type="location" element={ state.emptyLocation } onCancel={ toggleAdd } />
+  <element-list elements={ state.locations } type="location" add="#locations/add" />
+
   <script>
     import  './style.css'
-    import LocationsList from '../../includes/location/list.riot'
+    import ElementForm from '../../includes/_helper/element-form.riot'
+    import ElementList from '../../includes/_helper/element-list.riot'
 
     export default {
       components: {
-        LocationsList,
+        ElementForm,
+        ElementList,
       },
       state: {
+        add: 'nice',
         locations: [],
+        emptyLocation: {
+          name: '',
+          description: '',
+          classification: 0,
+        }
+      },
+
+      toggleAdd() {
+        this.registry.application.render('#locations')
       },
 
       setupListenter() {
@@ -28,11 +42,11 @@
       onMounted() {
         this.setupListenter()
         this.loadData()
+        this.update({
+           add: this.props.params[0] == 'add',
+        })
+
       }
     }
-
   </script>
-
-
-
 </locations>

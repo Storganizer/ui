@@ -1,43 +1,35 @@
 <box>
     <element-header
-      if={ ! state.edit && state.box } 
+      if={ !state.edit && state.box } 
       type="box"
       element={state.box}
       next={ state.nextBox ? "#box/" + state.nextBox.id : "" }
       previous={ state.previousBox ? "#box/" + state.previousBox.id : "" }
       edit="#box/{state.box.id}/edit"
       add="#box/{state.box.id}/add"
+      stateAdd={state.add}
     />
-
     <element-detail if={ !state.edit && state.box } type="box" element={ state.box } location={ state.location }  />
-    
-
-    <element-form if={ state.edit && state.box } type="box" element={ state.box }  />
-
-    <!-- Form
-    <div class="form clearfix" if={ state.edit && state.box }>
-      <box-form box={ state.box } onCancel={ toggleEdit }></box-form>
+    <element-form if={ state.edit && state.box } type="box" element={ state.box } onCancel={ toggleEdit }  />
+    <div if={ state.add && state.emptyItem } class="add-form">
+      <h2>Add an item to the box</h2>
+      <element-form type="item" element={ state.emptyItem } onCancel={ toggleEdit }  />
     </div>
-    -->
-
-    <div class="list">
-      <items-list if={ state.box} items={ state.items } boxId={ state.box.id } ></items-list>
-    </div>
-
+    <element-list elements={ state.items } type="item" />
   <script>
+
     import  './style.css'
-    import ElementDetail from '../../includes/_helper/element-detail.riot'
     import ElementHeader from '../../includes/_helper/element-header.riot'
+    import ElementDetail from '../../includes/_helper/element-detail.riot'
     import ElementForm from '../../includes/_helper/element-form.riot'
     import ElementList from '../../includes/_helper/element-list.riot'
-    import ItemsList from '../../includes/item/list.riot'
 
     export default {
       components: {
-        ElementDetail,
         ElementHeader,
+        ElementDetail,
         ElementForm,
-        ItemsList,
+        ElementList,
       },
 
       state: {
@@ -49,22 +41,20 @@
         items: false,
         edit: false,
         id: false,
+        emptyItem: false
       },
 
-      /*toggleEdit() {
-        this.update({
-          edit: !this.state.edit,
-          timestamp: Date.now(),
-        })
-
+      toggleEdit() {
+        this.registry.application.render('#box/' + this.state.id)
+        
         // cheap hack to reload the image after upload, could fetch the url until a 200 is there. Only if the current box has an image, of course
-        const myTimeout = setTimeout(function() {
+        /*const myTimeout = setTimeout(function() {
           clearTimeout(myTimeout);
           this.update({
             timestamp: Date.now(),
           })
-        }.bind(this), 1000);
-      },*/
+        }.bind(this), 1000);*/
+      },
 
       setupListenter() {
         let target = this
@@ -93,6 +83,10 @@
 
       loadBoxAndLocationData() {
         let box = this.registry.dataStore.boxes.getBoxById(this.state.id)
+        if (!box) {
+          return false
+        }
+
         let locationId = box && box.locationId ? box.locationId : 0
         let nextBox = this.registry.dataStore.boxes.getNext(box)
         let previousBox = this.registry.dataStore.boxes.getPrevious(box)
@@ -114,12 +108,33 @@
       onMounted() {
         this.update({
           id: this.props.params[0],
-          edit: this.props.params[1] == 'edit'
+          edit: this.props.params[1] == 'edit',
+          add: this.props.params[1] == 'add',
         })
+
+        this.update({
+          emptyItem: {
+            name: '',
+            description: '',
+            amount: 1,
+            boxId: this.state.id
+          }
+        })
+
         this.setupListenter()
         this.loadBoxAndLocationData()
         this.loadItemData()
       }
     }
   </script>
+
+  <style>
+  .add-form {
+    display: block;
+    background-color: white;
+    padding: 10px;
+    border-radius: 3px;
+  }
+  </style>
+
 </box>

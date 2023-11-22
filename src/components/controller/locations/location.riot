@@ -1,41 +1,50 @@
 <location>
-    <div if={ ! state.edit && state.location }>
-      <h2><i class="fa-solid fa-location-dot"></i> { state.location.name } <a class="edit-entry" onclick={ toggleEdit }><i class="fa fa-edit"></i></a></h2>
-
-      <p class="no-print">{ state.location.description }</p>
-      <p>Classification: <b>{ state.location.classification }</b></p>
-      <qr-code></qr-code>
+    <element-header
+      if={ ! state.edit && state.location } 
+      type="location"
+      element={state.location}
+      next={ state.nextLocation ? "#location/" + state.nextLocation.id : "" }
+      previous={ state.previousLocation ? "#location/" + state.previousLocation.id : "" }
+      edit="#location/{state.location.id}/edit"
+      add="#location/{state.location.id}/add"
+    />
+    <element-detail if={ !state.edit && state.location } type="location" element={ state.location } />
+    <element-form if={ state.edit && state.location } type="location" element={ state.location } onCancel={ toggleEdit }  />
+    <div if={ state.add && state.emptyBox } class="add-form">
+      <h2>Add a box to the loction</h2>
+      <element-form type="box" element={ state.emptyBox } onCancel={ toggleEdit }  />
     </div>
-    <div class="clearfix" if={ state.edit && state.location }>
-      <location-form location={ state.location } onCancel={ toggleEdit }></location-form>
-    </div>
-    <boxes-list if={ state.location } boxes={ state.boxes } locationId={ state.location.id } ></boxes-list>
+    <element-list elements={ state.boxes } type="box" />
 
   <script>
     import  './style.css'
-    import LocationForm from '../../includes/location/form.riot'
     import QrCode from '../../includes/_helper/qr-code.riot'
-    import BoxesList from '../../includes/box/list.riot'
-
+    import ElementHeader from '../../includes/_helper/element-header.riot'
+    import ElementDetail from '../../includes/_helper/element-detail.riot'
+    import ElementForm from '../../includes/_helper/element-form.riot'
+    import ElementList from '../../includes/_helper/element-list.riot'
 
     export default {
       components: {
-        LocationForm,
         QrCode,
-        BoxesList,
+        ElementHeader,
+        ElementDetail,
+        ElementForm,
+        ElementList,
       },
 
       state: {
+        nextLocation: false,
+        previousLocation: false,
         location: false,
         boxes: [],
         showQr: true,
         edit: false,
+        emptyBox: false
       },
 
       toggleEdit() {
-        this.update({
-          edit: !this.state.edit
-        })
+        this.registry.application.render('#location/' + this.state.id)
       },
 
       setupListenter() {
@@ -50,8 +59,17 @@
       },
 
       loadLocationData() {
+        let location = this.registry.dataStore.locations.getLocationById(this.props.params[0])
+        if (!location) {
+          return false
+        }
+        let nextLocation = this.registry.dataStore.locations.getNext(location)
+        let previousLocation = this.registry.dataStore.locations.getPrevious(location)
+
         this.update({
-            location: this.registry.dataStore.locations.getLocationById(this.props.params[0])
+          nextLocation: nextLocation ? nextLocation : false,
+          previousLocation: previousLocation ? previousLocation : false,
+          location: location
         })
       },
 
@@ -62,11 +80,34 @@
       },
 
       onMounted() {
+        this.update({
+          id: this.props.params[0],
+          edit: this.props.params[1] == 'edit',
+          add: this.props.params[1] == 'add',
+        })
+
+        this.update({
+          emptyBox: {
+            name: '',
+            description: '',
+            locationId: this.state.id
+          }
+        })
+
         this.setupListenter()
         this.loadLocationData()
         this.loadBoxData()
       }
     }
   </script>
+
+  <style>
+  .add-form {
+    display: block;
+    background-color: white;
+    padding: 10px;
+    border-radius: 3px;
+  }
+  </style>
 
 </location>

@@ -9,31 +9,22 @@
       edit="#item/{ state.item.id }/edit"
       add="#item/{ state.item.id }/add"
     />
-
     <element-detail if={ !state.edit && state.item } type="item" element={ state.item } box={ state.box } location={ state.location }  />
-
-    <!--
-    <div class="clearfix" if={ state.edit && state.item }>
-      <item-form item={ state.item } onCancel={ toggleEdit }></box-form>
-    </div>-->
+    <element-form if={ state.edit && state.item } type="item" element={ state.item } onCancel={ toggleEdit } />
 
   <script>
     import  './style.css'
 
-    import ElementDetail from '../../includes/_helper/element-detail.riot'
     import ElementHeader from '../../includes/_helper/element-header.riot'
+    import ElementDetail from '../../includes/_helper/element-detail.riot'
     import ElementForm from '../../includes/_helper/element-form.riot'
-    import ElementList from '../../includes/_helper/element-list.riot'
-    import ItemForm from '../../includes/item/form.riot'
 
 
     export default {
       components: {
-        ItemForm,
-        ElementDetail,
         ElementHeader,
+        ElementDetail,
         ElementForm,
-        ElementList,
       },
 
       state: {
@@ -46,6 +37,10 @@
         box: false,
         location: false,
         edit: false,
+      },
+
+      toggleEdit() {
+        this.registry.application.render('#item/' + this.state.id)
       },
 
       setupListenter() {
@@ -67,6 +62,10 @@
 
       loadData() {
         let item = this.registry.dataStore.items.getItemById(this.state.id)
+        if (!item) {
+          return false
+        }
+
         let boxId = item && item.boxId ? item.boxId : 0
         let box = this.registry.dataStore.boxes.getBoxById(boxId)
         let locationId = box && box.locationId ? box.locationId : 0
@@ -87,24 +86,12 @@
       onMounted() {
         this.update({
           id: this.props.params[0],
-          edit: this.props.params[1] == 'edit'
+          edit: this.props.params[1] == 'edit',
+          add: this.props.params[1] == 'add',
         })
         this.setupListenter()
         this.loadData()
       }
     }
   </script>
-  <style>
-    div.item {
-      padding: 25px;
-    }
-
-    div.list {
-      padding-top: 20px;
-    }
-
-    div.list, div.form{
-      background-color: white;
-    }
-  </style>
 </item>

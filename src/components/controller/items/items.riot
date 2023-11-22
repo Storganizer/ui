@@ -1,15 +1,31 @@
 <items>
-    <items-list items={ state.items }></items-list>
+    <element-form if={ state.add } type="item" element={ state.emptyItem } onCancel={ toggleAdd } />
+    <element-list elements={ state.items } type="item" add="#items/add" />
+    
   <script>
     import  './style.css'
-    import ItemsList from '../../includes/item/list.riot'
+    import ElementForm from '../../includes/_helper/element-form.riot'
+    import ElementList from '../../includes/_helper/element-list.riot'
 
     export default {
       components: {
-        ItemsList
+        ElementForm,
+        ElementList,
       },
+
       state: {
+        add: false,
         items: [],
+        emptyItem: {
+          name: '',
+          description: '',
+          amount: 1,
+          boxId: 0,
+        }
+      },
+
+      toggleAdd() {
+        this.registry.application.render('#items')
       },
 
       setupListenter() {
@@ -28,6 +44,9 @@
       onMounted() {
         this.setupListenter()
         this.loadData()
+        this.update({
+          add: this.props.params[0] == 'add',
+        })
       }
     }
 

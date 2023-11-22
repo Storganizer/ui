@@ -36,13 +36,6 @@ h2 i {
   margin-right: 15px;
 }
 
-.edit-entry, .add-entry {
-  cursor: pointer;
-  margin-right: 5px;
-  float: right;
-  font-size: .8em;
-}
-
 /* Camera Settings*/
 #fullscreen {
   position: absolute;

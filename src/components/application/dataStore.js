@@ -13,6 +13,28 @@ export default {
   locations: {
     locations: false,
 
+    getNext(location) {
+      if (!this.locations) {
+        return false
+      }
+      let index = this.locations.indexOf(location);
+      if(index >= 0 && index < this.locations.length - 1) {
+        return this.locations[index + 1]
+      }
+      return false
+    },
+
+    getPrevious(location) {
+      if (!this.locations) {
+        return false
+      }
+      let index = this.locations.indexOf(location)
+      if(index >= 1 && index < this.locations.length) {
+        return this.locations[index - 1]
+      }
+      return false
+    },
+
     search(string) {
       if (!this.locations) {
         this.fetchLocations()
