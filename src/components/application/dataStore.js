@@ -307,16 +307,14 @@ export default {
       req.open("DELETE", apiHost + "/box/" + box.id)
       req.send()
     }
-
-
   },
-
 
   items: {
     items: false,
 
     getNext(item) {
       let items = item.boxId ? this.getItemsByBoxId(item.boxId) : this.items
+
       if (!items) {
         return false
       }
@@ -328,7 +326,8 @@ export default {
     },
 
     getPrevious(item) {
-      let items = item.locationId ? this.getItemsByBoxId(item.boxId) : this.items
+      let items = item.boxId ? this.getItemsByBoxId(item.boxId) : this.items
+
       if (!items) {
         return false
       }
@@ -468,9 +467,6 @@ export default {
       req.open("DELETE", apiHost + "/item/" + item.id)
       req.send()
     }
-
-
-
   },
 
 }
