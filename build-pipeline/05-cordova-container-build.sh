@@ -2,6 +2,7 @@
 
 echo "Cordova Dev Build"
 mkdir -p $(pwd)/local-builds
+mkdir -p $(pwd)/www
 
 podman rm -f $(cat version.txt)
 podman run -it --name $(cat version.txt) \

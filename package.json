@@ -52,7 +52,9 @@
 			"android"
 		],
 		"plugins": {
-			"cordova-plugin-camera": {},
+			"cordova-plugin-camera": {
+				"ANDROIDX_CORE_VERSION": "1.6.+"
+			},
 			"cordova-plugin-android-permissions": {},
 			"cordova-plugin-device": {},
 			"cordova-plugin-file": {},
