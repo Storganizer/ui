@@ -77,13 +77,20 @@
         }
       },
 
-      clickHandler(e) {
+      hashChange(e) {
         // close the burger menu if open
         if (document.getElementsByClassName('menu-btn')[0].checked) {
           document.getElementsByClassName('menu-btn')[0].checked = false
         }
-        if (e.currentTarget.href) {
-          this.render(e.currentTarget.href)
+        if (e.newURL) {
+          this.render(e.newURL)
+        }
+      },
+
+      clickHandler(e) {
+        // close the burger menu if open
+        if (document.getElementsByClassName('menu-btn')[0].checked) {
+          document.getElementsByClassName('menu-btn')[0].checked = false
         }
       },
 
@@ -98,10 +105,7 @@
 
         this.currentControllerName = controller.name
         this.registry.eventBus.trigger('applicationRender')
-        // if it is an application link
-        if (url.indexOf('#') >= 0) {
-          window.location.replace(url)
-        }
+
         this.update({
           controller: controller
         })
@@ -109,6 +113,7 @@
 
       onBeforeMount() {
         this.registry.application = this
+        window.addEventListener("hashchange", this.hashChange)
       },
 
       async onMounted() {
