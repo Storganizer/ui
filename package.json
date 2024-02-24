@@ -57,7 +57,9 @@
 			},
 			"cordova-plugin-android-permissions": {},
 			"cordova-plugin-device": {},
-			"cordova-plugin-file": {},
+			"cordova-plugin-file": {
+				"ANDROIDX_WEBKIT_VERSION": "1.4.0"
+			},
 			"cordova-plugin-dialogs": {},
 			"cordova-plugin-media": {}
 		}

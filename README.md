@@ -38,5 +38,5 @@ npm test
 ## Build
 
 ```
-npm run build
-```# ui
+./build-pipeline/scripts/build.sh
+```

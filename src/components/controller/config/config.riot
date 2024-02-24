@@ -12,6 +12,15 @@
 
   <button onclick={ save }>Save</button>
 
+
+  <label>Backup/Restory</label>
+  <button onclick="{ backup }" href="#backup">Backup (Only data - No images yet)</button>
+  &nbsp;
+  <button onclick={ restore }>Restore (Only data - No images yet)</button>
+
+
+
+
   <script>
 
     export default {
@@ -37,6 +46,14 @@
         }
 
         this.localStorage.setItem("cameraId", cameraId)
+      },
+
+      backup(e) {
+        alert('funky backup')
+      },
+
+      restore(e) {
+        alert('funky restore')
       },
 
       async onMounted(e) {
