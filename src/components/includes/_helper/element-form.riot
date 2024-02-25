@@ -1,6 +1,6 @@
 <element-form>
   <p if={ props.element }>
-    <take-picture currentPicture="{ props.element.image }"></take-picture>
+    <take-picture currentPicture="{ state.apiHost }{ props.element.image }"></take-picture>
     <input placeholder="Name" ame="element-name" id="element-name" type="text" value="{ props.element.name }"></input>
     <textarea placeholder="Description" name="element-description" id="element-description">{ props.element.description }</textarea>
 
@@ -77,8 +77,15 @@
         })
       },
 
+      loadApiUrl() {
+        this.update({
+            apiHost: this.registry.dataStore.getApiHost()
+        })
+      },
+
       onMounted() {
         this.setupListenter()
+        this.loadApiUrl()
         this.loadLocationData()
         this.loadBoxData()
       },
