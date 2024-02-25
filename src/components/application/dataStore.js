@@ -10,6 +10,10 @@ export default {
     apiHost = url
   },
 
+  getApiHost() {
+    return apiHost
+  },
+
   locations: {
     locations: false,
 

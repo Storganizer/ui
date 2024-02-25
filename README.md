@@ -40,3 +40,7 @@ npm test
 ```
 ./build-pipeline/scripts/build.sh
 ```
+
+
+## Notes to myself
+ - Non-Located Boxes or non-boxed items are not possible yet with postgres because of foreign key violation. SQLite does not care on the other hand
