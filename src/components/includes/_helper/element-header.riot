@@ -3,7 +3,7 @@
     <img
       if={ props.element.image }
       class="header-image no-print"
-      src="{ props.element.image }?time={state.timestamp}" />
+      src="{ state.apiHost }{ props.element.image }?time={state.timestamp}" />
   </div>
 
   <div if={ props.previous } class="previous no-print">
@@ -31,7 +31,14 @@
       })
     },
 
+    loadApiUrl() {
+      this.update({
+          apiHost: this.registry.dataStore.getApiHost()
+      })
+    },
+
     onMounted() {
+      this.loadApiUrl()
       this.setupListener()
     },
   }
