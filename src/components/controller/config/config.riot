@@ -13,11 +13,11 @@
   <button onclick={ save }>Save</button>
 
 
-  <label>Backup</label>
+<!--   <label>Backup</label>
   <button onclick="{ backup }" href="#backup">Backup (Only data - No images yet)</button>
   <label>Restore</label>
   <button onclick={ restore }>Restore (Only data - No images yet)</button>
-
+ -->
   <script>
 
     export default {
@@ -43,15 +43,6 @@
         }
 
         this.localStorage.setItem("cameraId", cameraId)
-      },
-
-      backup(e) {
-        //res.writeHead(200, {'Content-Type': 'application/force-download','Content-disposition':'attachment; filename=file.txt'});
-        alert('backup')
-      },
-
-      restore(e) {
-        alert('restore')
       },
 
       async onMounted(e) {
