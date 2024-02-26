@@ -13,11 +13,12 @@
   <button onclick={ save }>Save</button>
 
 
-<!--   <label>Backup</label>
-  <button onclick="{ backup }" href="#backup">Backup (Only data - No images yet)</button>
+  <label>Backup</label>
+  <button onclick={ backup } href="{ state.apiHost }/backup">Backup (Only data - No images yet)</button>
+  <!--
   <label>Restore</label>
   <button onclick={ restore }>Restore (Only data - No images yet)</button>
- -->
+  -->
   <script>
 
     export default {
@@ -45,7 +46,18 @@
         this.localStorage.setItem("cameraId", cameraId)
       },
 
+      backup() {
+        window.location = this.state.apiHost + "/backup"
+      },
+
+      loadApiUrl() {
+        this.update({
+            apiHost: this.registry.dataStore.getApiHost()
+        })
+      },
+
       async onMounted(e) {
+        this.loadApiUrl()
         let devices = await navigator.mediaDevices.enumerateDevices();
         let cameras = [];
         for (const device of devices) {

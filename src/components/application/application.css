@@ -5,7 +5,9 @@ body {
   margin-top: 90px;
 }
 
-
+.clearfix {
+  clear: both;
+}
 
 .form-buttons {
   float: right;

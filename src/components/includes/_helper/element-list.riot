@@ -1,4 +1,5 @@
 <element-list class="no-print">
+    <div class="clearfix"></div>
     <div if={ props.add } class="add-entry no-print">
       <a onclick={ registry.application.clickHandler } href="{ props.add }"><i class="fa fa-plus"></i></a>
     </div>
@@ -13,6 +14,16 @@
       <span if={ props.type == 'location' }> Locations</span>
     </h2>
 
+    <a style="background-image: url('http://10.1.1.21:5000{element.image}')" class="image-list" each={ element in props.elements } key={ element.id }  onclick={ registry.application.clickHandler } href="#{props.type}/{ element.id }">
+      <div>
+        <i if={ props.type == 'item' } class="fa-solid fa-screwdriver-wrench"></i>
+        <i if={ props.type == 'box' } class="fa-solid fa-boxes-stacked"></i>
+        <i if={ props.type == 'location' } class="fa-solid fa-location-dot"></i>
+        { element.name }
+      </div>
+    </a>
+    <div class="clearfix last"></div>
+    <!--
     <table>
       <tbody>
         <tr each={ element in props.elements } key={ element.id }>
@@ -26,6 +37,9 @@
         </tr>
       </tbody>
     </table>
+    -->
+
+
 
   <script>
 
@@ -62,7 +76,32 @@
       font-size: 3rem;
     }
 
+    .image-list {
+      width: 140px;
+      height: 140px;
+      margin: 5px;
+      padding: 5px;
+      float: left;
+      /*border: 1px solid red;*/
+      border-radius: 3px;
+      background-size: 140px 140px;
+    }
 
+    .image-list div {
+      padding: 2px;
+      font-size: small;
+      background-color: #FFFFFF;
+      border-radius: 3px;
+      text-overflow: ellipsis;
+    }
+
+    .image-list div i {
+      margin-right: 3px;
+    }
+
+    .last {
+      margin-bottom: 10px;
+    }
   </style>
 
 
