@@ -14,17 +14,20 @@
       <span if={ props.type == 'location' }> Locations</span>
     </h2>
 
-    <a style="background-image: url('http://10.1.1.21:5000{element.image}')" class="image-list" each={ element in props.elements } key={ element.id }  onclick={ registry.application.clickHandler } href="#{props.type}/{ element.id }">
-      <div>
-        <i if={ props.type == 'item' } class="fa-solid fa-screwdriver-wrench"></i>
-        <i if={ props.type == 'box' } class="fa-solid fa-boxes-stacked"></i>
-        <i if={ props.type == 'location' } class="fa-solid fa-location-dot"></i>
-        { element.name }
-      </div>
-    </a>
-    <div class="clearfix last"></div>
-    <!--
-    <table>
+    <div if={ state.listView == 'image' }>
+      <a style="background-image: url('{state.apiUrl}{element.image}')" class="image-list" each={ element in props.elements } key={ element.id }  onclick={ registry.application.clickHandler } href="#{props.type}/{ element.id }">
+        <div>
+          <i if={ props.type == 'item' } class="fa-solid fa-screwdriver-wrench"></i>
+          <i if={ props.type == 'box' } class="fa-solid fa-boxes-stacked"></i>
+          <i if={ props.type == 'location' } class="fa-solid fa-location-dot"></i>
+          { element.name }
+        </div>
+      </a>
+      <div class="clearfix last"></div>
+    </div>
+
+
+    <table if={ state.listView == 'list' }>
       <tbody>
         <tr each={ element in props.elements } key={ element.id }>
           <td>
@@ -37,13 +40,13 @@
         </tr>
       </tbody>
     </table>
-    -->
-
-
 
   <script>
-
     export default {
+      state: {
+        apiUrl: window.localStorage.getItem("apiUrl"),
+        listView: window.localStorage.getItem("listView"),
+      },
     }
   </script>
 
