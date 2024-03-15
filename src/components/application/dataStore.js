@@ -313,6 +313,147 @@ export default {
     }
   },
 
+  persons: {
+    persons: false,
+
+    getNext(person) {
+      if (!this.persons) {
+        return false
+      }
+      let index = this.persons.indexOf(person);
+      if(index >= 0 && index < this.persons.length - 1) {
+        return this.persons[index + 1]
+      }
+      return false
+    },
+
+    getPrevious(person) {
+      if (!this.persons) {
+        return false
+      }
+      let index = this.persons.indexOf(person)
+      if(index >= 1 && index < this.persons.length) {
+        return this.persons[index - 1]
+      }
+      return false
+    },
+
+    search(string) {
+      if (!this.persons) {
+        this.fetchPersons()
+        return []
+      }
+
+      string = string.toLowerCase()
+      function filterByString(item) {
+        if (string == '') {
+          return true
+        }
+        let found = false
+
+        if (item.name && item.name.toLowerCase().includes(string)) {
+          found = true
+        }
+
+        if (item.description && item.description.toLowerCase().includes(string)) {
+          found = true
+        }
+
+        return found
+      }
+
+      return this.persons.filter(filterByString)
+    },
+
+    getPersonById(id) {
+      if (!this.persons) {
+        this.fetchPersons()
+        return false
+      }
+
+      function filterByID(item) {
+        if (Number.isFinite(item.id) && item.id == id) {
+          return true
+        }
+        return false
+      }
+
+      return this.persons.filter(filterByID)[0]
+    },
+
+    getPersons() {
+      if (!this.persons) {
+        this.fetchPersons()
+        return []
+      }
+
+      return this.persons
+    },
+
+    fetchPersons() {
+      if (this.persons == false) {
+        let target = this
+        function reqListener() {
+          let jsonResponse = JSON.parse(this.responseText)
+          target.persons = jsonResponse
+          Registry.eventBus.trigger('dataPersonLoadSuccess', target.persons)
+        }
+        const req = new XMLHttpRequest()
+        req.addEventListener("load", reqListener)
+        req.open("GET", apiHost + "/persons")
+        req.send()
+
+        return false
+      } else {
+        return true
+      }
+    },
+
+    reload() {
+      this.persons = false
+      this.fetchPersons()
+    },
+
+    updateEntry(person) {
+      let target = this
+      function reqListener() {
+        let jsonResponse = JSON.parse(this.responseText)
+        target.reload()
+      }
+
+      const req = new XMLHttpRequest()
+      req.addEventListener("load", reqListener)
+      req.open("PUT", apiHost + "/person/" + person.id)
+      req.send(JSON.stringify(person))
+    },
+
+    addEntry(person) {
+      let target = this
+      function reqListener() {
+        let jsonResponse = JSON.parse(this.responseText)
+        target.reload()
+      }
+
+      const req = new XMLHttpRequest()
+      req.addEventListener("load", reqListener)
+      req.open("POST", apiHost + "/persons")
+      req.send(JSON.stringify(person))
+    },
+
+    deleteEntry(person) {
+      let target = this
+      function reqListener() {
+        let jsonResponse = JSON.parse(this.responseText)
+        target.reload()
+      }
+
+      const req = new XMLHttpRequest()
+      req.addEventListener("load", reqListener)
+      req.open("DELETE", apiHost + "/person/" + person.id)
+      req.send()
+    }
+  },
+
   items: {
     items: false,
 

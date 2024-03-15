@@ -1,0 +1,108 @@
+<person>
+    <element-header
+      if={ !state.edit && state.person }
+      type="person"
+      element={state.person}
+      next={ state.nextPerson ? "#person/" + state.nextPerson.id : "" }
+      previous={ state.previousPerson ? "#person/" + state.previousPerson.id : "" }
+    />
+    <element-detail if={ !state.edit && state.person } type="person" element={ state.person }  />
+    <element-form if={ state.edit && state.person } type="person" element={ state.person } onCancel={ closeEdit }  />
+    <div if={ state.add && state.emptyItem } class="add-form">
+      <h2>Add a person</h2>
+      <element-form type="person" element={ state.emptyPerson } onCancel={ closeEdit }  />
+    </div>
+    <element-list elements={ state.persons } type="person" />
+  <script>
+
+    import  './style.css'
+    import ElementHeader from '../../includes/_helper/element-header.riot'
+    import ElementDetail from '../../includes/_helper/element-detail.riot'
+    import ElementForm from '../../includes/_helper/element-form.riot'
+    import ElementList from '../../includes/_helper/element-list.riot'
+
+    export default {
+      components: {
+        ElementHeader,
+        ElementDetail,
+        ElementForm,
+        ElementList,
+      },
+
+      state: {
+        nextPerson: false,
+        previousPerson: false,
+        person: false,
+        edit: false,
+        id: false,
+        emptyItem: false
+      },
+
+      closeEdit() {
+        this.registry.application.render('#person/' + this.state.id)
+
+        // cheap hack to reload the image after upload, could fetch the url until a 200 is there. Only if the current person has an image, of course
+        const myTimeout = setTimeout(function() {
+          clearTimeout(myTimeout);
+          this.registry.eventBus.trigger('imageUploaded')
+        }.bind(this), 1000);
+      },
+
+      setupListenter() {
+        let target = this
+
+        this.registry.eventBus.on('dataPersonLoadSuccess', function(boxes) {
+          target.loadPersonData()
+        })
+      },
+
+      clickHandler(e) {
+        // hack to rerender if only the controller properties have changed
+        this.registry.application.render('')
+        this.registry.application.clickHandler(e)
+      },
+
+      loadPersonData() {
+        let person = this.registry.dataStore.persons.getPersonById(this.state.id)
+        if (!person) {
+          return false
+        }
+        let nextPerson = this.registry.dataStore.persons.getNext(person)
+        let previousPerson = this.registry.dataStore.persons.getPrevious(person)
+        this.update({
+          person: person,
+          nextPerson: nextPerson ? nextPerson : false,
+          previousPerson: previousPerson ? previousPerson : false,
+        })
+      },
+
+      onMounted() {
+        this.update({
+          id: this.props.params[0],
+          edit: this.props.params[1] == 'edit',
+          add: this.props.params[1] == 'add',
+        })
+
+        this.update({
+          emptyItem: {
+            name: '',
+            description: '',
+          }
+        })
+
+        this.setupListenter()
+        this.loadPersonData()
+      }
+    }
+  </script>
+
+  <style>
+  .add-form {
+    display: block;
+    background-color: white;
+    padding: 10px;
+    border-radius: 3px;
+  }
+  </style>
+
+</person>

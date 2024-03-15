@@ -3,12 +3,13 @@
     <navigation application={ this }></navigation>
 
     <div class="clearfix" />
-
     <div class="application-body container">
       <locations application={ this } params={ state.controller.params } if={ isController('locations') }></locations>
       <location application={ this } params={ state.controller.params } if={ isController('location') }></location>
       <boxes application={ this } params={ state.controller.params } if={ isController('boxes') }></boxes>
       <box application={ this } params={ state.controller.params } if={ isController('box') }></box>
+      <persons application={ this } params={ state.controller.params } if={ isController('persons') }></persons>
+      <person application={ this } params={ state.controller.params } if={ isController('person') }></person>
       <items application={ this } params={ state.controller.params } if={ isController('items') }></items>
       <item application={ this } params={ state.controller.params } if={ isController('item') }></item>
       <search application={ this } params={ state.controller.params } if={ isController('search') }></search>
@@ -28,6 +29,8 @@
     import Location from '../controller/locations/location.riot'
     import Boxes from '../controller/boxes/boxes.riot'
     import Box from '../controller/boxes/box.riot'
+    import Persons from '../controller/persons/persons.riot'
+    import Person from '../controller/persons/person.riot'
     import Items from '../controller/items/items.riot'
     import Item from '../controller/items/item.riot'
     import Search from '../controller/search/search.riot'
@@ -50,6 +53,8 @@
         Location,
         Boxes,
         Box,
+        Persons,
+        Person,
         Items,
         Item,
         Search,

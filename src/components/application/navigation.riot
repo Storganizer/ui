@@ -7,6 +7,7 @@
         <li class={ state.classes.locations }><a onclick={ registry.application.clickHandler } href="#locations">Locations</a></li>
         <li class={ state.classes.boxes }><a onclick={ registry.application.clickHandler } href="#boxes">Boxes</a></li>
         <li class={ state.classes.items }><a onclick={ registry.application.clickHandler } href="#items">Items</a></li>
+        <li class={ state.classes.persons }><a onclick={ registry.application.clickHandler } href="#persons"><i class="fa-solid fa-person"></i></a></li>
         <li class={ state.classes.search }><a onclick={ registry.application.clickHandler } href="#search"><i class="fa-solid fa-magnifying-glass"></i></a></li>
         <li class={ state.classes.config }><a onclick={ registry.application.clickHandler } href="#config"><i class="fa-solid fa-gear"></i></a></li>
       </ul>
@@ -21,6 +22,7 @@
           locations: '',
           boxes: '',
           items: '',
+          persons: '',
           search: '',
           config: '',
         }
@@ -37,12 +39,13 @@
           locations: controller == 'locations' || controller == 'location' ? 'active' : '',
           boxes: controller == 'boxes' || controller == 'box' ? 'active' : '',
           items: controller == 'items' || controller == 'item' ? 'active' : '',
+          persons: controller == 'persons' || controller == 'person' ? 'active' : '',
           search: controller == 'search' ? 'active' : '',
           config: controller == 'config' ? 'active' : '',
         }
 
         this.update({
-          classes: classes 
+          classes: classes
         })
       },
 

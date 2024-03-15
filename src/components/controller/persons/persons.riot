@@ -1,0 +1,49 @@
+<persons>
+  <element-form if={ state.add } type="person" element={ state.emptyPerson } onCancel={ toggleAdd } />
+  <element-list elements={ state.persons } type="person" add="#persons/add" />
+
+  <script>
+    import  './style.css'
+    import ElementForm from '../../includes/_helper/element-form.riot'
+    import ElementList from '../../includes/_helper/element-list.riot'
+
+    export default {
+      components: {
+        ElementForm,
+        ElementList,
+      },
+      state: {
+        add: false,
+        persons: [],
+        emptyPerson: {
+          name: ''
+        }
+      },
+
+      toggleAdd() {
+        this.registry.application.render('#persons')
+      },
+
+      setupListenter() {
+        let target = this
+        this.registry.eventBus.on('dataBoxLoadSuccess', function() {
+          target.loadData()
+        })
+      },
+
+      loadData() {
+        this.update({
+            persons: this.registry.dataStore.persons.getPersons()
+        })
+      },
+
+      onMounted() {
+        this.setupListenter()
+        this.loadData()
+        this.update({
+          add: this.props.params[0] == 'add',
+        })
+      }
+    }
+  </script>
+</persons>

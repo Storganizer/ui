@@ -97,23 +97,26 @@
           id: this.props.element.id || 0,
           image: TakePicture.exports.getEncodedImage(),
           name: document.getElementById("element-name").value,
-          description: document.getElementById("element-description").value,
         }
 
         let dataStore
+
         switch(this.props.type) {
           case 'location':
-            element.classification = parseInt(document.getElementById("element-classification").value),
+            element.classification = parseInt(document.getElementById("element-classification").value)
             dataStore = this.registry.dataStore.locations
             break
           case 'box':
-            element.locationId = parseInt(document.getElementById("element-location-id").value),
+            element.locationId = parseInt(document.getElementById("element-location-id").value)
             dataStore = this.registry.dataStore.boxes
             break
           case 'item':
-            element.amount = parseInt(document.getElementById("element-amount").value),
-            element.boxId = parseInt(document.getElementById("element-box-id").value),
+            element.amount = parseInt(document.getElementById("element-amount").value)
+            element.boxId = parseInt(document.getElementById("element-box-id").value)
             dataStore = this.registry.dataStore.items
+            break
+          case 'person':
+            dataStore = this.registry.dataStore.persons
             break
         }
 
@@ -149,6 +152,10 @@
           case 'item':
             redirectUrl  = '#box/' + document.getElementById("element-box-id").value
             dataStore = this.registry.dataStore.items
+            break
+          case 'person':
+            redirectUrl  = '#persons'
+            dataStore = this.registry.dataStore.persons
             break
         }
 
