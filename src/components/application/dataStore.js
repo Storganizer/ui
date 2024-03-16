@@ -73,10 +73,7 @@ export default {
       }
 
       function filterByID(item) {
-        if (Number.isFinite(item.id) && item.id == id) {
-          return true
-        }
-        return false
+        return Number.isFinite(item.id) && item.id == id
       }
 
       return this.locations.filter(filterByID)[0]
@@ -217,10 +214,7 @@ export default {
       }
 
       function filterByID(item) {
-        if (Number.isFinite(item.id) && item.id == id) {
-          return true
-        }
-        return false
+        return Number.isFinite(item.id) && item.id == id
       }
 
       return this.boxes.filter(filterByID)[0]
@@ -233,10 +227,7 @@ export default {
       }
 
       function filterByLocationID(item) {
-        if (Number.isFinite(item.locationId) && item.locationId == locationId) {
-          return true
-        }
-        return false
+        return Number.isFinite(item.locationId) && item.locationId == locationId
       }
 
       return this.boxes.filter(filterByLocationID)
@@ -249,10 +240,7 @@ export default {
       }
 
       function filterByPersonID(item) {
-        if (Number.isFinite(item.personId) && item.personId == personId) {
-          return true
-        }
-        return false
+        return Number.isFinite(item.personId) && item.personId == personId
       }
 
       return this.boxes.filter(filterByPersonID)
@@ -389,10 +377,7 @@ export default {
       }
 
       function filterByID(item) {
-        if (Number.isFinite(item.id) && item.id == id) {
-          return true
-        }
-        return false
+        return Number.isFinite(item.id) && item.id == id
       }
 
       return this.persons.filter(filterByID)[0]
@@ -534,10 +519,7 @@ export default {
       }
 
       function filterByID(item) {
-        if (Number.isFinite(item.id) && item.id == id) {
-          return true
-        }
-        return false
+        return Number.isFinite(item.id) && item.id == id
       }
 
       return this.items.filter(filterByID)[0]
@@ -550,10 +532,7 @@ export default {
       }
 
       function filterByBoxID(item) {
-        if (Number.isFinite(item.boxId) && item.boxId == boxId) {
-          return true
-        }
-        return false
+        return Number.isFinite(item.boxId) && item.boxId == boxId
       }
 
       return this.items.filter(filterByBoxID)
