@@ -34,7 +34,7 @@
         boxes: [],
         edit: false,
         id: false,
-        emptyItem: false
+        emptyPerson: false
       },
 
       closeEdit() {
@@ -52,6 +52,10 @@
 
         this.registry.eventBus.on('dataPersonLoadSuccess', function(boxes) {
           target.loadPersonData()
+        })
+
+        this.registry.eventBus.on('dataBoxLoadSuccess', function(locations) {
+          target.loadBoxData()
         })
       },
 
@@ -89,7 +93,7 @@
         })
 
         this.update({
-          emptyItem: {
+          emptyPerson: {
             name: '',
             description: '',
           }

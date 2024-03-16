@@ -39,7 +39,7 @@
           <td class="description">{ element.description }</td>
           <td if={ props.type == 'item' } class="length">{ element.amount }</td>
           <td if={ props.type == 'box' } class="length">{ element.lenItems }</td>
-          <td if={ props.type == 'location' } class="length">{ element.lenBoxes }</td>
+          <td if={ props.type == 'location' || props.type == 'person' } class="length">{ element.lenBoxes }</td>
         </tr>
       </tbody>
     </table>
