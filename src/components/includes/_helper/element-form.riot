@@ -19,7 +19,6 @@
       <option selected={ props.element.boxId == element.id } each={ element in state.boxes } value={ element.id }>{ element.name }</option>
     </select>
 
-
     <select if={ props.type == 'location' } name="element-classification" id="element-classification">
       <option value="0">Location Type</option>
       <option selected={ props.element.classification == 5 } value="5">Outside</option>
@@ -28,7 +27,6 @@
       <option selected={ props.element.classification == 2 } value="2">Living Area</option>
       <option selected={ props.element.classification == 1 } value="1">My Room</option>
     </select>
-
   </p>
 
   <div class="form-buttons" if={ props.element }>
@@ -97,6 +95,7 @@
           id: this.props.element.id || 0,
           image: TakePicture.exports.getEncodedImage(),
           name: document.getElementById("element-name").value,
+          description: document.getElementById("element-description").value,
         }
 
         let dataStore

@@ -8,25 +8,18 @@
     />
     <element-detail if={ !state.edit && state.person } type="person" element={ state.person }  />
     <element-form if={ state.edit && state.person } type="person" element={ state.person } onCancel={ closeEdit }  />
-    <div if={ state.add && state.emptyItem } class="add-form">
-      <h2>Add a person</h2>
-      <element-form type="person" element={ state.emptyPerson } onCancel={ closeEdit }  />
-    </div>
-    <element-list elements={ state.persons } type="person" />
   <script>
 
     import  './style.css'
     import ElementHeader from '../../includes/_helper/element-header.riot'
     import ElementDetail from '../../includes/_helper/element-detail.riot'
     import ElementForm from '../../includes/_helper/element-form.riot'
-    import ElementList from '../../includes/_helper/element-list.riot'
 
     export default {
       components: {
         ElementHeader,
         ElementDetail,
         ElementForm,
-        ElementList,
       },
 
       state: {
