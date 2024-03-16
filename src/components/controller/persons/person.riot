@@ -8,24 +8,30 @@
     />
     <element-detail if={ !state.edit && state.person } type="person" element={ state.person }  />
     <element-form if={ state.edit && state.person } type="person" element={ state.person } onCancel={ closeEdit }  />
+
+    <element-list elements={ state.boxes } type="box" />
+
   <script>
 
     import  './style.css'
     import ElementHeader from '../../includes/_helper/element-header.riot'
     import ElementDetail from '../../includes/_helper/element-detail.riot'
     import ElementForm from '../../includes/_helper/element-form.riot'
+    import ElementList from '../../includes/_helper/element-list.riot'
 
     export default {
       components: {
         ElementHeader,
         ElementDetail,
         ElementForm,
+        ElementList,
       },
 
       state: {
         nextPerson: false,
         previousPerson: false,
         person: false,
+        boxes: [],
         edit: false,
         id: false,
         emptyItem: false
@@ -69,6 +75,12 @@
         })
       },
 
+      loadBoxData() {
+        this.update({
+            boxes: this.registry.dataStore.boxes.getBoxesByPersonId(this.props.params[0])
+        })
+      },
+
       onMounted() {
         this.update({
           id: this.props.params[0],
@@ -85,6 +97,7 @@
 
         this.setupListenter()
         this.loadPersonData()
+        this.loadBoxData()
       }
     }
   </script>

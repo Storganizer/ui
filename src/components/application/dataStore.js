@@ -242,6 +242,23 @@ export default {
       return this.boxes.filter(filterByLocationID)
     },
 
+    getBoxesByPersonId(personId) {
+      if (!this.boxes) {
+        this.fetchBoxes()
+        return []
+      }
+
+      function filterByPersonID(item) {
+        if (Number.isFinite(item.personId) && item.personId == personId) {
+          return true
+        }
+        return false
+      }
+
+      return this.boxes.filter(filterByPersonID)
+    },
+
+
     getBoxes() {
       if (!this.boxes) {
         this.fetchBoxes()

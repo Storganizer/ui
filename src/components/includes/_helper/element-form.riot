@@ -9,8 +9,14 @@
 
     <label if={ props.type == 'box' } for="element-location-id">Location</label>
     <select if={ props.type == 'box' } name="element-location-id" id="element-location-id">
-      <option selected={ !props.element.locationId || props.element.locationId <= 0 } value="0" >unlocated</option>
+      <option selected={ !props.element.locationId || props.element.locationId <= 0 } value="0" >unrelated</option>
       <option selected={ props.element.locationId == element.id } each={ element in state.locations } value={ element.id }>{ element.name }</option>
+    </select>
+
+    <label if={ props.type == 'box' } for="element-person-id">Belongs to</label>
+    <select if={ props.type == 'box' } name="element-person-id" id="element-person-id">
+      <option selected={ !props.element.personId || props.element.personId <= 0 } value="0" >everybody</option>
+      <option selected={ props.element.personId == element.id } each={ element in state.persons } value={ element.id }>{ element.name }</option>
     </select>
 
     <label if={ props.type == 'item' } for="element-box-id">Box</label>
@@ -46,6 +52,7 @@
       state: {
         locations: false,
         boxes: false,
+        persons: false,
       },
 
       onCancel() {
@@ -75,6 +82,12 @@
         })
       },
 
+      loadPersonData() {
+        this.update({
+            persons: this.registry.dataStore.persons.getPersons()
+        })
+      },
+
       loadApiUrl() {
         this.update({
             apiHost: this.registry.dataStore.getApiHost()
@@ -86,6 +99,7 @@
         this.loadApiUrl()
         this.loadLocationData()
         this.loadBoxData()
+        this.loadPersonData()
       },
 
       saveEntry(e) {
@@ -106,12 +120,22 @@
             dataStore = this.registry.dataStore.locations
             break
           case 'box':
-            element.locationId = parseInt(document.getElementById("element-location-id").value)
+            let locationId = parseInt(document.getElementById("element-location-id").value)
+            let personId = parseInt(document.getElementById("element-person-id").value)
+            if (locationId > 0) {
+              element.locationId = locationId
+            }
+            if (personId > 0) {
+              element.personId = personId
+            }
             dataStore = this.registry.dataStore.boxes
             break
           case 'item':
             element.amount = parseInt(document.getElementById("element-amount").value)
-            element.boxId = parseInt(document.getElementById("element-box-id").value)
+            let boxId = parseInt(document.getElementById("element-box-id").value)
+            if (boxId > 0) {
+              element.boxId = boxId
+            }
             dataStore = this.registry.dataStore.items
             break
           case 'person':

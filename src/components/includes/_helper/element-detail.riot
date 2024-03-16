@@ -38,6 +38,13 @@
         </div>
       </p>
 
+      <p if={ props.person }>
+        <div class="text">
+          Belongs to:
+          <b><a onclick={ registry.application.clickHandler } href="#person/{ props.person.id }">{ props.person.name }</a></b>
+        </div>
+      </p>
+
       <button class="action no-print" onclick={ edit }><i class="fa fa-edit"></i></button>
       <button if={ props.type != 'item' && props.type != 'person' } class="action no-print" onclick={ add }><i class="fa fa-plus"></i></button>
       <qr-code if={ props.type != 'person' }></qr-code>

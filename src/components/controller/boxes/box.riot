@@ -6,7 +6,7 @@
       next={ state.nextBox ? "#box/" + state.nextBox.id : "" }
       previous={ state.previousBox ? "#box/" + state.previousBox.id : "" }
     />
-    <element-detail if={ !state.edit && state.box } type="box" element={ state.box } location={ state.location }  />
+    <element-detail if={ !state.edit && state.box } type="box" element={ state.box } location={ state.location } person={ state.person }  />
     <element-form if={ state.edit && state.box } type="box" element={ state.box } onCancel={ closeEdit }  />
     <div if={ state.add && state.emptyItem } class="add-form">
       <h2>Add an item to the box</h2>
@@ -34,6 +34,7 @@
         previousBox: false,
         box: false,
         location: false,
+        person: false,
         items: false,
         edit: false,
         id: false,
@@ -54,12 +55,12 @@
         let target = this
 
         this.registry.eventBus.on('dataBoxLoadSuccess', function(boxes) {
-          target.loadBoxAndLocationData()
+          target.loadBoxLocationAndPersonData()
         })
 
 
         this.registry.eventBus.on('dataLocationLoadSuccess', function(boxes) {
-          target.loadBoxAndLocationData()
+          target.loadBoxLocationAndPersonData()
         })
 
 
@@ -75,20 +76,22 @@
         this.registry.application.clickHandler(e)
       },
 
-      loadBoxAndLocationData() {
+      loadBoxLocationAndPersonData() {
         let box = this.registry.dataStore.boxes.getBoxById(this.state.id)
         if (!box) {
           return false
         }
 
         let locationId = box && box.locationId ? box.locationId : 0
+        let personId = box && box.personId ? box.personId : 0
         let nextBox = this.registry.dataStore.boxes.getNext(box)
         let previousBox = this.registry.dataStore.boxes.getPrevious(box)
         this.update({
           box: box,
           nextBox: nextBox ? nextBox : false,
           previousBox: previousBox ? previousBox : false,
-          location: this.registry.dataStore.locations.getLocationById(locationId)
+          location: this.registry.dataStore.locations.getLocationById(locationId),
+          person: this.registry.dataStore.persons.getPersonById(personId)
         })
       },
 
@@ -116,7 +119,7 @@
         })
 
         this.setupListenter()
-        this.loadBoxAndLocationData()
+        this.loadBoxLocationAndPersonData()
         this.loadItemData()
       }
     }
