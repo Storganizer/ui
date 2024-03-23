@@ -6,12 +6,13 @@
       next={ state.nextBox ? "#box/" + state.nextBox.id : "" }
       previous={ state.previousBox ? "#box/" + state.previousBox.id : "" }
     />
-    <element-detail if={ !state.edit && state.box } type="box" element={ state.box } location={ state.location } person={ state.person }  />
+    <element-detail if={ !state.edit && state.box } type="box" element={ state.box } location={ state.parentLocation } person={ state.person } box={state.parentBox }  />
     <element-form if={ state.edit && state.box } type="box" element={ state.box } onCancel={ closeEdit }  />
     <div if={ state.add && state.emptyItem } class="add-form">
       <h2>Add an item to the box</h2>
       <element-form type="item" element={ state.emptyItem } onCancel={ closeEdit }  />
     </div>
+    <element-list if={ state.boxes && state.boxes[0] } elements={ state.boxes } type="box" />
     <element-list elements={ state.items } type="item" />
   <script>
 
@@ -33,9 +34,12 @@
         nextBox: false,
         previousBox: false,
         box: false,
+        parentBox: false,
         location: false,
+        parentLocation: false,
         person: false,
         items: false,
+        boxes: false,
         edit: false,
         id: false,
         emptyItem: false
@@ -83,15 +87,22 @@
         }
 
         let locationId = box && box.locationId ? box.locationId : 0
+        let parentLocationId = box && box.parentLocationId ? box.parentLocationId : 0
+        let boxId = box && box.id ? box.id : 0
+        let parentBoxId = box && box.boxId ? box.boxId : 0
         let personId = box && box.personId ? box.personId : 0
         let nextBox = this.registry.dataStore.boxes.getNext(box)
         let previousBox = this.registry.dataStore.boxes.getPrevious(box)
+        console.log(box)
         this.update({
           box: box,
           nextBox: nextBox ? nextBox : false,
           previousBox: previousBox ? previousBox : false,
           location: this.registry.dataStore.locations.getLocationById(locationId),
-          person: this.registry.dataStore.persons.getPersonById(personId)
+          parentLocation: this.registry.dataStore.locations.getLocationById(parentLocationId),
+          person: this.registry.dataStore.persons.getPersonById(personId),
+          boxes: this.registry.dataStore.boxes.getBoxesByBoxId(boxId),
+          parentBox: this.registry.dataStore.boxes.getBoxById(parentBoxId)
         })
       },
 
@@ -99,7 +110,12 @@
         this.update({
           items: this.registry.dataStore.items.getItemsByBoxId(this.state.id)
         })
+      },
 
+      loadBoxData() {
+        this.update({
+          boxes: this.registry.dataStore.boxes.getBoxesByBoxId(this.state.id)
+        })
       },
 
       onMounted() {
@@ -121,6 +137,7 @@
         this.setupListenter()
         this.loadBoxLocationAndPersonData()
         this.loadItemData()
+        this.loadBoxData()
       }
     }
   </script>
