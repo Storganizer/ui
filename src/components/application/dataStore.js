@@ -14,6 +14,40 @@ export default {
     return apiHost
   },
 
+  defaults: {
+    images: false,
+
+    getImages() {
+      if (!this.images) {
+        this.fetchImages()
+        return false
+      }
+
+
+      return this.images
+      //http://localhost:5000/config/default-images
+    },
+
+    fetchImages() {
+      if (this.images == false) {
+        let target = this
+        function reqListener() {
+          let jsonResponse = JSON.parse(this.responseText)
+          target.images = jsonResponse
+          Registry.eventBus.trigger('dataDefaultImagesLoadSuccess', target.images)
+        }
+        const req = new XMLHttpRequest()
+        req.addEventListener("load", reqListener)
+        req.open("GET", apiHost + "/config/default-images")
+        req.send()
+
+        return false
+      } else {
+        return true
+      }
+    },
+  },
+
   locations: {
     locations: false,
 
