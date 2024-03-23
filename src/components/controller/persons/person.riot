@@ -33,7 +33,6 @@
         boxes: [],
         edit: false,
         id: false,
-        emptyPerson: false
       },
 
       closeEdit() {
@@ -89,13 +88,6 @@
           id: this.props.params[0],
           edit: this.props.params[1] == 'edit',
           add: this.props.params[1] == 'add',
-        })
-
-        this.update({
-          emptyPerson: {
-            name: '',
-            description: '',
-          }
         })
 
         this.setupListenter()
