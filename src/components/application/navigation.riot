@@ -33,7 +33,6 @@
       },
 
       onApplicationRender() {
-        console.log('rerendering navigation')
         let controller = this.registry.application.getCurrentController()
         let classes = {
           locations: controller == 'locations' || controller == 'location' ? 'active' : '',

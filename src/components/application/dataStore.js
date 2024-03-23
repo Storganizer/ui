@@ -227,10 +227,23 @@ export default {
       }
 
       function filterByLocationID(item) {
-        return Number.isFinite(item.locationId) && item.locationId == locationId
+        return Number.isFinite(item.parentLocationId) && item.parentLocationId == locationId
       }
 
       return this.boxes.filter(filterByLocationID)
+    },
+
+    getBoxesByBoxId(boxId) {
+      if (!this.boxes) {
+        this.fetchBoxes()
+        return []
+      }
+
+      function filterByBoxID(box) {
+        return Number.isFinite(box.boxId) && box.boxId == boxId
+      }
+
+      return this.boxes.filter(filterByBoxID)
     },
 
     getBoxesByPersonId(personId) {

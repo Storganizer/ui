@@ -6,11 +6,19 @@
 
     <input if={ props.type == 'item' } placeholder="Amount" name="element-amount" id="element-amount" value={ props.element.amount }></input>
 
+    <input class="margin-right" onchange={ boxInBox } type="checkbox" id="element-box-in-box" name="element-box-in-box" checked={ state.boxInBox }  />
+    <label class="no-block" if={ props.type == 'box' } for="element-box-in-box">This box is in another box</label>
 
-    <label if={ props.type == 'box' } for="element-location-id">Location</label>
-    <select if={ props.type == 'box' } name="element-location-id" id="element-location-id">
+    <label if={ props.type == 'box' && !state.boxInBox } for="element-location-id">Location</label>
+    <select if={ props.type == 'box' && !state.boxInBox } name="element-location-id" id="element-location-id">
       <option selected={ !props.element.locationId || props.element.locationId <= 0 } value="0" >unrelated</option>
-      <option selected={ props.element.locationId == element.id } each={ element in state.locations } value={ element.id }>{ element.name }</option>
+      <option selected={ props.element.parentLocationId == element.id } each={ element in state.locations } value={ element.id }>{ element.name }</option>
+    </select>
+
+    <label if={ props.type == 'box' && state.boxInBox } for="element-in-box-id">Box</label>
+    <select if={ props.type == 'box' && state.boxInBox } name="element-in-box-id" id="element-in-box-id">
+      <option selected={ !props.element.locationId || props.element.locationId <= 0 } value="0" >unrelated</option>
+      <option if={ props.element.id != element.id } selected={ props.element.boxId == element.id } each={ element in state.boxes } value={ element.id }>{ element.name }</option>
     </select>
 
     <label if={ props.type == 'box' } for="element-person-id">Belongs to</label>
@@ -50,9 +58,22 @@
       },
 
       state: {
+        boxInBox: true,
         locations: false,
         boxes: false,
         persons: false,
+      },
+
+      boxInBox(e) {
+        let checked = false
+        if (e.target) {
+          checked = e.target.checked
+        }
+
+        this.update({
+            boxInBox: checked
+        })
+
       },
 
       onCancel() {
@@ -100,6 +121,17 @@
         this.loadLocationData()
         this.loadBoxData()
         this.loadPersonData()
+
+        if (this.props && this.props.type == 'box') {
+          let boxInBox = false
+          if (parseInt(this.props.element.boxId) > 0) {
+            boxInBox = true
+          }
+
+          this.update({
+              boxInBox: boxInBox
+          })
+        }
       },
 
       saveEntry(e) {
@@ -120,10 +152,23 @@
             dataStore = this.registry.dataStore.locations
             break
           case 'box':
-            let locationId = parseInt(document.getElementById("element-location-id").value)
+            let locationId = 0
+            let inBoxId = 0
+
+            if (document.getElementById("element-location-id")) {
+              locationId = parseInt(document.getElementById("element-location-id").value)
+            }
+
+            if (document.getElementById("element-in-box-id")) {
+              inBoxId = parseInt(document.getElementById("element-in-box-id").value)
+            }
+
             let personId = parseInt(document.getElementById("element-person-id").value)
             if (locationId > 0) {
               element.locationId = locationId
+            }
+            if (inBoxId > 0) {
+              element.boxId = inBoxId
             }
             if (personId > 0) {
               element.personId = personId
@@ -142,7 +187,6 @@
             dataStore = this.registry.dataStore.persons
             break
         }
-
 
         if (element.id > 0) {
           dataStore.updateEntry(element)

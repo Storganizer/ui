@@ -9,7 +9,15 @@ body {
   clear: both;
 }
 
-.form-buttons {
+.no-block {
+  display: inline;
+}
+
+.left {
+  float: left;
+}
+
+.form-buttons .right {
   float: right;
 }
 
@@ -32,6 +40,10 @@ td.length {
 i {
   margin: 0px;
   padding: 0px;
+}
+
+.margin-right {
+  margin-right: 5px;
 }
 
 h2 i {
