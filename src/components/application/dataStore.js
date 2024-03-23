@@ -29,7 +29,7 @@ export default {
     },
 
     fetchImages() {
-      if (this.images == false) {
+      if (!this.images) {
         let target = this
         function reqListener() {
           let jsonResponse = JSON.parse(this.responseText)
