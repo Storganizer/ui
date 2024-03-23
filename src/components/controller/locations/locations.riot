@@ -34,16 +34,24 @@
       },
 
       loadData() {
+
         this.update({
-            locations: this.registry.dataStore.locations.getLocations()
+          locations: this.registry.dataStore.locations.getLocations()
         })
       },
 
       onMounted() {
         this.setupListenter()
         this.loadData()
+
         this.update({
-           add: this.props.params[0] == 'add',
+          emptyLocation: {
+            image: this.registry.dataStore.defaults.getImages()['location'],
+          }
+        })
+
+        this.update({
+          add: this.props.params[0] == 'add',
         })
 
       }

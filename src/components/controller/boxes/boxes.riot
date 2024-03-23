@@ -57,6 +57,13 @@
         this.setupListenter()
         this.loadBoxesData()
         this.loadPersonData()
+
+        this.update({
+          emptyBox: {
+            image: this.registry.dataStore.defaults.getImages()['box'],
+          }
+        })
+
         this.update({
           add: this.props.params[0] == 'add',
         })

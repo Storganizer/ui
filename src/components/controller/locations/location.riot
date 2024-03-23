@@ -99,16 +99,16 @@
           edit: this.props.params[1] == 'edit',
           add: this.props.params[1] == 'add',
         })
-        let emptyBox = {
+
+        this.update({
+          emptyBox: {
             name: '',
             description: '',
             boxId: 0,
+            image: this.registry.dataStore.defaults.getImages()['box'],
             personId: window.localStorage.getItem("personId"),
             parentLocationId: this.state.id
           }
-          //console.log(emptyBox)
-        this.update({
-          emptyBox: emptyBox
         })
 
         this.setupListenter()

@@ -44,6 +44,13 @@
       onMounted() {
         this.setupListenter()
         this.loadData()
+
+        this.update({
+          emptyItem: {
+            image: this.registry.dataStore.defaults.getImages()['item'],
+          }
+        })
+
         this.update({
           add: this.props.params[0] == 'add',
         })
