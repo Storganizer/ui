@@ -6,18 +6,18 @@
 
     <input if={ props.type == 'item' } placeholder="Amount" name="element-amount" id="element-amount" value={ props.element.amount }></input>
 
-    <input class="margin-right" onchange={ boxInBox } type="checkbox" id="element-box-in-box" name="element-box-in-box" checked={ state.boxInBox }  />
+    <input class="margin-right" if={ props.type == 'box' } onchange={ boxInBox } type="checkbox" id="element-box-in-box" name="element-box-in-box" checked={ state.boxInBox }  />
     <label class="no-block" if={ props.type == 'box' } for="element-box-in-box">This box is in another box</label>
 
     <label if={ props.type == 'box' && !state.boxInBox } for="element-location-id">Location</label>
     <select if={ props.type == 'box' && !state.boxInBox } name="element-location-id" id="element-location-id">
-      <option selected={ !props.element.locationId || props.element.locationId <= 0 } value="0" >unrelated</option>
+      <option selected={ !props.element.locationId || props.element.locationId <= 0 } value="0" >unlocated</option>
       <option selected={ props.element.parentLocationId == element.id } each={ element in state.locations } value={ element.id }>{ element.name }</option>
     </select>
 
     <label if={ props.type == 'box' && state.boxInBox } for="element-in-box-id">Box</label>
     <select if={ props.type == 'box' && state.boxInBox } name="element-in-box-id" id="element-in-box-id">
-      <option selected={ !props.element.locationId || props.element.locationId <= 0 } value="0" >unrelated</option>
+      <option selected={ !props.element.locationId || props.element.locationId <= 0 } value="0" >unboxed</option>
       <option if={ props.element.id != element.id } selected={ props.element.boxId == element.id } each={ element in state.boxes } value={ element.id }>{ element.name }</option>
     </select>
 

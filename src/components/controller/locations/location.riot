@@ -36,6 +36,7 @@
         previousLocation: false,
         location: false,
         boxes: [],
+        persons: [],
         showQr: true,
         edit: false,
         emptyBox: false
@@ -52,14 +53,17 @@
       },
 
       setupListenter() {
-        let target = this
         this.registry.eventBus.on('dataLocationLoadSuccess', function(locations) {
-          target.loadLocationData()
-        })
+          this.loadLocationData()
+        }.bind(this))
 
         this.registry.eventBus.on('dataBoxLoadSuccess', function(locations) {
-          target.loadBoxData()
-        })
+          this.loadBoxData()
+        }.bind(this))
+
+        this.registry.eventBus.on('dataPersonLoadSuccess', function(locations) {
+          this.loadPersonData()
+        }.bind(this))
       },
 
       loadLocationData() {
@@ -83,24 +87,34 @@
         })
       },
 
+      loadPersonData() {
+        this.update({
+            persons: this.registry.dataStore.persons.getPersons()
+        })
+      },
+
       onMounted() {
         this.update({
           id: this.props.params[0],
           edit: this.props.params[1] == 'edit',
           add: this.props.params[1] == 'add',
         })
-
-        this.update({
-          emptyBox: {
+        let emptyBox = {
             name: '',
             description: '',
-            locationId: this.state.id
+            boxId: 0,
+            personId: window.localStorage.getItem("personId"),
+            parentLocationId: this.state.id
           }
+          //console.log(emptyBox)
+        this.update({
+          emptyBox: emptyBox
         })
 
         this.setupListenter()
         this.loadLocationData()
         this.loadBoxData()
+        this.loadPersonData()
       }
     }
   </script>

@@ -12,13 +12,17 @@
         ElementForm,
         ElementList,
       },
+
       state: {
         add: false,
         boxes: [],
+        persons: [],
         emptyBox: {
           name: '',
           description: '',
-          locationId: 0,
+          parentLocationId: 0,
+          boxId: 0,
+          personId: window.localStorage.getItem("personId"),
         }
       },
 
@@ -27,21 +31,32 @@
       },
 
       setupListenter() {
-        let target = this
         this.registry.eventBus.on('dataBoxLoadSuccess', function() {
-          target.loadData()
-        })
+          this.loadBoxesData()
+        }.bind(this))
+
+        this.registry.eventBus.on('dataPersonLoadSuccess', function(locations) {
+          this.loadPersonData()
+        }.bind(this))
+
       },
 
-      loadData() {
+      loadBoxesData() {
         this.update({
             boxes: this.registry.dataStore.boxes.getBoxes()
         })
       },
 
+      loadPersonData() {
+        this.update({
+            persons: this.registry.dataStore.persons.getPersons()
+        })
+      },
+
       onMounted() {
         this.setupListenter()
-        this.loadData()
+        this.loadBoxesData()
+        this.loadPersonData()
         this.update({
           add: this.props.params[0] == 'add',
         })

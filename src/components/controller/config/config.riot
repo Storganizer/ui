@@ -9,6 +9,14 @@
     <option selected={ state.cameraId == camera.id } each={ camera in state.cameras } value={ camera.id }>{ camera.label }</option>
   </select>
 
+  <label for="personId">Who are you?</label>
+    <select name="personId" id="personId">
+      <option selected={ state.personId == element.id } each={ element in state.persons } value={ element.id }>{ element.name }</option>
+    </select>
+
+
+
+
   <label for="listView">List view</label>
   <select name="listView" id="listView">
     <option selected={ state.listView == 'list' } value="list" >list</option>
@@ -34,6 +42,8 @@
       state: {
         apiUrl: "http://localhost:5000",
         listView: "list",
+        personId: 0,
+        persons: false,
         cameraId: "",
         cameras: [],
       },
@@ -51,6 +61,13 @@
           cameraId = this.state.cameras[0].id
         }
 
+        let personIdSelect = document.getElementById("personId")
+        let personId = 0
+        if (personIdSelect) {
+          personId = personIdSelect.value
+        }
+
+
         let listViewSelect = document.getElementById("listView")
         let listView = 'list'
         if (listViewSelect) {
@@ -59,10 +76,11 @@
 
         this.localStorage.setItem("listView", listView)
         this.localStorage.setItem("cameraId", cameraId)
+        this.localStorage.setItem("personId", personId)
       },
 
       backup() {
-        window.location = this.state.apiHost + "/backup"
+        window.location = this.state.apiUrl + "/backup"
       },
 
       setListView(e) {
@@ -73,7 +91,21 @@
         }
       },
 
+      setupListenter() {
+        this.registry.eventBus.on('dataPersonLoadSuccess', function(locations) {
+          this.loadPersonData()
+        }.bind(this))
+      },
+
+      loadPersonData() {
+        this.update({
+            persons: this.registry.dataStore.persons.getPersons()
+        })
+      },
+
       async onMounted(e) {
+        this.setupListenter()
+        this.loadPersonData()
         let devices = await navigator.mediaDevices.enumerateDevices();
         let cameras = [];
         for (const device of devices) {
@@ -89,6 +121,7 @@
           apiUrl: this.localStorage.getItem("apiUrl"),
           listView: this.localStorage.getItem("listView"),
           cameraId: this.localStorage.getItem("cameraId"),
+          personId: this.localStorage.getItem("personId"),
           cameras: cameras,
         })
       },
