@@ -7,7 +7,7 @@ import DataStore from './components/application/dataStore'
 
 Registry.eventBus = observable()
 Registry.dataStore = DataStore
-
+Registry.dataStore.defaults.getImages()
 riot.install(function(component) {
   // all components will pass through here
   component.registry = Registry
