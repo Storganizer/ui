@@ -22,7 +22,6 @@
           description: '',
           parentLocationId: 0,
           boxId: 0,
-          personId: window.localStorage.getItem("personId"),
         }
       },
 
@@ -35,7 +34,7 @@
           this.loadBoxesData()
         }.bind(this))
 
-        this.registry.eventBus.on('dataPersonLoadSuccess', function(locations) {
+        this.registry.eventBus.on('dataPersonLoadSuccess', function() {
           this.loadPersonData()
         }.bind(this))
 
@@ -61,6 +60,7 @@
         this.update({
           emptyBox: {
             image: this.registry.dataStore.defaults.getImages()['box'],
+            personId: window.localStorage.getItem("personId"),
           }
         })
 
