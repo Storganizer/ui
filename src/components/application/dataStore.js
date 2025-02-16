@@ -2,7 +2,7 @@ import Registry from './registry.js'
 
 
 
-let apiHost = window.localStorage.getItem("apiUrl")
+let apiHost = window.localStorage.getItem("apiUrl") || 'http://127.0.0.1:5000'
 
 export default {
 

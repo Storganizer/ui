@@ -1,7 +1,7 @@
 <config>
 
   <label for="api-url">Api URL</label>
-  <input placeholder="http://localhost:5000" name="api-url" id="api-url" type="text" value="{ state.apiUrl }"></input>
+  <input placeholder="http://127.0.0.1:5000" name="api-url" id="api-url" type="text" value="{ state.apiUrl }"></input>
 
   <label if={ state.cameras.length > 1 } for="cameraId">Preferred camera</label>
   <select if={ state.cameras.length > 1 } name="cameraId" id="cameraId">
@@ -13,8 +13,6 @@
     <select name="personId" id="personId">
       <option selected={ state.personId == element.id } each={ element in state.persons } value={ element.id }>{ element.name }</option>
     </select>
-
-
 
 
   <label for="listView">List view</label>
@@ -40,7 +38,7 @@
       localStorage: window.localStorage,
 
       state: {
-        apiUrl: "http://localhost:5000",
+        apiUrl: "http://127.0.0.1:5000",
         listView: "list",
         personId: 0,
         persons: false,
