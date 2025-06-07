@@ -1,5 +1,26 @@
 #!/bin/bash
 
+
+
+
+# find a better, non-outdated image or build one by myself
+apt -y update
+apt -y purge openjdk-11-jdk
+apt -y install openjdk-17-jdk
+
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export PATH=$JAVA_HOME/bin:$PATH
+
+
+echo "und jetzt die Version"
+java -version
+
+
+apt upgrade --yes
+apt dist-upgrade --yes
+
+echo y | sdkmanager "build-tools;35.0.0"
+
 rm -rf ./platforms ./plugins
 
 RELEASE=""
@@ -22,16 +43,22 @@ done
 VERSION=$(cat /tmp/version.txt)
 sed "s/{{VERSION}}/${VERSION}${DEV}/g" /tmp/orig-config.xml > /tmp/config.xml
 
-bash  /tmp/pipeline/container-build-prepare.sh
+bash  /tmp/pipeline/01-container-build-prepare.sh
 
 cordova telemetry off
-cordova platform add electron
+# diff
+cordova plugin add cordova-plugin-android-permissions
+cordova plugin add cordova-plugin-camera
+cordova platform add android@14.0.1
+
 #cordova build --buildConfig=/tmp/build-config/appimage.json --release -- --gradleArg=-PcdvBuildMultipleApks=true --packageType=apk
 #cordova build --buildConfig=/tmp/build-config/appimage.json --release -- --packageType=apk
-cordova build --buildConfig=/tmp/build-config/appimage.json $RELEASE
 
-APP_IMAGE=$(find ./ -name *.AppImage)
+cordova build $RELEASE -- --packageType=apk
+# diff
 
-echo "AppImage: $APP_IMAGE"
+APP_IMAGE=$(find ./ -name *.apk)
 
-cp --force $APP_IMAGE /tmp/local-builds/appimage
+echo "APK: $APP_IMAGE"
+
+cp --force $APP_IMAGE /tmp/local-builds/android 2> >(grep -v "are the same file" >&2)
