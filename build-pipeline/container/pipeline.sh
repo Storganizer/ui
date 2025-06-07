@@ -6,6 +6,8 @@ rm -rf /tmp/local-builds/*
 cordova telemetry off
 cordova platform add android
 cordova platform add electron
+#cordova build --buildConfig=/tmp/build-pipeline/config/cordova.json --release -- --gradleArg=-PcdvBuildMultipleApks=true --packageType=apk
+#cordova build --buildConfig=/tmp/build-pipeline/config/cordova.json --release -- --packageType=apk
 cordova build --buildConfig=/tmp/build-pipeline/config/cordova.json
 
 APK=$(find ./ -name *.apk)
