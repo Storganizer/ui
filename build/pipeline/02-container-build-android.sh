@@ -1,25 +1,48 @@
 #!/bin/bash
 
+apt update 
+apt -y install nodejs npm unzip wget gradle android-sdk #android-tools-adb android-sdk-build-tools
 
+# Set environment variables
+export ANDROID_HOME=/opt/android-sdk
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
 
+# Create directories
+mkdir -p $ANDROID_HOME/cmdline-tools
 
-# find a better, non-outdated image or build one by myself
-apt -y update
-apt -y purge openjdk-11-jdk
-apt -y install openjdk-17-jdk
+# Download and extract command line tools
+cd /tmp
+wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline-tools.zip
+unzip cmdline-tools.zip
+mv cmdline-tools $ANDROID_HOME/cmdline-tools/latest
+rm cmdline-tools.zip
 
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-export PATH=$JAVA_HOME/bin:$PATH
-
-
-echo "und jetzt die Version"
-java -version
-
-
-apt upgrade --yes
-apt dist-upgrade --yes
+# Accept licenses and install basic packages
+yes | sdkmanager --licenses
+sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
 echo y | sdkmanager "build-tools;35.0.0"
+npm install -g cordova
+cd /tmp
+#exit 0
+
+# find a better, non-outdated image or build one by myself
+#apt -y update
+#apt -y purge openjdk-11-jdk
+#apt -y install openjdk-17-jdk
+#
+#export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+#export PATH=$JAVA_HOME/bin:$PATH
+#
+#
+#echo "und jetzt die Version"
+#java -version
+#
+#
+#apt upgrade --yes
+#apt dist-upgrade --yes
+#
+#echo y | sdkmanager "build-tools;35.0.0"
 
 rm -rf ./platforms ./plugins
 
