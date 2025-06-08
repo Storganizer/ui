@@ -34,4 +34,5 @@ APP_IMAGE=$(find ./ -name *.AppImage)
 
 echo "AppImage: $APP_IMAGE"
 
+mkdir -p /tmp/local-builds/appimage
 cp --force $APP_IMAGE /tmp/local-builds/appimage 2> >(grep -v "are the same file" >&2)

@@ -24,25 +24,6 @@ sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 echo y | sdkmanager "build-tools;35.0.0"
 npm install -g cordova
 cd /tmp
-#exit 0
-
-# find a better, non-outdated image or build one by myself
-#apt -y update
-#apt -y purge openjdk-11-jdk
-#apt -y install openjdk-17-jdk
-#
-#export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-#export PATH=$JAVA_HOME/bin:$PATH
-#
-#
-#echo "und jetzt die Version"
-#java -version
-#
-#
-#apt upgrade --yes
-#apt dist-upgrade --yes
-#
-#echo y | sdkmanager "build-tools;35.0.0"
 
 rm -rf ./platforms ./plugins
 
@@ -83,5 +64,5 @@ cordova build $RELEASE -- --packageType=apk
 APP_IMAGE=$(find ./ -name *.apk)
 
 echo "APK: $APP_IMAGE"
-
-cp --force $APP_IMAGE /tmp/local-builds/android 2> >(grep -v "are the same file" >&2)
+mkdir -p /tmp/local-builds/android/
+cp --force $APP_IMAGE /tmp/local-builds/android/ 2> >(grep -v "are the same file" >&2)
