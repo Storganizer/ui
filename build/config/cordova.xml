@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget
     id="io.storganizer.app"
-    version="1.3.3"
+    version="{{VERSION}}"
     xmlns="http://www.w3.org/ns/widgets"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:cdv="http://cordova.apache.org/ns/1.0" >
@@ -16,17 +16,17 @@
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
 
+
+
     <platform name="electron">
         <icon src="www/storganizer-logo.png" />
 
         <preference name="Fullscreen" value="true" />
         <preference name="ShowTitle" value="false" />
-        <preference name="ElectronSettingsFilePath" value="./electron.json" />
     </platform>
 
 
     <platform name="android">
-
         <icon src="www/storganizer-logo.png" />
         <preference name="Scheme" value="http" />
         <preference name="usesCleartextTraffic" value="true" />
