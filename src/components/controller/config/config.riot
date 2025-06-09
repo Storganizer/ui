@@ -104,10 +104,49 @@
       async onMounted(e) {
         this.setupListenter()
         this.loadPersonData()
-        let devices = await navigator.mediaDevices.enumerateDevices();
+
+        // ask for camera permissions
+
+        let useCamera = false
+        let permissionObj = await navigator.permissions.query({name: 'camera'})
+
+        if (permissionObj.state == 'prompt') {
+          useCamera = true
+          // request permissions
+          let stream = await navigator.mediaDevices.getUserMedia({audio: false, video: true})
+          if (stream) {
+            stream.getTracks().forEach(function(track) {
+              track.stop()
+            })
+          }
+
+        } else if (permissionObj.state == 'granted') {
+          console.log('permissions granted');
+          useCamera = true
+        }
+
+
+
+        console.log("open camera " + useCamera)
+
+        let devices = []
+        if (useCamera == true) {
+          console.log("open camera")
+          // load camera stream and stop it again, in order to enumerate the devices, throws an exception without permissions
+
+
+          devices = await navigator.mediaDevices.enumerateDevices()
+          console.log(devices);
+        }
+
         let cameras = [];
+        let backCameraFound = false
         for (const device of devices) {
             if (device.kind === "videoinput") {
+                if (!backCameraFound && device.label.includes("back")) {
+                  backCameraFound = true
+                  this.localStorage.setItem("cameraId", device.deviceId)
+                }
                 cameras.push({
                     id: device.deviceId,
                     label: device.label
