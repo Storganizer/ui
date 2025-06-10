@@ -10,6 +10,8 @@
 
   <script>
 
+    import Camera from '../../application/camera.js'
+
     export default {
       localStorage: window.localStorage,
       stream: false,
@@ -47,7 +49,7 @@
         }
       },
 
-      openCamera(e) {
+      async openCamera(e) {
         let body = document.getElementsByTagName('body')[0]
         body.className = 'no-scroll'
 
@@ -92,7 +94,7 @@
         this.camera = document.getElementById("camera")
         navigator.mediaDevices.getUserMedia({
           'video': {
-              'deviceId': this.localStorage.getItem("cameraId")
+              'deviceId': await Camera.getDeviceId(this.localStorage.getItem("cameraLabel")) // todo, get ID from Label
           },
           'audio': false,
         }).then(function(stream) {
@@ -129,7 +131,9 @@
         return canvas.toDataURL().replace(/^data:image\/png;base64,/, "")
       },
 
-
+      async onMounted(e) {
+        await navigator.mediaDevices.enumerateDevices()
+      }
     }
   </script>
   <style>

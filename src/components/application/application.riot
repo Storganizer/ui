@@ -99,6 +99,11 @@
         }
       },
 
+      goto(url) {
+        let controller = this.parseUrl(url)
+        window.location.hash = "#" + controller.name + "/" + controller.params.join("/")
+      },
+
       render(url) {
         let controller = this.getController(url)
         
@@ -122,8 +127,20 @@
       },
 
       async onMounted() {
-        let devices = await navigator.mediaDevices.enumerateDevices();
-        this.render(document.URL)
+        console.log("apiUrl: " + window.localStorage.getItem("apiUrl"))
+        console.log("listView: " + window.localStorage.getItem("listView"))
+        console.log("cameraLabel: " + window.localStorage.getItem("cameraLabel"))
+        console.log("personId: " + window.localStorage.getItem("personId"))
+        
+        
+
+
+        
+        if (!window.localStorage.getItem("cameraLabel") || window.localStorage.getItem("cameraLabel") == "") {
+          this.goto("#config")
+        } else {
+          this.render(document.URL)
+        }
       },
 
       getController(url) {

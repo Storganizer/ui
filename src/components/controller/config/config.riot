@@ -3,10 +3,10 @@
   <label for="api-url">Api URL</label>
   <input placeholder="http://127.0.0.1:5000" name="api-url" id="api-url" type="text" value="{ state.apiUrl }"></input>
 
-  <label if={ state.cameras.length > 1 } for="cameraId">Preferred camera</label>
-  <select if={ state.cameras.length > 1 } name="cameraId" id="cameraId">
-    <option selected={ !state.cameraId || state.cameraId == '' } value="" >choose camera</option>
-    <option selected={ state.cameraId == camera.id } each={ camera in state.cameras } value={ camera.id }>{ camera.label }</option>
+  <label if={ state.cameras.length > 1 } for="cameraLabel">Preferred camera</label>
+  <select if={ state.cameras.length > 1 } name="cameraLabel" id="cameraLabel">
+    <option selected={ !state.cameraLabel || state.cameraLabel == '' } value="" >choose camera</option>
+    <option selected={ state.cameraLabel == camera.label } each={ camera in state.cameras } value={ camera.label }>{ camera.label }</option>
   </select>
 
   <label for="personId">Who are you?</label>
@@ -42,7 +42,7 @@
         listView: "list",
         personId: 0,
         persons: false,
-        cameraId: "",
+        cameraLabel: "",
         cameras: [],
       },
 
@@ -51,12 +51,12 @@
         this.registry.dataStore.setApiHost(apiUrl)
         this.localStorage.setItem("apiUrl", apiUrl)
 
-        let cameraIdSelect = document.getElementById("cameraId")
-        let cameraId = ''
-        if (cameraIdSelect) {
-          cameraId = cameraIdSelect.value
+        let cameraLabelSelect = document.getElementById("cameraLabel")
+        let cameraLabel = ''
+        if (cameraLabelSelect) {
+          cameraLabel = cameraLabelSelect.value
         } else if (this.state.cameras.length == 1) {
-          cameraId = this.state.cameras[0].id
+          cameraLabel = this.state.cameras[0].label
         }
 
         let personIdSelect = document.getElementById("personId")
@@ -65,7 +65,6 @@
           personId = personIdSelect.value
         }
 
-
         let listViewSelect = document.getElementById("listView")
         let listView = 'list'
         if (listViewSelect) {
@@ -73,8 +72,10 @@
         }
 
         this.localStorage.setItem("listView", listView)
-        this.localStorage.setItem("cameraId", cameraId)
+        this.localStorage.setItem("cameraLabel", cameraLabel)
         this.localStorage.setItem("personId", personId)
+
+        window.location.reload();
       },
 
       backup() {
@@ -97,7 +98,7 @@
 
       loadPersonData() {
         this.update({
-            persons: this.registry.dataStore.persons.getPersons()
+          persons: this.registry.dataStore.persons.getPersons()
         })
       },
 
@@ -121,43 +122,36 @@
           }
 
         } else if (permissionObj.state == 'granted') {
-          console.log('permissions granted');
           useCamera = true
         }
 
-
-
-        console.log("open camera " + useCamera)
-
         let devices = []
         if (useCamera == true) {
-          console.log("open camera")
-          // load camera stream and stop it again, in order to enumerate the devices, throws an exception without permissions
-
-
           devices = await navigator.mediaDevices.enumerateDevices()
-          console.log(devices);
         }
 
         let cameras = [];
-        let backCameraFound = false
+        let cameraFound = false
+
         for (const device of devices) {
-            if (device.kind === "videoinput") {
-                if (!backCameraFound && device.label.includes("back")) {
-                  backCameraFound = true
-                  this.localStorage.setItem("cameraId", device.deviceId)
-                }
-                cameras.push({
-                    id: device.deviceId,
-                    label: device.label
-                })
-            }
+          if (device.kind === "videoinput") {
+            cameras.push({
+              label: device.label
+            })
+          }
+        }
+
+        for (const camera of cameras) {
+          if (cameras.length == 1 || (!cameraFound && camera.label.includes("back"))) {
+            cameraFound = true
+            this.localStorage.setItem("cameraLabel", camera.label)
+          }
         }
 
         this.update({
           apiUrl: this.localStorage.getItem("apiUrl"),
           listView: this.localStorage.getItem("listView"),
-          cameraId: this.localStorage.getItem("cameraId"),
+          cameraLabel: this.localStorage.getItem("cameraLabel"),
           personId: this.localStorage.getItem("personId"),
           cameras: cameras,
         })
