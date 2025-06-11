@@ -128,15 +128,7 @@
       },
 
       async onMounted() {
-        console.log("apiUrl: " + window.localStorage.getItem("apiUrl"))
-        console.log("listView: " + window.localStorage.getItem("listView"))
-        console.log("cameraLabel: " + window.localStorage.getItem("cameraLabel"))
-        console.log("personId: " + window.localStorage.getItem("personId"))
-        
         await Camera.configure()
-        alert(window.localStorage.getItem("cameraLabel"))
-        alert(await Camera.getDeviceId())
-
         this.render(document.URL)
       },
 

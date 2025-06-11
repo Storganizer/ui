@@ -8,11 +8,11 @@ class Camera {
 
   async isPersisted() {
     // read permissions
-    await this.readCameraPermissions()
     return this.getCurrentCameraLabel() != null
   }
 
   async configure() {
+    await this.readCameraPermissions()
     await this.readAllCameras()
     let labels = this.getCameraLabels()
 
@@ -24,7 +24,6 @@ class Camera {
       }
     }
   }
-
 
   async readCameraPermissions() {
     let permissionObj = await navigator.permissions.query({name: 'camera'})
@@ -47,7 +46,6 @@ class Camera {
   async readAllCameras() {
     if (this.useCamera == true) {
       let devices = await navigator.mediaDevices.enumerateDevices()
-
       for (const device of devices) {
         if (device.kind === "videoinput") {
           this.devices.push({
@@ -68,8 +66,6 @@ class Camera {
   }
 
   async getDeviceId() {
-    console.log("biber")
-    console.log(this.devices)
     const device = this.devices.find(device => device.label === this.getCurrentCameraLabel());
     return device ? device.id : null;
   }

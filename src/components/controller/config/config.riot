@@ -3,10 +3,10 @@
   <label for="api-url">Api URL</label>
   <input placeholder="http://127.0.0.1:5000" name="api-url" id="api-url" type="text" value="{ state.apiUrl }"></input>
 
-  <label if={ state.cameras.length > 1 } for="cameraLabel">Preferred camera</label>
-  <select if={ state.cameras.length > 1 } name="cameraLabel" id="cameraLabel">
+  <label if={ state.cameraLabels.length > 0 } for="cameraLabel">Preferred camera</label>
+  <select if={ state.cameraLabels.length > 0 } name="cameraLabel" id="cameraLabel">
     <option selected={ !state.cameraLabel || state.cameraLabel == '' } value="" >choose camera</option>
-    <option selected={ state.cameraLabel == camera.label } each={ camera in state.cameras } value={ camera.label }>{ camera.label }</option>
+    <option selected={ state.cameraLabel == camera } each={ camera in state.cameraLabels } value={ camera }>{ camera }</option>
   </select>
 
   <label for="personId">Who are you?</label>
@@ -44,7 +44,7 @@
         personId: 0,
         persons: false,
         cameraLabel: "",
-        cameras: [],
+        cameraLabels: [],
       },
 
       save(e) {
@@ -56,8 +56,8 @@
         let cameraLabel = ''
         if (cameraLabelSelect) {
           cameraLabel = cameraLabelSelect.value
-        } else if (this.state.cameras.length == 1) {
-          cameraLabel = this.state.cameras[0].label
+        } else if (this.state.cameraLabels.length == 1) {
+          cameraLabel = this.state.cameraLabels[0]
         }
 
         let personIdSelect = document.getElementById("personId")
@@ -107,54 +107,12 @@
         this.setupListenter()
         this.loadPersonData()
 
-        // ask for camera permissions
-
-        let useCamera = false
-        let permissionObj = await navigator.permissions.query({name: 'camera'})
-
-        if (permissionObj.state == 'prompt') {
-          useCamera = true
-          // request permissions
-          let stream = await navigator.mediaDevices.getUserMedia({audio: false, video: true})
-          if (stream) {
-            stream.getTracks().forEach(function(track) {
-              track.stop()
-            })
-          }
-
-        } else if (permissionObj.state == 'granted') {
-          useCamera = true
-        }
-
-        let devices = []
-        if (useCamera == true) {
-          devices = await navigator.mediaDevices.enumerateDevices()
-        }
-
-        let cameras = [];
-        let cameraFound = false
-
-        for (const device of devices) {
-          if (device.kind === "videoinput") {
-            cameras.push({
-              label: device.label
-            })
-          }
-        }
-
-        for (const camera of cameras) {
-          if (cameras.length == 1 || (!cameraFound && camera.label.includes("back"))) {
-            cameraFound = true
-            this.localStorage.setItem("cameraLabel", camera.label)
-          }
-        }
-
         this.update({
           apiUrl: this.localStorage.getItem("apiUrl"),
           listView: this.localStorage.getItem("listView"),
           cameraLabel: this.localStorage.getItem("cameraLabel"),
           personId: this.localStorage.getItem("personId"),
-          cameras: cameras,
+          cameraLabels: Camera.getCameraLabels(),
         })
       },
 
