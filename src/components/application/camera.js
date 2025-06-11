@@ -1,14 +1,37 @@
-let instance;
 
-export default {
+class Camera {
 
-  async getDeviceId(label) {
-    let useCamera = false
+  localStorage = window.localStorage
+  useCamera = false
+  devices = []
+
+
+  async isPersisted() {
+    // read permissions
+    await this.readCameraPermissions()
+    return this.getCurrentCameraLabel() != null
+  }
+
+  async configure() {
+    await this.readAllCameras()
+    let labels = this.getCameraLabels()
+
+    if (! await this.isPersisted()) {
+      for (const label of labels) {
+        if (labels.length == 1 || label.includes("back")) {
+          this.localStorage.setItem("cameraLabel", label)
+        }
+      }
+    }
+  }
+
+
+  async readCameraPermissions() {
     let permissionObj = await navigator.permissions.query({name: 'camera'})
-
     if (permissionObj.state == 'prompt') {
-        useCamera = true
-        // request permissions
+        this.useCamera = true
+
+        // request permissions - only works in browser so far
         let stream = await navigator.mediaDevices.getUserMedia({audio: false, video: true})
         if (stream) {
           stream.getTracks().forEach(function(track) {
@@ -17,25 +40,39 @@ export default {
         }
 
     } else if (permissionObj.state == 'granted') {
-      useCamera = true
+      this.useCamera = true
     }
+  }
 
-    let devices = []
-    if (useCamera == true) {
-      devices = await navigator.mediaDevices.enumerateDevices()
-    }
+  async readAllCameras() {
+    if (this.useCamera == true) {
+      let devices = await navigator.mediaDevices.enumerateDevices()
 
-    let cameras = [];
-    let cameraFound = false
-
-    for (const device of devices) {
-      if (device.kind === "videoinput" && device.label == label) {
-        if (device.deviceId) {
-            return device.deviceId
-        } else if (device.id){
-            return device.id
+      for (const device of devices) {
+        if (device.kind === "videoinput") {
+          this.devices.push({
+            label: device.label,
+            id: device.id || device.deviceId
+          })
         }
       }
     }
   }
+
+  getCameraLabels() {
+    return this.devices.map(device => device.label);
+  }
+
+  getCurrentCameraLabel() {
+    return this.localStorage.getItem("cameraLabel")
+  }
+
+  async getDeviceId() {
+    console.log("biber")
+    console.log(this.devices)
+    const device = this.devices.find(device => device.label === this.getCurrentCameraLabel());
+    return device ? device.id : null;
+  }
 }
+
+export default new Camera()

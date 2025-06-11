@@ -35,6 +35,7 @@
     import Item from '../controller/items/item.riot'
     import Search from '../controller/search/search.riot'
     import Config from '../controller/config/config.riot'
+    import Camera from './camera.js'
 
     //const isLoggedIn = Login.exports.login()
     const isLoggedIn = true
@@ -132,15 +133,11 @@
         console.log("cameraLabel: " + window.localStorage.getItem("cameraLabel"))
         console.log("personId: " + window.localStorage.getItem("personId"))
         
-        
+        await Camera.configure()
+        alert(window.localStorage.getItem("cameraLabel"))
+        alert(await Camera.getDeviceId())
 
-
-        
-        if (!window.localStorage.getItem("cameraLabel") || window.localStorage.getItem("cameraLabel") == "") {
-          this.goto("#config")
-        } else {
-          this.render(document.URL)
-        }
+        this.render(document.URL)
       },
 
       getController(url) {
