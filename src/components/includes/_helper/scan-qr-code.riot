@@ -4,12 +4,70 @@
   <script>
 
     import * as riot from 'riot'
-
+    import Camera from '../../application/camera.js'
 
     export default {
-      scan(e) {
-        alert('rebuild')
+      localStorage: window.localStorage,
+      html5QrCode: null, // <- globales Objekt speichern
+      scannerRunning: false,
+
+      async scan(e) {
+        let element = document.getElementById("reader");
+        let registry = this.registry;
+
+        const deviceId = await Camera.getDeviceId(this.localStorage.getItem("cameraLabel")) // todo, get ID from Label
+        const config = { fps: 10, qrbox: { width: 400, height: 400 } }
+
+        if (e.target.innerHTML === 'Scan qr code') {
+          e.target.innerHTML = 'Close camera';
+
+          // Nur ein neues Objekt erstellen, wenn noch keines existiert
+          if (!this.html5QrCode) {
+            this.html5QrCode = new Html5Qrcode("reader");
+          }
+
+          const onScanSuccess = (decodedText, decodedResult) => {
+            this.html5QrCode.stop().then(() => {
+              this.html5QrCode.clear();
+              this.scannerRunning = false;
+              registry.application.goto(decodedText)
+            });
+          };
+
+          const onScanFailure = (err) => {
+            console.error("Error while scanning qr-code:", err);
+          };
+
+          this.html5QrCode.start(
+            { deviceId: { exact: deviceId } },
+            config,
+            onScanSuccess,
+            onScanFailure
+          ).then(() => {
+            this.scannerRunning = true;
+          }).catch(err => {
+            console.error("Error while starting qr-code scanner:", err);
+          });
+
+        } else if (e.target.innerHTML === 'Close camera') {
+          if (this.html5QrCode && this.scannerRunning) {
+            this.html5QrCode.stop().then(() => {
+              this.html5QrCode.clear();
+              this.scannerRunning = false;
+              e.target.innerHTML = 'Scan qr code';
+            }).catch(err => {
+              console.error("Error while stopping camera: ", err);
+            });
+          }
+        }
       },
+
+      async onMounted(e) {
+        await navigator.mediaDevices.enumerateDevices()
+      }
     }
+
   </script>
+
+</location>
 </scan-qr-code>

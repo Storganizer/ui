@@ -35,6 +35,7 @@
     import Item from '../controller/items/item.riot'
     import Search from '../controller/search/search.riot'
     import Config from '../controller/config/config.riot'
+    import Camera from './camera.js'
 
     //const isLoggedIn = Login.exports.login()
     const isLoggedIn = true
@@ -99,6 +100,11 @@
         }
       },
 
+      goto(url) {
+        let controller = this.parseUrl(url)
+        window.location.hash = "#" + controller.name + "/" + controller.params.join("/")
+      },
+
       render(url) {
         let controller = this.getController(url)
         
@@ -122,7 +128,7 @@
       },
 
       async onMounted() {
-        let devices = await navigator.mediaDevices.enumerateDevices();
+        await Camera.configure()
         this.render(document.URL)
       },
 
