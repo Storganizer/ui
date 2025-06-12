@@ -44,7 +44,7 @@ class Camera {
   }
 
   async readAllCameras() {
-    if (this.useCamera == true) {
+    if (this.useCamera) {
       let devices = await navigator.mediaDevices.enumerateDevices()
       for (const device of devices) {
         if (device.kind === "videoinput") {
