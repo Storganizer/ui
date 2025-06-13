@@ -1,6 +1,6 @@
 <qr-code>
   <p><button class="no-print margin-right left" onclick={ toggleQr }>Show qr code</button></p>
-  <p><button class="no-print margin-right hidden clearfix" id="print-button" onclick={ () => window.print() }>Print qr code</button></p>
+  <p><button class="no-print margin-right hidden clearfix" id="print-button" onclick={ print }>Print qr code</button></p>
   <p><div id="location-qr"></div></p>
 
   <script>
@@ -8,6 +8,19 @@
     import QRCode from 'easyqrcodejs';
 
     export default {
+
+      print() {
+        if (cordova) {
+          cordova.plugins.printer.print('<b>Hello Cordova!</b>');
+            var html = document.documentElement.outerHTML;
+            cordova.plugins.printer.print(html, {
+              name: 'Meine Seite',
+              landscape: false
+            });
+        } else {
+          window.print()
+        }
+      },
 
       toggleQr(e) {
         let element = document.getElementById("location-qr")
