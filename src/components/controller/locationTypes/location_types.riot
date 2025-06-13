@@ -6,9 +6,7 @@
   <br />
   <br />
   <b>Lago Mio</b>
-  <element-form if={ state.add } type="locationType" element={ state.emptyLocationType } onCancel={ toggleAdd } />
-  <element-list elements={ state.locationTypes } type="locationType" add="#locationTypes/add" />
-
+  
   <script>
 
     import  './style.css'
@@ -41,20 +39,18 @@
       },
 
       loadData() {
-        alert('go on')
         this.update({
           locations: this.registry.dataStore.locationTypes.getLocationTypes()
         })
       },
 
       onMounted() {
-        alert('types mounted')
-        this.setupListenter()
-        this.loadData()
-
-        this.update({
-          add: this.props.params[0] == 'add',
-        })
+        //this.setupListenter()
+        //this.loadData()
+//
+        //this.update({
+        //  add: this.props.params[0] == 'add',
+        //})
 
       }
     }
