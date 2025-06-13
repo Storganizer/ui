@@ -4,8 +4,10 @@
 
     <div class="clearfix" />
     <div class="application-body container">
-      <locations application={ this } params={ state.controller.params } if={ isController('locations') }></locations>
+      <locations application={ this } params={ state.controller.params } if={ isController('locations') }>boii</locations>
       <location application={ this } params={ state.controller.params } if={ isController('location') }></location>
+      <location_types if={ isController('locationTypes') }>Beach</location_types>
+      <locationType application={ this } params={ state.controller.params } if={ isController('locationType') }>Boy</location_types>
       <boxes application={ this } params={ state.controller.params } if={ isController('boxes') }></boxes>
       <box application={ this } params={ state.controller.params } if={ isController('box') }></box>
       <persons application={ this } params={ state.controller.params } if={ isController('persons') }></persons>
@@ -22,11 +24,15 @@
   </div>
 
   <script>
+    import * as riot from 'riot'
+
     import './application.css'
     import Registry from './registry.js'
     import Navigation from './navigation.riot'
     import Locations from '../controller/locations/locations.riot'
     import Location from '../controller/locations/location.riot'
+    import LocationTypes from '../controller/locationTypes/location_types.riot'
+    import LocationType from '../controller/locationTypes/locationType.riot'
     import Boxes from '../controller/boxes/boxes.riot'
     import Box from '../controller/boxes/box.riot'
     import Persons from '../controller/persons/persons.riot'
@@ -36,6 +42,8 @@
     import Search from '../controller/search/search.riot'
     import Config from '../controller/config/config.riot'
     import Camera from './camera.js'
+
+    riot.register('location_types', LocationTypes)
 
     //const isLoggedIn = Login.exports.login()
     const isLoggedIn = true
@@ -52,6 +60,8 @@
         Navigation,
         Locations,
         Location,
+        LocationTypes,
+        LocationType,
         Boxes,
         Box,
         Persons,
@@ -59,7 +69,7 @@
         Items,
         Item,
         Search,
-        Config,
+        Config
       },
 
       parseUrl(url = "localhost#locations") {
@@ -116,7 +126,6 @@
 
         this.currentControllerName = controller.name
         this.registry.eventBus.trigger('applicationRender')
-
         this.update({
           controller: controller
         })
@@ -128,6 +137,8 @@
       },
 
       async onMounted() {
+        console.log(Locations)
+        console.log(LocationTypes)
         await Camera.configure()
         this.render(document.URL)
       },
