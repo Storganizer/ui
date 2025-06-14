@@ -22,16 +22,20 @@ echo "Cordova Build"
 mkdir -p $SCRIPT_PATH/local-builds
 mkdir -p $SCRIPT_PATH/www
 
+#-v $SCRIPT_PATH/build/android:/tmp/android:z \
+
 podman rm -f storganizer-build-android-$(cat version.txt)
 podman run -it --name storganizer-build-android-$(cat version.txt) \
     -v $SCRIPT_PATH/version.txt:/tmp/version.txt:z \
     -v $SCRIPT_PATH/src:/tmp/src:z \
+    -v $SCRIPT_PATH/build/config/capacitor.config.debug.ts:/tmp/capacitor.config.ts:z \
     -v $SCRIPT_PATH/webpack.config.js:/tmp/webpack.config.js:z \
     -v $SCRIPT_PATH/public:/tmp/public:z \
+    -v $SCRIPT_PATH/android:/tmp/android:z \
     -v $SCRIPT_PATH/build/pipeline:/tmp/pipeline:z \
     -v $SCRIPT_PATH/build/config/appimage.json:/tmp/build-config/appimage.json:z \
     -v $SCRIPT_PATH/local-builds:/tmp/local-builds:z \
     -v $SCRIPT_PATH/build/config/cordova.xml:/tmp/orig-config.xml:z \
     -v $SCRIPT_PATH/package.json:/tmp/package.json:z \
-    docker.io/eclipse-temurin:17-jdk \
+    docker.io/eclipse-temurin:21-jdk \
         bash /tmp/pipeline/02-container-build-android.sh $RELEASE

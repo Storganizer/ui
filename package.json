@@ -38,6 +38,9 @@
 		"webpack-dev-server": "^5.2.2"
 	},
 	"dependencies": {
+		"@capacitor/android": "^7.3.0",
+		"@capacitor/cli": "^7.3.0",
+		"@capacitor/core": "^7.3.0",
 		"@riotjs/custom-elements": "^9.0.1",
 		"@riotjs/hot-reload": "^9.0.1",
 		"@riotjs/lazy": "^9.0.0",

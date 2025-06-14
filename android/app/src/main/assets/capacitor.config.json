@@ -1,0 +1,6 @@
+{
+	"appId": "io.storganizer.app",
+	"appName": "Storganizer",
+	"webDir": "www",
+	"loggingBehavior": "debug"
+}
