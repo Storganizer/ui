@@ -1,3 +1,0 @@
-/* Riot WIP, @license MIT */
-
-/* Riot v9.4.9, @license MIT */
