@@ -18,7 +18,7 @@
       <span if={ props.type == 'location' }> Locations</span>
     </h2>
 
-    <div if={ state.listView == 'image' }>
+    <div if={ state.listView == 'image' && props.type != 'locationType' }>
       <a style="background-image: url('{state.apiUrl}{element.image}')" class="image-list" each={ element in props.elements } key={ element.id }  onclick={ registry.application.clickHandler } href="#{props.type}/{ element.id }">
         <div>
           <i if={ props.type == 'item' } class="fa-solid fa-screwdriver-wrench"></i>
@@ -32,7 +32,7 @@
     </div>
 
 
-    <table if={ state.listView == 'list' }>
+    <table if={ state.listView == 'list' || props.type == 'locationType' }>
       <tbody>
         <tr each={ element in props.elements } key={ element.id }>
           <td>

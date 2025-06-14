@@ -48,7 +48,7 @@
         }.bind(this))
 
         this.registry.eventBus.on('dataLocationLoadSuccess', function(locations) {
-          this.loadLocationData()
+          this.loadLocationsData()
         }.bind(this))
       },
 
@@ -91,7 +91,7 @@
 
         this.setupListenter()
         this.loadLocationTypeData()
-        this.loadLocationData()
+        this.loadLocationsData()
       }
     }
   </script>

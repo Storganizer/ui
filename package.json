@@ -45,6 +45,7 @@
 		"@riotjs/route": "^9.2.2",
 		"cordova": "^12.0.0",
 		"easyqrcodejs": "^4.6.2",
+		"html5-qrcode": "^2.3.8",
 		"qr-scanner": "^1.4.2",
 		"riot": "^9.4.9",
 		"riot-observable": "^3.0.0"

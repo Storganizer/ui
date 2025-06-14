@@ -1,6 +1,6 @@
 <element-form>
   <p if={ props.element }>
-    <take-picture currentPicture="{ state.apiHost }{ props.element.image }"></take-picture>
+    <take-picture if={ props.type != 'locationType' } currentPicture="{ state.apiHost }{ props.element.image }"></take-picture>
     <input placeholder="Name" ame="element-name" id="element-name" type="text" value="{ props.element.name }"></input>
     <textarea placeholder="Description" name="element-description" id="element-description">{ props.element.description }</textarea>
 
@@ -139,9 +139,12 @@
 
         let element = {
           id: this.props.element.id || 0,
-          image: TakePicture.exports.getEncodedImage(),
           name: document.getElementById("element-name").value,
           description: document.getElementById("element-description").value,
+        }
+
+        if (this.props.type !== 'locationType') {
+          element.image = TakePicture.exports.getEncodedImage()
         }
 
         let dataStore
@@ -151,6 +154,10 @@
             element.classification = parseInt(document.getElementById("element-classification").value)
             dataStore = this.registry.dataStore.locations
             break
+          case 'locationType':
+            dataStore = this.registry.dataStore.locationTypes
+            break
+
           case 'box':
             let locationId = 0
             let inBoxId = 0
@@ -211,6 +218,11 @@
           case 'location':
             redirectUrl  = '#locations'
             dataStore = this.registry.dataStore.locations
+            break
+          case 'locationType':
+            // todo: remember to inform about the locations sitting without type now
+            redirectUrl  = '#locationTypes'
+            dataStore = this.registry.dataStore.locationTypes
             break
           case 'box':
             redirectUrl  = '#location/' + document.getElementById("element-location-id").value

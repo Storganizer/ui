@@ -298,11 +298,29 @@ export default {
     },
 
     updateEntry(locationType) {
+      let target = this
+      function reqListener() {
+        let jsonResponse = JSON.parse(this.responseText)
+        target.reload()
+      }
 
+      const req = new XMLHttpRequest()
+      req.addEventListener("load", reqListener)
+      req.open("PUT", apiHost + "/locationType/" + locationType.id)
+      req.send(JSON.stringify(locationType))
     },
 
     addEntry(locationType) {
+      let target = this
+      function reqListener() {
+        let jsonResponse = JSON.parse(this.responseText)
+        target.reload()
+      }
 
+      const req = new XMLHttpRequest()
+      req.addEventListener("load", reqListener)
+      req.open("POST", apiHost + "/locationTypes")
+      req.send(JSON.stringify(locationType))
     },
 
     deleteEntry(locationType) {

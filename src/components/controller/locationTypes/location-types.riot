@@ -1,5 +1,7 @@
 <location-types>
-  lago mio
+  <element-form if={ state.add } type="locationType" element={ state.emptyLocationType } onCancel={ toggleAdd } />
+  <element-list elements={ state.locationTypes } type="locationType" add="#locationTypes/add" />
+
   <script>
 
     import  './style.css'
@@ -13,7 +15,7 @@
       },
       state: {
         add: false,
-        locations: [],
+        locationTypes: [],
         emptyLocationType: {
           name: '',
           description: ''
@@ -28,22 +30,23 @@
         let target = this
         this.registry.eventBus.on('dataLocationTypeLoadSuccess', function() {
           target.loadData()
+          console.log(target.registry.dataStore.locationTypes.getLocationTypes())
         })
       },
 
       loadData() {
         this.update({
-          locations: this.registry.dataStore.locationTypes.getLocationTypes()
+          locationTypes: this.registry.dataStore.locationTypes.getLocationTypes()
         })
       },
 
       onMounted() {
-        //this.setupListenter()
-        //this.loadData()
-//
-        //this.update({
-        //  add: this.props.params[0] == 'add',
-        //})
+        this.setupListenter()
+        this.loadData()
+
+        this.update({
+          add: this.props.params[0] == 'add',
+        })
 
       }
     }
