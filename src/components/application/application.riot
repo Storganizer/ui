@@ -4,10 +4,10 @@
 
     <div class="clearfix" />
     <div class="application-body container">
-      <locations application={ this } params={ state.controller.params } if={ isController('locations') }>boii</locations>
+      <locations application={ this } params={ state.controller.params } if={ isController('locations') }></locations>
       <location application={ this } params={ state.controller.params } if={ isController('location') }></location>
-      <location_types if={ isController('locationTypes') }>Beach</location_types>
-      <locationType application={ this } params={ state.controller.params } if={ isController('locationType') }>Boy</location_types>
+      <location-types application={ this } params={ state.controller.params } if={ isController('locationTypes') }></location-types>
+      <location-type application={ this } params={ state.controller.params } if={ isController('locationType') }></location-type>
       <boxes application={ this } params={ state.controller.params } if={ isController('boxes') }></boxes>
       <box application={ this } params={ state.controller.params } if={ isController('box') }></box>
       <persons application={ this } params={ state.controller.params } if={ isController('persons') }></persons>
@@ -31,8 +31,8 @@
     import Navigation from './navigation.riot'
     import Locations from '../controller/locations/locations.riot'
     import Location from '../controller/locations/location.riot'
-    import Location_Types from '../controller/locationTypes/location_types.riot'
-    import LocationType from '../controller/locationTypes/locationType.riot'
+    import LocationTypes from '../controller/locationTypes/location-types.riot'
+    import LocationType from '../controller/locationTypes/location-type.riot'
     import Boxes from '../controller/boxes/boxes.riot'
     import Box from '../controller/boxes/box.riot'
     import Persons from '../controller/persons/persons.riot'
@@ -60,7 +60,7 @@
         Navigation,
         Locations,
         Location,
-        Location_Types,
+        LocationTypes,
         LocationType,
         Boxes,
         Box,
