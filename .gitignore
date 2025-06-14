@@ -3,6 +3,9 @@
 /plugins
 /builds
 /local-builds
+/android
+
+
 # --------------------
 # OSX Files
 # --------------------
