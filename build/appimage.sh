@@ -24,6 +24,7 @@ mkdir -p $SCRIPT_PATH/www
 
 podman rm -f storganizer-build-appimage-$(cat version.txt)
 podman run -it --name storganizer-build-appimage-$(cat version.txt) \
+    --workdir '/tmp' \
     -v $SCRIPT_PATH/version.txt:/tmp/version.txt:z \
     -v $SCRIPT_PATH/src:/tmp/src:z \
     -v $SCRIPT_PATH/webpack.config.js:/tmp/webpack.config.js:z \
