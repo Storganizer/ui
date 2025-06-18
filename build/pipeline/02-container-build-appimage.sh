@@ -35,7 +35,7 @@ cordova platform add electron
 #cordova build --buildConfig=/tmp/build-config/appimage.json --release -- --packageType=apk
 cordova build --buildConfig=/tmp/build-config/appimage.json $RELEASE
 
-if [ "$GITHUB" -eq "1" ]; then
+if [ "$GITHUB" -ne "1" ]; then
   APP_IMAGE=$(find ./ -name *.AppImage)
 
   echo "AppImage: $APP_IMAGE"
