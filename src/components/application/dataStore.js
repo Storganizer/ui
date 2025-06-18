@@ -126,9 +126,11 @@ export default {
         this.fetchLocations()
         return []
       }
+      console.log("Find locations for " + locationTypeId)
 
       function filterByLocationTypeID(item) {
-        return Number.isFinite(item.parentLocationTypeId) && item.parentLocationTypeId == locationTypeId
+        console.log(item.locationTypeId)
+        return Number.isFinite(item.locationTypeId) && item.locationTypeId == locationTypeId
       }
 
       return this.locations.filter(filterByLocationTypeID)
