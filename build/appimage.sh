@@ -34,4 +34,4 @@ podman run -it --name storganizer-build-appimage-$(cat version.txt) \
     -v $SCRIPT_PATH/build/config/cordova.xml:/tmp/orig-config.xml:z \
     -v $SCRIPT_PATH/package.json:/tmp/package.json:z \
     beevelop/ionic \
-        bash /tmp/pipeline/02-container-build-appimage.sh $RELEASE
+        bash /tmp/pipeline/02-container-build-appimage.sh --github $RELEASE
