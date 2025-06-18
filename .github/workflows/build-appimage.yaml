@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1
-      - run: ./build/pipeline/01-container-build-prepare.sh
+      - run: bash ./build/pipeline/01-container-build-prepare.sh
 
   build-dev:
     needs: [build-prepare]
@@ -26,7 +26,7 @@ jobs:
         with:
           java-version: 17
 
-      - run: ./build/pipeline/02-container-build-appimage.sh
+      - run: bash ./build/pipeline/02-container-build-appimage.sh
 
       - run: |
           find /home/runner/work/ui/ui/ -name *.AppImage
@@ -47,7 +47,7 @@ jobs:
         with:
           java-version: 17
 
-      - run: ./build/pipeline/02-container-build-appimage.sh --release
+      - run: bash ./build/pipeline/02-container-build-appimage.sh --release
 
       - run: |
           find /home/runner/work/ui/ui/ -name *.AppImage
