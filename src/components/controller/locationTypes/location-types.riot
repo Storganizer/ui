@@ -1,8 +1,9 @@
-<locations>
-  <element-form if={ state.add } type="location" element={ state.emptyLocation } onCancel={ toggleAdd } />
-  <element-list elements={ state.locations } type="location" add="#locations/add" />
+<location-types>
+  <element-form if={ state.add } type="locationType" element={ state.emptyLocationType } onCancel={ toggleAdd } />
+  <element-list elements={ state.locationTypes } type="locationType" add="#locationTypes/add" />
 
   <script>
+
     import  './style.css'
     import ElementForm from '../../includes/_helper/element-form.riot'
     import ElementList from '../../includes/_helper/element-list.riot'
@@ -14,29 +15,28 @@
       },
       state: {
         add: false,
-        locations: [],
-        emptyLocation: {
+        locationTypes: [],
+        emptyLocationType: {
           name: '',
-          description: '',
-          locationTypeId: 0,
+          description: ''
         }
       },
 
       toggleAdd() {
-        window.location.href = '/#locations'
+        window.location.href = '/#locationTypes'
       },
 
       setupListenter() {
         let target = this
-        this.registry.eventBus.on('dataLocationLoadSuccess', function() {
+        this.registry.eventBus.on('dataLocationTypeLoadSuccess', function() {
           target.loadData()
+          console.log(target.registry.dataStore.locationTypes.getLocationTypes())
         })
       },
 
       loadData() {
-
         this.update({
-          locations: this.registry.dataStore.locations.getLocations()
+          locationTypes: this.registry.dataStore.locationTypes.getLocationTypes()
         })
       },
 
@@ -45,16 +45,10 @@
         this.loadData()
 
         this.update({
-          emptyLocation: {
-            image: this.registry.dataStore.defaults.getImages()['location'],
-          }
-        })
-
-        this.update({
           add: this.props.params[0] == 'add',
         })
 
       }
     }
   </script>
-</locations>
+</location-types>

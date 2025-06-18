@@ -1,0 +1,108 @@
+<location-type>
+  <element-header
+    if={ ! state.edit && state.locationType } 
+    type="location"
+    element={state.locationType}
+    next={ state.nextLocationType ? "#location/" + state.nextLocationType.id : "" }
+    previous={ state.previousLocationType ? "#location/" + state.previousLocationType.id : "" }
+  />
+  <element-detail if={ !state.edit && state.locationType } type="locationType" element={ state.locationType } />
+  <element-form if={ state.edit && state.locationType } type="locationType" element={ state.locationType } onCancel={ closeEdit }  />
+  <div if={ state.add && state.emptyLocation } class="add-form">
+    <h2>Add a location to the loctionType</h2>
+    <element-form type="location" element={ state.emptyLocation } onCancel={ closeEdit }  />
+  </div>
+  <element-list elements={ state.locations } type="location" />
+
+  <script>
+    import  './style.css'
+    import ElementHeader from '../../includes/_helper/element-header.riot'
+    import ElementDetail from '../../includes/_helper/element-detail.riot'
+    import ElementForm from '../../includes/_helper/element-form.riot'
+    import ElementList from '../../includes/_helper/element-list.riot'
+
+    export default {
+      components: {
+        ElementHeader,
+        ElementDetail,
+        ElementForm,
+        ElementList,
+      },
+
+      state: {
+        nextLocationType: false,
+        previousLocationType: false,
+        locationType: false,
+        locations: [],
+        edit: false,
+        emptyLocation: false
+      },
+
+      closeEdit() {
+        this.registry.application.render('#locationType/' + this.state.id)
+      },
+
+      setupListenter() {
+        this.registry.eventBus.on('dataLocationTypeLoadSuccess', function(locations) {
+          this.loadLocationTypeData()
+        }.bind(this))
+
+        this.registry.eventBus.on('dataLocationLoadSuccess', function(locations) {
+          this.loadLocationsData()
+        }.bind(this))
+      },
+
+      loadLocationTypeData() {
+        let locationType = this.registry.dataStore.locationTypes.getLocationTypeById(this.props.params[0])
+        if (!locationType) {
+          return false
+        }
+        let nextLocationType = this.registry.dataStore.locationTypes.getNext(locationType)
+        let previousLocationType = this.registry.dataStore.locationTypes.getPrevious(locationType)
+
+        this.update({
+          nextLocationType: nextLocationType ? nextLocationType : false,
+          previousLocationType: previousLocationType ? previousLocationType : false,
+          locationType: locationType
+        })
+      },
+
+      loadLocationsData() {
+        this.update({
+            locations: this.registry.dataStore.locations.getLocationsByLocationTypeId(this.props.params[0])
+        })
+      },
+
+      onMounted() {
+        this.update({
+          id: this.props.params[0],
+          edit: this.props.params[1] == 'edit',
+          add: this.props.params[1] == 'add',
+        })
+
+        this.update({
+          emptyLocation: {
+            name: '',
+            description: '',
+            locationId: 0,
+            parentLocationTypeId: this.state.id
+          }
+        })
+
+        this.setupListenter()
+        this.loadLocationTypeData()
+        this.loadLocationsData()
+      }
+    }
+  </script>
+
+  <style>
+  .add-form {
+    display: block;
+    background-color: white;
+    padding: 10px;
+    border-radius: 3px;
+  }
+  </style>
+
+</location-type>

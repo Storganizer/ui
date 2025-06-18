@@ -23,7 +23,6 @@ export default {
         return false
       }
 
-
       return this.images
       //http://localhost:5000/config/default-images
     },
@@ -122,6 +121,22 @@ export default {
       return this.locations
     },
 
+    getLocationsByLocationTypeId(locationTypeId) {
+      if (!this.locations) {
+        this.fetchLocations()
+        return []
+      }
+      console.log("Find locations for " + locationTypeId)
+
+      function filterByLocationTypeID(item) {
+        console.log(item.locationTypeId)
+        return Number.isFinite(item.locationTypeId) && item.locationTypeId == locationTypeId
+      }
+
+      return this.locations.filter(filterByLocationTypeID)
+    },
+
+
     fetchLocations() {
       if (this.locations == false) {
         let target = this
@@ -185,6 +200,145 @@ export default {
       req.send()
     }
   },
+
+  locationTypes: {
+    locationTypes: false,
+
+    getNext(locationType) {
+      if (!this.locationTypes) {
+        return false
+      }
+      let index = this.locationTypes.indexOf(locationType);
+      if(index >= 0 && index < this.locationTypes.length - 1) {
+        return this.locationTypes[index + 1]
+      }
+      return false
+    },
+
+    getPrevious(locationType) {
+      if (!this.locationTypes) {
+        return false
+      }
+      let index = this.locationTypes.indexOf(locationType)
+      if(index >= 1 && index < this.locationTypes.length) {
+        return this.locationTypes[index - 1]
+      }
+      return false
+    },
+
+    search(string) {
+      if (!this.locationTypes) {
+        this.fetchLocationTypes()
+        return []
+      }
+
+      string = string.toLowerCase()
+      function filterByString(item) {
+        if (string == '') {
+          return true
+        }
+        let found = false
+
+        if (item.name && item.name.toLowerCase().includes(string)) {
+          found = true
+        }
+
+        if (item.description && item.description.toLowerCase().includes(string)) {
+          found = true
+        }
+
+        return found
+      }
+
+      return this.locationTypes.filter(filterByString)
+    },
+
+    getLocationTypeById(id) {
+      if (!this.locationTypes) {
+        this.fetchLocationTypes()
+        return false
+      }
+
+      function filterByID(item) {
+        return Number.isFinite(item.id) && item.id == id
+      }
+
+      return this.locationTypes.filter(filterByID)[0]
+    },
+
+    getLocationTypes() {
+      if (!this.locationTypes) {
+        this.fetchLocationTypes()
+        return []
+      }
+
+      return this.locationTypes
+    },
+
+    fetchLocationTypes() {
+      if (this.locationTypes == false) {
+        let target = this
+        function reqListener() {
+          let jsonResponse = JSON.parse(this.responseText)
+          target.locationTypes = jsonResponse
+          Registry.eventBus.trigger('dataLocationTypeLoadSuccess', target.locationTypes)
+        }
+        const req = new XMLHttpRequest()
+        req.addEventListener("load", reqListener)
+        req.open("GET", apiHost + "/locationTypes")
+        req.send()
+
+        return false
+      } else {
+        return true
+      }
+    },
+
+    reload() {
+      this.locationTypes = false
+      this.fetchLocationTypes()
+    },
+
+    updateEntry(locationType) {
+      let target = this
+      function reqListener() {
+        let jsonResponse = JSON.parse(this.responseText)
+        target.reload()
+      }
+
+      const req = new XMLHttpRequest()
+      req.addEventListener("load", reqListener)
+      req.open("PUT", apiHost + "/locationType/" + locationType.id)
+      req.send(JSON.stringify(locationType))
+    },
+
+    addEntry(locationType) {
+      let target = this
+      function reqListener() {
+        let jsonResponse = JSON.parse(this.responseText)
+        target.reload()
+      }
+
+      const req = new XMLHttpRequest()
+      req.addEventListener("load", reqListener)
+      req.open("POST", apiHost + "/locationTypes")
+      req.send(JSON.stringify(locationType))
+    },
+
+    deleteEntry(locationType) {
+      let target = this
+      function reqListener() {
+        let jsonResponse = JSON.parse(this.responseText)
+        target.reload()
+      }
+
+      const req = new XMLHttpRequest()
+      req.addEventListener("load", reqListener)
+      req.open("DELETE", apiHost + "/locationType/" + locationType.id)
+      req.send()
+    }
+  },
+
 
   boxes: {
     boxes: false,

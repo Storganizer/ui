@@ -1,6 +1,6 @@
 <element-form>
   <p if={ props.element }>
-    <take-picture currentPicture="{ state.apiHost }{ props.element.image }"></take-picture>
+    <take-picture if={ props.type != 'locationType' } currentPicture="{ state.apiHost }{ props.element.image }"></take-picture>
     <input placeholder="Name" ame="element-name" id="element-name" type="text" value="{ props.element.name }"></input>
     <textarea placeholder="Description" name="element-description" id="element-description">{ props.element.description }</textarea>
 
@@ -33,13 +33,9 @@
       <option selected={ props.element.boxId == element.id } each={ element in state.boxes } value={ element.id }>{ element.name }</option>
     </select>
 
-    <select if={ props.type == 'location' } name="element-classification" id="element-classification">
+    <select if={ props.type == 'location' } name="element-locationType" id="element-locationType">
       <option value="0">Location Type</option>
-      <option selected={ props.element.classification == 5 } value="5">Outside</option>
-      <option selected={ props.element.classification == 4 } value="4">Basement</option>
-      <option selected={ props.element.classification == 3 } value="3">Attic</option>
-      <option selected={ props.element.classification == 2 } value="2">Living Area</option>
-      <option selected={ props.element.classification == 1 } value="1">My Room</option>
+      <option selected={ props.element.locationTypeId == element.id } each={ element in state.locationTypes } value={ element.id }>{ element.name }</option>
     </select>
   </p>
 
@@ -60,6 +56,7 @@
       state: {
         boxInBox: true,
         locations: false,
+        locationTypes: false,
         boxes: false,
         persons: false,
       },
@@ -86,6 +83,10 @@
           this.loadLocationData()
         }.bind(this))
 
+        this.registry.eventBus.on('dataLocationTypeLoadSuccess', function(locations) {
+          this.loadLocationTypeData()
+        }.bind(this))
+
         this.registry.eventBus.on('dataBoxLoadSuccess', function(locations) {
           this.loadBoxData()
         }.bind(this))
@@ -94,6 +95,12 @@
       loadLocationData() {
         this.update({
             locations: this.registry.dataStore.locations.getLocations()
+        })
+      },
+
+      loadLocationTypeData() {
+        this.update({
+            locationTypes: this.registry.dataStore.locationTypes.getLocationTypes()
         })
       },
 
@@ -119,6 +126,7 @@
         this.setupListenter()
         this.loadApiUrl()
         this.loadLocationData()
+        this.loadLocationTypeData()
         this.loadBoxData()
         this.loadPersonData()
 
@@ -139,18 +147,25 @@
 
         let element = {
           id: this.props.element.id || 0,
-          image: TakePicture.exports.getEncodedImage(),
           name: document.getElementById("element-name").value,
           description: document.getElementById("element-description").value,
+        }
+
+        if (this.props.type !== 'locationType') {
+          element.image = TakePicture.exports.getEncodedImage()
         }
 
         let dataStore
 
         switch(this.props.type) {
           case 'location':
-            element.classification = parseInt(document.getElementById("element-classification").value)
+            element.locationType = parseInt(document.getElementById("element-locationType").value)
             dataStore = this.registry.dataStore.locations
             break
+          case 'locationType':
+            dataStore = this.registry.dataStore.locationTypes
+            break
+
           case 'box':
             let locationId = 0
             let inBoxId = 0
@@ -187,6 +202,7 @@
             dataStore = this.registry.dataStore.persons
             break
         }
+        console.log(element)
 
         if (element.id > 0) {
           dataStore.updateEntry(element)
@@ -211,6 +227,11 @@
           case 'location':
             redirectUrl  = '#locations'
             dataStore = this.registry.dataStore.locations
+            break
+          case 'locationType':
+            // todo: remember to inform about the locations sitting without type now
+            redirectUrl  = '#locationTypes'
+            dataStore = this.registry.dataStore.locationTypes
             break
           case 'box':
             redirectUrl  = '#location/' + document.getElementById("element-location-id").value

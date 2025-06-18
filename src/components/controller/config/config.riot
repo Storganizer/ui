@@ -28,6 +28,11 @@
 
   <label>Backup</label>
   <button onclick={ backup } href="{ state.apiUrl }/backup">Backup (Only data - No images yet)</button>
+
+  <label>Restore</label>
+  <input type="file" name="backup" id="backup" /> <br />
+  <button onclick={ restore } href="{ state.apiUrl }/restore">Restore (Only data - No images yet)</button>
+
   <!--
   <label>Restore</label>
   <button onclick={ restore }>Restore (Only data - No images yet)</button>
@@ -81,6 +86,30 @@
 
       backup() {
         window.location = this.state.apiUrl + "/backup"
+      },
+
+      restore() {
+        const fileInput = document.getElementById("backup");
+        const file = fileInput.files[0];
+
+        if (!file) {
+          alert("Please choose a storganizer backup-file for upload.");
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("backup", file);
+
+        const req = new XMLHttpRequest();
+        req.addEventListener("load", function () {
+          console.log("Upload done:", req.responseText);
+        });
+        req.addEventListener("error", function () {
+          console.error("Error during upload:", req);
+        });
+
+        req.open("POST", this.state.apiUrl + "/restore");
+        req.send(formData);
       },
 
       setListView(e) {

@@ -5,6 +5,7 @@
       <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
       <ul class="menu">
         <li class={ state.classes.locations }><a onclick={ registry.application.clickHandler } href="#locations">Locations</a></li>
+        <li class={ state.classes.locationTypes }><a onclick={ registry.application.clickHandler } href="#locationTypes">Location Types</a></li>
         <li class={ state.classes.boxes }><a onclick={ registry.application.clickHandler } href="#boxes">Boxes</a></li>
         <li class={ state.classes.items }><a onclick={ registry.application.clickHandler } href="#items">Items</a></li>
         <li class={ state.classes.persons }><a onclick={ registry.application.clickHandler } href="#persons"><i class="fa-solid fa-person"></i></a></li>
@@ -20,6 +21,7 @@
       state: {
         classes: {
           locations: '',
+          locationTypes: '',
           boxes: '',
           items: '',
           persons: '',
@@ -36,6 +38,7 @@
         let controller = this.registry.application.getCurrentController()
         let classes = {
           locations: controller == 'locations' || controller == 'location' ? 'active' : '',
+          locationTypes: controller == 'locationTypes' || controller == 'locationType' ? 'active' : '',
           boxes: controller == 'boxes' || controller == 'box' ? 'active' : '',
           items: controller == 'items' || controller == 'item' ? 'active' : '',
           persons: controller == 'persons' || controller == 'person' ? 'active' : '',

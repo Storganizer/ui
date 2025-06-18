@@ -93,7 +93,6 @@
         let personId = box && box.personId ? box.personId : 0
         let nextBox = this.registry.dataStore.boxes.getNext(box)
         let previousBox = this.registry.dataStore.boxes.getPrevious(box)
-        console.log(box)
         this.update({
           box: box,
           nextBox: nextBox ? nextBox : false,

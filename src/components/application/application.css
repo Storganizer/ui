@@ -50,6 +50,10 @@ h2 i {
   margin-right: 15px;
 }
 
+button.margin-right {
+  margin-right: 5px;
+}
+
 /* Camera Settings*/
 #fullscreen {
   position: absolute;
@@ -92,6 +96,10 @@ h2 i {
 .no-scroll {
   overflow: hidden;
 
+}
+
+.hidden {
+    display: none !important;
 }
 
 @media print
