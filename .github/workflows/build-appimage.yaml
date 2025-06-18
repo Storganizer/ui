@@ -13,8 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1
-        with:
-          java-version: 17
       - run: ./build/pipeline/01-container-build-prepare.sh
 
   build-dev:
@@ -26,7 +24,7 @@ jobs:
       - uses: bahmutov/npm-install@v1
       - uses: coturiv/setup-ionic@v1
         with:
-          java-version: 8
+          java-version: 17
 
       - run: ./build/pipeline/02-container-build-appimage.sh
 
@@ -47,7 +45,7 @@ jobs:
       - uses: bahmutov/npm-install@v1
       - uses: coturiv/setup-ionic@v1
         with:
-          java-version: 8
+          java-version: 17
 
       - run: ./build/pipeline/02-container-build-appimage.sh --release
 
