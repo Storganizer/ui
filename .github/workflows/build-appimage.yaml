@@ -39,7 +39,7 @@ jobs:
   build-release:
     needs: [build-prepare]
     runs-on: ubuntu-latest
-    name: Build Dev
+    name: Build Release
     steps:
       - uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1
