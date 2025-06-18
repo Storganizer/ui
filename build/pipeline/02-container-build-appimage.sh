@@ -4,11 +4,16 @@ rm -rf ./platforms ./plugins
 
 RELEASE=""
 DEV="-dev"
+GITHUB=0
 while [ $# -gt 0 ]; do
   case "$1" in
     --release)
       RELEASE="--release"
       DEV=""
+      ;;
+
+    --github)
+      GITHUB=1
       ;;
     *)
       printf "***************************\n"
@@ -30,9 +35,11 @@ cordova platform add electron
 #cordova build --buildConfig=/tmp/build-config/appimage.json --release -- --packageType=apk
 cordova build --buildConfig=/tmp/build-config/appimage.json $RELEASE
 
-APP_IMAGE=$(find ./ -name *.AppImage)
+if [ "$GITHUB" -eq "1" ]
+  APP_IMAGE=$(find ./ -name *.AppImage)
 
-echo "AppImage: $APP_IMAGE"
+  echo "AppImage: $APP_IMAGE"
 
-mkdir -p /tmp/local-builds/appimage
-cp --force $APP_IMAGE /tmp/local-builds/appimage 2> >(grep -v "are the same file" >&2)
+  mkdir -p /tmp/local-builds/appimage
+  cp --force $APP_IMAGE /tmp/local-builds/appimage 2> >(grep -v "are the same file" >&2)
+fi

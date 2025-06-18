@@ -1,4 +1,4 @@
-name: main
+name: Build Appimage
 on:
   push:
     tags:
@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1
-      - run: bash ./build/pipeline/01-container-build-prepare.sh
+      - run: bash ./build/pipeline/01-container-build-prepare.sh --github
 
   build-dev:
     needs: [build-prepare]
@@ -47,7 +47,7 @@ jobs:
         with:
           java-version: 17
 
-      - run: bash ./build/pipeline/02-container-build-appimage.sh --release
+      - run: bash ./build/pipeline/02-container-build-appimage.sh --github --release
 
       - run: |
           find /home/runner/work/ui/ui/ -name *.AppImage
