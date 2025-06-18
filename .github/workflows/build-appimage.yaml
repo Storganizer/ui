@@ -1,0 +1,60 @@
+name: main
+on:
+  push:
+    tags:
+    - 'v*'
+  workflow_dispatch:
+
+jobs:
+
+  build-prepare:
+    runs-on: ubuntu-latest
+    name: Prepare Build
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bahmutov/npm-install@v1
+        with:
+          java-version: 17
+      - run: ./build/pipeline/01-container-build-prepare.sh
+
+  build-dev:
+    needs: [build-prepare]
+    runs-on: ubuntu-latest
+    name: Build Dev
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bahmutov/npm-install@v1
+      - uses: coturiv/setup-ionic@v1
+        with:
+          java-version: 8
+
+      - run: ./build/pipeline/02-container-build-appimage.sh
+
+      - run: |
+          find /home/runner/work/ui/ui/ -name *.AppImage
+
+      - uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.STORGANIZER_RELEASE_TOKEN }}
+          artifacts: "platforms/electron/build/*AppImage,"
+
+  build-dev:
+    needs: [build-prepare]
+    runs-on: ubuntu-latest
+    name: Build Dev
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bahmutov/npm-install@v1
+      - uses: coturiv/setup-ionic@v1
+        with:
+          java-version: 8
+
+      - run: ./build/pipeline/02-container-build-appimage.sh --release
+
+      - run: |
+          find /home/runner/work/ui/ui/ -name *.AppImage
+
+      - uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.STORGANIZER_RELEASE_TOKEN }}
+          artifacts: "platforms/electron/build/*AppImage,"
