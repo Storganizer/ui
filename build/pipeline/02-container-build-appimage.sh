@@ -24,7 +24,7 @@ while [ $# -gt 0 ]; do
   shift
 done
 
-VERSION=$(cat /tmp/version.txt)
+VERSION=$(cat ./version.txt)
 sed "s/{{VERSION}}/${VERSION}${DEV}/g" /tmp/orig-config.xml > /tmp/config.xml
 
 bash  /tmp/pipeline/01-container-build-prepare.sh
