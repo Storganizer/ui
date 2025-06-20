@@ -3,8 +3,8 @@
     if={ ! state.edit && state.locationType } 
     type="location"
     element={state.locationType}
-    next={ state.nextLocationType ? "#location/" + state.nextLocationType.id : "" }
-    previous={ state.previousLocationType ? "#location/" + state.previousLocationType.id : "" }
+    next={ state.nextLocationType ? "#locationType/" + state.nextLocationType.id : "" }
+    previous={ state.previousLocationType ? "#locationType/" + state.previousLocationType.id : "" }
   />
   <element-detail if={ !state.edit && state.locationType } type="locationType" element={ state.locationType } />
   <element-form if={ state.edit && state.locationType } type="locationType" element={ state.locationType } onCancel={ closeEdit }  />
