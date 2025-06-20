@@ -27,7 +27,7 @@ jobs:
           java-version: 8
 
       - run: ./build/pipeline/02-container-build-appimage.sh --github
-      - run: tree platforms/electron/build
+      - run: tree ./
 
       - uses: ncipollo/release-action@v1
         with:

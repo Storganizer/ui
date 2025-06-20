@@ -14,3 +14,5 @@ echo "Preparing for cordova build"
 mkdir -p ./www
 cp ./dist/* ./www
 cp ./public/* ./www
+
+exit 0

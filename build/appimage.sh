@@ -29,10 +29,10 @@ podman run -it --name storganizer-build-appimage-$(cat version.txt) \
     -v $SCRIPT_PATH/src:/tmp/src:z \
     -v $SCRIPT_PATH/webpack.config.js:/tmp/webpack.config.js:z \
     -v $SCRIPT_PATH/public:/tmp/public:z \
-    -v $SCRIPT_PATH/build/pipeline:/tmp/pipeline:z \
-    -v $SCRIPT_PATH/build/config/appimage.json:/tmp/build-config/appimage.json:z \
+    -v $SCRIPT_PATH/build/pipeline:/tmp/build/pipeline:z \
+    -v $SCRIPT_PATH/build/config/appimage.json:/tmp/build/config/appimage.json:z \
     -v $SCRIPT_PATH/local-builds:/tmp/local-builds:z \
-    -v $SCRIPT_PATH/build/config/cordova.xml:/tmp/orig-config.xml:z \
+    -v $SCRIPT_PATH/build/config/cordova.xml:/tmp/build/config/cordova.xml:z \
     -v $SCRIPT_PATH/package.json:/tmp/package.json:z \
     beevelop/ionic \
-        bash /tmp/pipeline/02-container-build-appimage.sh --github $RELEASE
+    bash -c "./build/pipeline/01-container-build-prepare.sh && ./build/pipeline/02-container-build-appimage.sh $RELEASE"
