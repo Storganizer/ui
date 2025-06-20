@@ -1,7 +1,7 @@
 #!/bin/bash
 
-apt update 
-apt -y install temurin-17-jdk nodejs npm unzip wget gradle android-sdk #android-tools-adb android-sdk-build-tools
+apt update && DEBIAN_FRONTEND=noninteractive 
+apt -y install openjdk-17-jdk nodejs npm unzip wget gradle android-sdk #android-tools-adb android-sdk-build-tools
 
 # Set environment variables
 export ANDROID_HOME=/opt/android-sdk
