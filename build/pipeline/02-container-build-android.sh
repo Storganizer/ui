@@ -1,7 +1,7 @@
 #!/bin/bash
 
 apt update 
-apt -y install nodejs npm unzip wget gradle android-sdk #android-tools-adb android-sdk-build-tools
+apt -y install temurin-17-jdk nodejs npm unzip wget gradle android-sdk #android-tools-adb android-sdk-build-tools
 
 # Set environment variables
 export ANDROID_HOME=/opt/android-sdk
@@ -23,7 +23,6 @@ yes | sdkmanager --licenses
 sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
 echo y | sdkmanager "build-tools;35.0.0"
-npm install -g cordova
 
 rm -rf ./platforms ./plugins
 
