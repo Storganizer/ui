@@ -39,9 +39,6 @@ jobs:
 
       - uses: bahmutov/npm-install@v1
       - uses: coturiv/setup-ionic@v1
-        with:
-          java-version: 8
-
       - run: sudo ./build/pipeline/02-container-build-appimage.sh --github
       - run: tree ./
 
@@ -50,23 +47,24 @@ jobs:
           token: ${{ secrets.STORGANIZER_RELEASE_TOKEN }}
           artifacts: "platforms/electron/build/*AppImage,"
 
-  # build-release:
-    # needs: [build-prepare]
-    # runs-on: ubuntu-latest
-    # name: Build Release
-    # steps:
-      # - uses: actions/checkout@v3
-      # - uses: bahmutov/npm-install@v1
-      # - uses: coturiv/setup-ionic@v1
-        # with:
-          # java-version: 17
-# 
-      # - run: ./build/pipeline/02-container-build-appimage.sh --github --release
-# 
-      # - run: |
-          # find /home/runner/work/ui/ui/ -name *.AppImage
-# 
-      # - uses: ncipollo/release-action@v1
-        # with:
-          # token: ${{ secrets.STORGANIZER_RELEASE_TOKEN }}
-          # artifacts: "platforms/electron/build/*AppImage,"
+  build-release:
+    needs: [build-prepare]
+    runs-on: ubuntu-latest
+    name: Build Release
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: prepared-build
+
+
+      - uses: bahmutov/npm-install@v1
+      - uses: coturiv/setup-ionic@v1
+      - run: sudo ./build/pipeline/02-container-build-appimage.sh --github --release
+      - run: tree ./
+
+      - uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.STORGANIZER_RELEASE_TOKEN }}
+          artifacts: "platforms/electron/build/*AppImage,"
