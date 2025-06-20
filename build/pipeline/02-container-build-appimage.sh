@@ -32,13 +32,10 @@ cp ./build/config/cordova.xml ./orig-config.xml
 
 VERSION=$(cat ./version.txt)
 sed "s/{{VERSION}}/${VERSION}${DEV}/g" ./orig-config.xml > ./config.xml
-cat ./config.xml
-
-tree ./build
 
 cordova telemetry off
 cordova platform add electron
-cordova build --buildConfig=./build/config/appimage.json $RELEASE
+cordova build --buildConfig=$(pwd)/build/config/appimage.json $RELEASE
 
 
 #cordova build --buildConfig=./build-config/appimage.json --release -- --gradleArg=-PcdvBuildMultipleApks=true --packageType=apk
