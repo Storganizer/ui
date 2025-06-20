@@ -31,7 +31,7 @@ jobs:
     name: Build Dev
     steps:
       - uses: actions/checkout@v3
-      - name: Download build artifacts
+      - name: Download prepared build
         uses: actions/download-artifact@v4
         with:
           name: prepared-build
@@ -42,11 +42,21 @@ jobs:
       - run: sudo ./build/pipeline/02-container-build-appimage.sh --github
       - run: tree ./
 
-      - uses: ncipollo/release-action@v1
+      # - uses: ncipollo/release-action@v1
+      #   with:
+      #     token: ${{ secrets.STORGANIZER_RELEASE_TOKEN }}
+      #     allowUpdates: true
+      #     artifacts: "platforms/electron/build/*AppImage,"
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
         with:
-          token: ${{ secrets.STORGANIZER_RELEASE_TOKEN }}
-          allowUpdates: true
-          artifacts: "platforms/electron/build/*AppImage,"
+          name: build-artifacts-dev
+          path: |
+            ./platforms/electron/build/
+
+
+
 
   build-release:
     needs: [build-prepare]
@@ -54,7 +64,7 @@ jobs:
     name: Build Release
     steps:
       - uses: actions/checkout@v3
-      - name: Download build artifacts
+      - name: Download prepared build
         uses: actions/download-artifact@v4
         with:
           name: prepared-build
@@ -65,8 +75,33 @@ jobs:
       - run: sudo ./build/pipeline/02-container-build-appimage.sh --github --release
       - run: tree ./
 
+      # - uses: ncipollo/release-action@v1
+      #   with:
+      #     token: ${{ secrets.STORGANIZER_RELEASE_TOKEN }}
+      #     allowUpdates: true
+      #     artifacts: "platforms/electron/build/*AppImage,"
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts-release
+          path: |
+            ./platforms/electron/build/
+
+
+  release:
+    steps:
+      - name: Download dev build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts-dev
+
+      - name: Download releae build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts-release
+
       - uses: ncipollo/release-action@v1
         with:
           token: ${{ secrets.STORGANIZER_RELEASE_TOKEN }}
-          allowUpdates: true
           artifacts: "platforms/electron/build/*AppImage,"
