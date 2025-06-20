@@ -50,6 +50,8 @@ while [ $# -gt 0 ]; do
   shift
 done
 
+cp ./build/config/cordova.xml ./orig-config.xml
+
 VERSION=$(cat ./version.txt)
 sed "s/{{VERSION}}/${VERSION}${DEV}/g" ./orig-config.xml > ./config.xml
 
