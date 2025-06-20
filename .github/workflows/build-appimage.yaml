@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1
-      - run: ./build/pipeline/01-container-build-prepare.sh
+      - run: sudo ./build/pipeline/01-container-build-prepare.sh
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -42,7 +42,7 @@ jobs:
         with:
           java-version: 8
 
-      - run: ./build/pipeline/02-container-build-appimage.sh --github
+      - run: sudo ./build/pipeline/02-container-build-appimage.sh --github
       - run: tree ./
 
       - uses: ncipollo/release-action@v1
