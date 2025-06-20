@@ -5,6 +5,7 @@ apt -y install temurin-17-jdk nodejs npm unzip wget gradle android-sdk #android-
 
 # Set environment variables
 export ANDROID_HOME=/opt/android-sdk
+export ANDROID_SDK_ROOT=/opt/android-sdk
 export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
 
 # Create directories
