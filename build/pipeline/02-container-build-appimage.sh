@@ -4,6 +4,7 @@ rm -rf ./platforms ./plugins
 
 apt update 
 apt -y install tree
+npm install -g cordova
 
 
 RELEASE=""

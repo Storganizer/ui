@@ -24,6 +24,7 @@ sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
 echo y | sdkmanager "build-tools;35.0.0"
 
+npm install -g cordova
 rm -rf ./platforms ./plugins
 
 RELEASE=""

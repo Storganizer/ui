@@ -15,6 +15,4 @@ mkdir -p ./www
 cp ./dist/* ./www
 cp ./public/* ./www
 
-npm install -g cordova
-
 exit 0
