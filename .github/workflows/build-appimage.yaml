@@ -90,6 +90,8 @@ jobs:
 
 
   release:
+    needs: [build-dev, build-release]
+    runs-on: ubuntu-latest
     steps:
       - name: Download dev build artifacts
         uses: actions/download-artifact@v4
