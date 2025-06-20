@@ -62,8 +62,32 @@ jobs:
           path: |
             ./platforms/electron/build/
 
+
+  build-android-dev:
+    needs: [build-prepare]
+    runs-on: ubuntu-latest
+    name: Build Android Dev
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download prepared build
+        uses: actions/download-artifact@v4
+        with:
+          name: prepared-build
+      - uses: bahmutov/npm-install@v1
+      - uses: coturiv/setup-ionic@v1
+      - run: sudo ./build/pipeline/02-container-build-android.sh --github
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts-dev-android
+          path: |
+            ./platforms/android/app/build/
+
+
+
+
   release:
-    needs: [build-dev, build-release]
+    needs: [build-dev, build-release, build-android-dev]
     runs-on: ubuntu-latest
     steps:
       - name: Download dev build artifacts
@@ -74,7 +98,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-artifacts-release
+      - name: Download android dev build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts-dev-android
       - uses: ncipollo/release-action@v1
         with:
           token: ${{ secrets.STORGANIZER_RELEASE_TOKEN }}
-          artifacts: "*AppImage,"
+          artifacts: "*AppImage,*apk"

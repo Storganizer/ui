@@ -29,6 +29,7 @@ rm -rf ./platforms ./plugins
 
 RELEASE=""
 DEV="-dev"
+GITHUB=0
 while [ $# -gt 0 ]; do
   case "$1" in
     --release)
@@ -61,8 +62,12 @@ cordova platform add android@14.0.1
 cordova build $RELEASE -- --packageType=apk
 # diff
 
-APP_IMAGE=$(find ./ -name *.apk)
 
-echo "APK: $APP_IMAGE"
-mkdir -p /tmp/local-builds/android/
-cp --force $APP_IMAGE /tmp/local-builds/android/ 2> >(grep -v "are the same file" >&2)
+if [ "$GITHUB" -ne "1" ]; then
+  APP_IMAGE=$(find ./ -name *.apk)
+
+  echo "AppImage: $APP_IMAGE"
+
+  mkdir -p /tmp/local-builds/android/
+  cp --force $APP_IMAGE /tmp/local-builds/android/ 2> >(grep -v "are the same file" >&2)
+fi
