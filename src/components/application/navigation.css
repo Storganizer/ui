@@ -95,7 +95,7 @@
 }
 
 .header .menu-btn:checked ~ .menu {
-  max-height: 270px;
+  max-height: 320px;
 }
 
 .header .menu-btn:checked ~ .menu-icon .navicon {
@@ -124,7 +124,7 @@
  * Sizes are handled here because its primary use is here within the navigation
  * 48em = 768px
  */
-@media (min-width: 55em) {
+@media (min-width: 60em) {
   .header li {
     float: left;
   }
@@ -142,7 +142,7 @@
 }
 
 
-@media (max-width: 55em) {
+@media (max-width: 60em) {
   h2 {
     font-size: 2rem !important;
   }

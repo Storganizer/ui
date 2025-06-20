@@ -1,5 +1,8 @@
 #!/bin/bash
 
+apt update
+apt -y install npm
+
 echo "Cleanup"
 rm -rf ./builds ./dist ./node_modules ./platforms ./plugins ./www
 
