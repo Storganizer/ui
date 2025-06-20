@@ -40,13 +40,6 @@ jobs:
       - uses: bahmutov/npm-install@v1
       - uses: coturiv/setup-ionic@v1
       - run: sudo ./build/pipeline/02-container-build-appimage.sh --github
-      - run: tree ./
-
-      # - uses: ncipollo/release-action@v1
-      #   with:
-      #     token: ${{ secrets.STORGANIZER_RELEASE_TOKEN }}
-      #     allowUpdates: true
-      #     artifacts: "platforms/electron/build/*AppImage,"
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -69,17 +62,9 @@ jobs:
         with:
           name: prepared-build
 
-
       - uses: bahmutov/npm-install@v1
       - uses: coturiv/setup-ionic@v1
       - run: sudo ./build/pipeline/02-container-build-appimage.sh --github --release
-      - run: tree ./
-
-      # - uses: ncipollo/release-action@v1
-      #   with:
-      #     token: ${{ secrets.STORGANIZER_RELEASE_TOKEN }}
-      #     allowUpdates: true
-      #     artifacts: "platforms/electron/build/*AppImage,"
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -98,10 +83,15 @@ jobs:
         with:
           name: build-artifacts-dev
 
+      - run: tree ./
+
       - name: Download releae build artifacts
         uses: actions/download-artifact@v4
         with:
           name: build-artifacts-release
+     
+      - run: tree ./
+
 
       - uses: ncipollo/release-action@v1
         with:
