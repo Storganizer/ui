@@ -1,6 +1,6 @@
 #!/bin/bash
 
-apt update
+apt update && DEBIAN_FRONTEND=noninteractive
 apt -y install npm
 
 echo "Cleanup"

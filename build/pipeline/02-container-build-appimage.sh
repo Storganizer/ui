@@ -2,7 +2,7 @@
 
 rm -rf ./platforms ./plugins
 
-apt update 
+apt update && DEBIAN_FRONTEND=noninteractive
 apt -y install tree
 npm install -g cordova
 

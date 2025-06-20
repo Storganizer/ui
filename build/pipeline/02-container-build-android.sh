@@ -1,6 +1,6 @@
 #!/bin/bash
 
-apt update && DEBIAN_FRONTEND=noninteractive 
+apt update && DEBIAN_FRONTEND=noninteractive
 apt -y install openjdk-17-jdk nodejs npm unzip wget gradle android-sdk #android-tools-adb android-sdk-build-tools
 
 # Set environment variables
