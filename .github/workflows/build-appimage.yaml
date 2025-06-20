@@ -45,6 +45,7 @@ jobs:
       - uses: ncipollo/release-action@v1
         with:
           token: ${{ secrets.STORGANIZER_RELEASE_TOKEN }}
+          allowUpdates: true
           artifacts: "platforms/electron/build/*AppImage,"
 
   build-release:
@@ -67,4 +68,5 @@ jobs:
       - uses: ncipollo/release-action@v1
         with:
           token: ${{ secrets.STORGANIZER_RELEASE_TOKEN }}
+          allowUpdates: true
           artifacts: "platforms/electron/build/*AppImage,"
