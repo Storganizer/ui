@@ -19,6 +19,7 @@ while [ $# -gt 0 ]; do
     --github)
       GITHUB=1
       ;;
+
     *)
       printf "***************************\n"
       printf "* Error: Invalid argument.*\n"
