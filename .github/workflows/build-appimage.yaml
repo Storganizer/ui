@@ -15,12 +15,28 @@ jobs:
       - uses: bahmutov/npm-install@v1
       - run: ./build/pipeline/01-container-build-prepare.sh
 
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: prepared-build
+          path: |
+            ./node_modules/
+            ./www/
+
+
+
   build-dev:
     needs: [build-prepare]
     runs-on: ubuntu-latest
     name: Build Dev
     steps:
       - uses: actions/checkout@v3
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: prepared-build
+
+
       - uses: bahmutov/npm-install@v1
       - uses: coturiv/setup-ionic@v1
         with:
