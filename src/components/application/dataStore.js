@@ -4,7 +4,55 @@ import Registry from './registry.js'
 
 let apiHost = window.localStorage.getItem("apiUrl") || 'http://127.0.0.1:5000'
 
+//alert(apiHost)
+
 export default {
+
+  // async isLoggedIn() {
+  //   let target = this
+  //   function reqListener() {
+  //     let jsonResponse = JSON.parse(this.responseText)
+  //     target.user = jsonResponse
+  //     Registry.eventBus.trigger('dataUserLoadSuccess', target.user)
+  //   }
+  //   const req = new XMLHttpRequest()
+  //   req.withCredentials = true
+  //   req.addEventListener("load", reqListener)
+  //   req.open("GET", apiHost + "user")
+  //   await req.send()
+
+  //   return this.user.logged_in
+  // },
+
+  async isLoggedIn() {
+    const response = await new Promise((resolve, reject) => {
+      const req = new XMLHttpRequest()
+      req.withCredentials = true
+      req.open("GET", apiHost + "/user");
+      
+
+      req.onload = () => {
+        if (req.status >= 200 && req.status < 300) {
+          resolve(JSON.parse(req.responseText));
+        } else {
+          reject(new Error("Request failed with status " + req.status));
+        }
+      };
+
+      req.onerror = () => reject(new Error("Network error"));
+      req.send();
+    });
+
+    this.user = await response;
+    //console.log(this.user.logged_in)
+    Registry.eventBus.trigger('dataUserLoadSuccess', this.user);
+    return this.user.logged_in;
+  },
+
+
+
+
+
 
   setApiHost(url) {
     apiHost = url
@@ -36,6 +84,7 @@ export default {
           Registry.eventBus.trigger('dataDefaultImagesLoadSuccess', target.images)
         }
         const req = new XMLHttpRequest()
+        req.withCredentials = true
         req.addEventListener("load", reqListener)
         req.open("GET", apiHost + "/config/default-images")
         req.send()
@@ -146,6 +195,7 @@ export default {
           Registry.eventBus.trigger('dataLocationLoadSuccess', target.locations)
         }
         const req = new XMLHttpRequest()
+        req.withCredentials = true
         req.addEventListener("load", reqListener)
         req.open("GET", apiHost + "/locations")
         req.send()
@@ -169,6 +219,7 @@ export default {
       }
 
       const req = new XMLHttpRequest()
+      req.withCredentials = true
       req.addEventListener("load", reqListener)
       req.open("PUT", apiHost + "/location/" + location.id)
       req.send(JSON.stringify(location))
@@ -182,6 +233,7 @@ export default {
       }
 
       const req = new XMLHttpRequest()
+      req.withCredentials = true
       req.addEventListener("load", reqListener)
       req.open("POST", apiHost + "/locations")
       req.send(JSON.stringify(location))
@@ -195,6 +247,7 @@ export default {
       }
 
       const req = new XMLHttpRequest()
+      req.withCredentials = true
       req.addEventListener("load", reqListener)
       req.open("DELETE", apiHost + "/location/" + location.id)
       req.send()
@@ -284,6 +337,7 @@ export default {
           Registry.eventBus.trigger('dataLocationTypeLoadSuccess', target.locationTypes)
         }
         const req = new XMLHttpRequest()
+        req.withCredentials = true
         req.addEventListener("load", reqListener)
         req.open("GET", apiHost + "/locationTypes")
         req.send()
@@ -307,6 +361,7 @@ export default {
       }
 
       const req = new XMLHttpRequest()
+      req.withCredentials = true
       req.addEventListener("load", reqListener)
       req.open("PUT", apiHost + "/locationType/" + locationType.id)
       req.send(JSON.stringify(locationType))
@@ -320,6 +375,7 @@ export default {
       }
 
       const req = new XMLHttpRequest()
+      req.withCredentials = true
       req.addEventListener("load", reqListener)
       req.open("POST", apiHost + "/locationTypes")
       req.send(JSON.stringify(locationType))
@@ -333,6 +389,7 @@ export default {
       }
 
       const req = new XMLHttpRequest()
+      req.withCredentials = true
       req.addEventListener("load", reqListener)
       req.open("DELETE", apiHost + "/locationType/" + locationType.id)
       req.send()
@@ -467,9 +524,10 @@ export default {
           Registry.eventBus.trigger('dataBoxLoadSuccess', target.boxes)
         }
 
-        const req = new XMLHttpRequest();
-        req.addEventListener("load", reqListener);
-        req.open("GET", apiHost + "/boxes");
+        const req = new XMLHttpRequest()
+        req.withCredentials = true
+        req.addEventListener("load", reqListener)
+        req.open("GET", apiHost + "/boxes")
         req.send();
       }
     },
@@ -487,6 +545,7 @@ export default {
       }
 
       const req = new XMLHttpRequest()
+      req.withCredentials = true
       req.addEventListener("load", reqListener)
       req.open("PUT", apiHost + "/box/" + box.id)
       req.send(JSON.stringify(box))
@@ -500,6 +559,7 @@ export default {
       }
 
       const req = new XMLHttpRequest()
+      req.withCredentials = true
       req.addEventListener("load", reqListener)
       req.open("POST", apiHost + "/boxes")
       req.send(JSON.stringify(box))
@@ -513,6 +573,7 @@ export default {
       }
 
       const req = new XMLHttpRequest()
+      req.withCredentials = true
       req.addEventListener("load", reqListener)
       req.open("DELETE", apiHost + "/box/" + box.id)
       req.send()
@@ -602,6 +663,7 @@ export default {
           Registry.eventBus.trigger('dataPersonLoadSuccess', target.persons)
         }
         const req = new XMLHttpRequest()
+        req.withCredentials = true
         req.addEventListener("load", reqListener)
         req.open("GET", apiHost + "/persons")
         req.send()
@@ -625,6 +687,7 @@ export default {
       }
 
       const req = new XMLHttpRequest()
+      req.withCredentials = true
       req.addEventListener("load", reqListener)
       req.open("PUT", apiHost + "/person/" + person.id)
       req.send(JSON.stringify(person))
@@ -638,6 +701,7 @@ export default {
       }
 
       const req = new XMLHttpRequest()
+      req.withCredentials = true
       req.addEventListener("load", reqListener)
       req.open("POST", apiHost + "/persons")
       req.send(JSON.stringify(person))
@@ -651,6 +715,7 @@ export default {
       }
 
       const req = new XMLHttpRequest()
+      req.withCredentials = true
       req.addEventListener("load", reqListener)
       req.open("DELETE", apiHost + "/person/" + person.id)
       req.send()
@@ -757,10 +822,11 @@ export default {
           Registry.eventBus.trigger('dataItemLoadSuccess', target.items)
         }
 
-        const req = new XMLHttpRequest();
-        req.addEventListener("load", reqListener);
-        req.open("GET", apiHost + "/items");
-        req.send();
+        const req = new XMLHttpRequest()
+        req.withCredentials = true
+        req.addEventListener("load", reqListener)
+        req.open("GET", apiHost + "/items")
+        req.send()
       }
 
     },
@@ -779,6 +845,7 @@ export default {
       }
 
       const req = new XMLHttpRequest()
+      req.withCredentials = true
       req.addEventListener("load", reqListener)
       req.open("PUT", apiHost + "/item/" + item.id)
       req.send(JSON.stringify(item))
@@ -792,6 +859,7 @@ export default {
       }
 
       const req = new XMLHttpRequest()
+      req.withCredentials = true
       req.addEventListener("load", reqListener)
       req.open("POST", apiHost + "/items")
       req.send(JSON.stringify(item))
@@ -805,6 +873,7 @@ export default {
       }
 
       const req = new XMLHttpRequest()
+      req.withCredentials = true
       req.addEventListener("load", reqListener)
       req.open("DELETE", apiHost + "/item/" + item.id)
       req.send()

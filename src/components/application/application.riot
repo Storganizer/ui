@@ -18,7 +18,6 @@
       <config application={ this } params={ state.controller.params } if={ isController('config') }></config>
     </div>
   </div>
-
   <div if={ !state.isLoggedIn } class="container">
     <login></login>
   </div>
@@ -30,6 +29,7 @@
     //import './css-themes/olive.css'
     import Registry from './registry.js'
     import Navigation from './navigation.riot'
+    import Login from './login.riot'
     import Locations from '../controller/locations/locations.riot'
     import Location from '../controller/locations/location.riot'
     import LocationTypes from '../controller/locationTypes/location-types.riot'
@@ -47,18 +47,19 @@
     //riot.register('location_types', LocationTypes)
 
     //const isLoggedIn = Login.exports.login()
-    const isLoggedIn = true
+    //const isLoggedIn = this.registry.dataStore.isLoggedIn()
 
     export default {
       application: this,
       currentControllerName: false,
       state: {
         controller: false,
-        isLoggedIn: isLoggedIn,
+        isLoggedIn: false,
       },
 
       components: {
         Navigation,
+        Login,
         Locations,
         Location,
         LocationTypes,
@@ -116,9 +117,13 @@
         window.location.hash = "#" + controller.name + "/" + controller.params.join("/")
       },
 
-      render(url) {
+      async render(url) {
         let controller = this.getController(url)
-        
+
+        this.update({
+          isLoggedIn: await this.registry.dataStore.isLoggedIn()
+        })
+
         if (controller.name == this.getCurrentController()) {
           this.update({
             controller: {}
@@ -128,7 +133,7 @@
         this.currentControllerName = controller.name
         this.registry.eventBus.trigger('applicationRender')
         this.update({
-          controller: controller
+         controller: controller
         })
       },
 

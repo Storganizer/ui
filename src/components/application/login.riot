@@ -1,0 +1,19 @@
+<login class="no-print">
+    <div class="login">
+        <button onclick={ login }>Backend Login</button>
+        Login on your Backend
+    </div>
+  <script>
+    import './login.css'
+
+
+    export default {
+
+      login(e) {
+        window.location.href = this.registry.dataStore.getApiHost() + "/login"
+      },
+    }
+
+
+  </script>
+</login>
