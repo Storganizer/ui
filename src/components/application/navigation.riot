@@ -11,6 +11,7 @@
         <li class={ state.classes.persons }><a onclick={ registry.application.clickHandler } href="#persons"><i class="fa-solid fa-person"></i></a></li>
         <li class={ state.classes.search }><a onclick={ registry.application.clickHandler } href="#search"><i class="fa-solid fa-magnifying-glass"></i></a></li>
         <li class={ state.classes.config }><a onclick={ registry.application.clickHandler } href="#config"><i class="fa-solid fa-gear"></i></a></li>
+        <li if={ state.showLogout }><a onclick={ logout }><i class="fa-solid fa-right-from-bracket"></i></a></li>
       </ul>
     </div>
   <script>
@@ -27,11 +28,19 @@
           persons: '',
           search: '',
           config: '',
-        }
+        },
+        showLogout: false
       },
 
       setupListener() {
         this.registry.eventBus.on('applicationRender', this.onApplicationRender)
+        this.registry.eventBus.on('dataUserLoadSuccess', this.onUserLoadSuccess)
+      },
+
+      onUserLoadSuccess(user) {
+        this.update({
+          showLogout: user.logged_in && user.oidc_enabled
+        })
       },
 
       onApplicationRender() {
@@ -51,6 +60,10 @@
         })
       },
 
+      logout(e) {
+        e.preventDefault()
+        window.location.href = this.registry.dataStore.getApiHost() + "/logout"
+      },
 
       onMounted() {
         this.setupListener()
