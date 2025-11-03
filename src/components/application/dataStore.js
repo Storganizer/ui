@@ -24,6 +24,8 @@ export default {
   //   return this.user.logged_in
   // },
 
+  loggedIn: false,
+
   async isLoggedIn() {
     const response = await new Promise((resolve, reject) => {
       const req = new XMLHttpRequest()
@@ -46,13 +48,9 @@ export default {
     this.user = await response;
     //console.log(this.user.logged_in)
     Registry.eventBus.trigger('dataUserLoadSuccess', this.user);
-    return this.user.logged_in;
+    this.loggedIn =  this.user.logged_in;
+    return this.loggedIn;
   },
-
-
-
-
-
 
   setApiHost(url) {
     apiHost = url
@@ -175,7 +173,6 @@ export default {
         this.fetchLocations()
         return []
       }
-      console.log("Find locations for " + locationTypeId)
 
       function filterByLocationTypeID(item) {
         console.log(item.locationTypeId)
@@ -187,6 +184,10 @@ export default {
 
 
     fetchLocations() {
+      if (!Registry.dataStore.loggedIn) {
+        return false
+      }
+
       if (this.locations == false) {
         let target = this
         function reqListener() {

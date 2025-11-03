@@ -97,7 +97,7 @@
 
       hashChange(e) {
         // close the burger menu if open
-        if (document.getElementsByClassName('menu-btn')[0].checked) {
+        if (document.getElementsByClassName('menu-btn')[0] && document.getElementsByClassName('menu-btn')[0].checked) {
           document.getElementsByClassName('menu-btn')[0].checked = false
         }
         if (e.newURL) {
@@ -119,9 +119,16 @@
 
       async render(url) {
         let controller = this.getController(url)
+        let isLoggedIn = false
+
+        if (controller.name == 'config') {
+          isLoggedIn = true
+        } else {
+          isLoggedIn = await this.registry.dataStore.isLoggedIn()
+        }
 
         this.update({
-          isLoggedIn: await this.registry.dataStore.isLoggedIn()
+          isLoggedIn: isLoggedIn
         })
 
         if (controller.name == this.getCurrentController()) {
