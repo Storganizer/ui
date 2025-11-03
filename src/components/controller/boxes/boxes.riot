@@ -60,7 +60,7 @@
         this.update({
           emptyBox: {
             image: this.registry.dataStore.defaults.getImages()['box'],
-            personId: window.localStorage.getItem("personId"),
+            personId: this.registry.dataStore.getPersonId(),
           }
         })
 

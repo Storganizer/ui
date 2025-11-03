@@ -25,6 +25,21 @@ export default {
   // },
 
   loggedIn: false,
+  user: null,
+
+  getPersonId() {
+    // In OIDC mode, personId comes from the user session
+    if (this.user && this.user.logged_in && this.user.personId) {
+      return this.user.personId;
+    }
+    // In non-OIDC mode, personId comes from localStorage
+    const storedPersonId = window.localStorage.getItem("personId");
+    return storedPersonId || null;
+  },
+
+  getListView() {
+    return window.localStorage.getItem("listView") || 'list';
+  },
 
   async isLoggedIn() {
     const response = await new Promise((resolve, reject) => {
