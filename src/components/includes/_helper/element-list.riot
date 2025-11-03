@@ -53,7 +53,7 @@
         listView: 'list',
       },
 
-      onBeforeMount() {
+      onMounted() {
         this.update({
           apiUrl: this.registry.dataStore.getApiHost(),
           listView: this.registry.dataStore.getListView(),

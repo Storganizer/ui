@@ -67,6 +67,11 @@
 
       onMounted() {
         this.setupListener()
+
+        // Check if user data was already loaded before we mounted
+        if (this.registry.dataStore.user) {
+          this.onUserLoadSuccess(this.registry.dataStore.user)
+        }
       },
     }
 

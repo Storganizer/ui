@@ -60,8 +60,7 @@ export default {
       req.send();
     });
 
-    this.user = await response;
-    //console.log(this.user.logged_in)
+    this.user = response;
     Registry.eventBus.trigger('dataUserLoadSuccess', this.user);
     this.loggedIn =  this.user.logged_in;
     return this.loggedIn;
